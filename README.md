@@ -6,5 +6,7 @@
 3. Run the project
 
 ## Team Members
-- Alice
-- Bob
+- Shravan
+- Maxwell
+- Ash
+- 
