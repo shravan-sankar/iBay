@@ -10,3 +10,9 @@
 - Maxwell
 - Ash
 - Qayyis
+  
+## HTML pages
+- Upload Page
+- Login Page
+- Browse Products Page
+- Individual product page
