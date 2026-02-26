@@ -16,3 +16,4 @@
 - Login Page
 - Browse Products Page
 - Individual product page
+- Checkout Page
