@@ -9,4 +9,15 @@
 - Shravan
 - Maxwell
 - Ash
-- 
+- Qayyis
+  
+## HTML pages
+- Upload Page
+- Login Page
+- Browse Products Page
+- Individual product page
+- Checkout Page
+
+## Ideas
+- Registration has options they can select for preferences
+- Stephen lynch book as product
