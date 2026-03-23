@@ -4,14 +4,16 @@ body{
 
 }
 
+
 #header{
     background-color: #61ADFF;
-    height: 30px;
+    height: 50px;
     margin: 10px;
+    padding: 10px;
     border-radius: 10px;
 }
 #categories {
-    background-color: #A3CAFF;
+    background-color: #61ADFF;
     height: 80px;
     margin: 10px;
     border-radius: 10px;
@@ -24,28 +26,81 @@ body{
     height: auto;
 }
 
-.category-bar{
-    float:right;
-    display:flex;
-    width: 100%;
-
-
+#profile-image {
+  width: 50px;        /* adjust size */
+  height: 50px;       /* must match width */
+  border-radius: 50%; /* makes it a circle */
+  object-fit: cover;  /* prevents stretching */
 }
 
-.nav-links{
-    display:flex;
-    width: 100%;
-    justify-content: space-evenly;
-    list-style: none;
+#basket-image {
+  width: 50px;        /* adjust size */
+  height: 50px;       /* must match width */
+  object-fit: cover;  /* prevents stretching */
+  padding-right: 10px;
 }
+
+
+.nav-container {
+  display: flex;
+  align-items: center;   /* vertically aligns image + bar */
+  gap: 10px;
+}
+.nav-image {
+  width: 60px;     /* adjust size */
+  height: auto;
+}
+
+.category-bar {
+  display: flex;
+  flex: 1;   /* takes remaining space */
+}
+
+.category-bar a {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  position: relative;
+  padding: 10px 0;
+}
+
+/* vertical dividers */
+.category-bar a:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background-color: black;
+}
+
+
+
+
 
 #Recommended_Products {
-    background-color: #A3CAFF;
+    background-color: #61ADFF;
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
 }
+#Latest_Products {
+    background-color: #61ADFF;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 #products-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 16px;
+        padding-bottom: 5px;
+        }
+
+#latest-products-container {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 16px;
@@ -57,4 +112,13 @@ body{
   border: 2px solid black;
   border-radius: 10px;
   padding: 10px;
+}
+
+#footer {
+    display: flex;
+    background: black;
+    color: white;
+    align-items: center;
+    flex: 1;
+    font-size: 12px;
 }
