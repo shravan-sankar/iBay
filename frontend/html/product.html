@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iBay - Item Details</title>
+    <link rel="stylesheet" href="../css/product.css">
+</head>
+<body>
+ 
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="main.html">
+            <img src="../images/iBay_Logo.png" alt="iBay Logo" class="nav-logo">
+        </a>
+        <div class="nav-links">
+            <a href="search.html">Search</a>
+            <a href="login.html">Login</a>
+            <a href="upload.html">Sell an Item</a>
+        </div>
+    </nav>
+ 
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="main.html">Home</a> &gt;
+        <a href="search.html">Search Results</a> &gt;
+        <span>Item Details</span>
+    </div>
+ 
+    <!-- Page Background -->
+    <div class="page-bg">
+ 
+        <!-- Product Card -->
+        <div class="card">
+ 
+            <h1 class="item-title">Vintage Leather Jacket</h1>
+            <p class="item-category">Category: <span>Clothing</span></p>
+ 
+            <!-- Images -->
+            <div class="product-images">
+                <img id="main-image" src="../images/placeholder.jpg" alt="Item Image" class="main-image">
+                <div class="thumbnail-row">
+                    <img src="../images/placeholder.jpg" alt="Thumbnail 1" class="thumbnail" onclick="changeImage(this)">
+                    <img src="../images/placeholder2.jpg" alt="Thumbnail 2" class="thumbnail" onclick="changeImage(this)">
+                </div>
+            </div>
+ 
+            <!-- Price -->
+            <div class="price-box">
+                <p class="price">£<span id="item-price">45.00</span></p>
+                <p class="postage">Postage: £<span id="item-postage">3.99</span></p>
+            </div>
+ 
+            <!-- Countdown -->
+            <div class="time-left">
+                <p>Auction ends: <strong id="item-finish">2025-06-01 18:00:00</strong></p>
+                <p id="time-remaining" class="countdown"></p>
+            </div>
+ 
+            <!-- Seller Info -->
+            <div class="seller-info">
+                <p>Seller: <a href="#">john_doe</a></p>
+                <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734;</p>
+                <p>Location: LE11 3TU</p>
+            </div>
+ 
+            <!-- Buttons -->
+            <button class="btn-primary">Place Bid</button>
+            <button class="btn-secondary">Add to Watchlist</button>
+ 
+            <!-- Description -->
+            <div class="section">
+                <h2>Item Description</h2>
+                <p>This is a great quality vintage leather jacket in excellent condition.
+                Only worn a handful of times. Size M. Brown colour with brass zips.
+                Comes from a smoke-free and pet-free home.</p>
+            </div>
+ 
+            <!-- Seller Table -->
+            <div class="section">
+                <h2>Seller Details</h2>
+                <table class="seller-table">
+                    <tr>
+                        <td>Username:</td>
+                        <td>john_doe</td>
+                    </tr>
+                    <tr>
+                        <td>Rating:</td>
+                        <td>142</td>
+                    </tr>
+                    <tr>
+                        <td>Member Since:</td>
+                        <td>January 2020</td>
+                    </tr>
+                    <tr>
+                        <td>Postcode:</td>
+                        <td>LE11 3TU</td>
+                    </tr>
+                </table>
+            </div>
+ 
+        </div>
+        <!-- End Card -->
+ 
+    </div>
+    <!-- End Page BG -->
+ 
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 iBay. All rights reserved.</p>
+    </footer>
+ 
+    <script>
+        // Change main image when thumbnail is clicked
+        function changeImage(thumbnail) {
+            document.getElementById("main-image").src = thumbnail.src;
+        }
+ 
+        // Countdown timer to auction end
+        function updateCountdown() {
+            var finishTime = document.getElementById("item-finish").textContent;
+            var endDate = new Date(finishTime);
+            var now = new Date();
+            var diff = endDate - now;
+ 
+            if (diff <= 0) {
+                document.getElementById("time-remaining").textContent = "Auction has ended";
+                return;
+            }
+ 
+            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+ 
+            document.getElementById("time-remaining").textContent =
+                days + "d " + hours + "h " + minutes + "m " + seconds + "s remaining";
+        }
+ 
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+ 
+</body>
+</html>

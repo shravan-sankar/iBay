@@ -1,0 +1,255 @@
+/* ===========================
+   iBay - Product Page Styles
+   =========================== */
+ 
+/* --- Reset & Base --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ 
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #e8f0fe;
+}
+ 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+ 
+/* --- Navbar --- */
+.navbar {
+    background-color: #15223f;
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+ 
+.nav-logo {
+    height: 40px;
+}
+ 
+.nav-links a {
+    color: white;
+    margin-left: 20px;
+    font-size: 15px;
+}
+ 
+.nav-links a:hover {
+    text-decoration: underline;
+}
+ 
+/* --- Breadcrumb --- */
+.breadcrumb {
+    padding: 10px 30px;
+    font-size: 14px;
+    color: #555;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+ 
+.breadcrumb a {
+    color: #1a73e8;
+}
+ 
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+ 
+/* --- Page Background (blue gradient like login) --- */
+.page-bg {
+    min-height: calc(100vh - 120px);
+    background: linear-gradient(160deg, #1a73e8 0%, #6ab0f5 100%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+}
+ 
+/* --- White Card (like login card) --- */
+.card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 35px 40px;
+    width: 100%;
+    max-width: 750px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+ 
+/* --- Item Title & Category --- */
+.item-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+    text-align: center;
+}
+ 
+.item-category {
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+    margin-bottom: 20px;
+}
+ 
+/* --- Product Images --- */
+.product-images {
+    margin-bottom: 20px;
+}
+ 
+.main-image {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+ 
+.thumbnail-row {
+    display: flex;
+    gap: 10px;
+}
+ 
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+}
+ 
+.thumbnail:hover {
+    border-color: #1a73e8;
+}
+ 
+/* --- Price Box --- */
+.price-box {
+    background-color: #f0f6ff;
+    border: 1px solid #c5d8f8;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+ 
+.price {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1a73e8;
+}
+ 
+.postage {
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+}
+ 
+/* --- Countdown --- */
+.time-left {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 15px;
+}
+ 
+.countdown {
+    font-weight: bold;
+    color: #1a73e8;
+    margin-top: 4px;
+}
+ 
+/* --- Seller Info --- */
+.seller-info {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.9;
+}
+ 
+.seller-info a {
+    color: #1a73e8;
+}
+ 
+.seller-info a:hover {
+    text-decoration: underline;
+}
+ 
+/* --- Buttons --- */
+.btn-primary, .btn-secondary {
+    padding: 12px 0;
+    font-size: 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+}
+ 
+.btn-primary {
+    background-color: #1a73e8;
+    color: white;
+}
+ 
+.btn-primary:hover {
+    background-color: #1558b0;
+}
+ 
+.btn-secondary {
+    background-color: #fff;
+    color: #1a73e8;
+    border: 2px solid #1a73e8;
+}
+ 
+.btn-secondary:hover {
+    background-color: #e8f0fe;
+}
+ 
+/* --- Section (description & seller table) --- */
+.section {
+    margin-top: 25px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+ 
+.section h2 {
+    font-size: 17px;
+    color: #1a73e8;
+    margin-bottom: 10px;
+}
+ 
+.section p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+}
+ 
+/* --- Seller Table --- */
+.seller-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+ 
+.seller-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+}
+ 
+.seller-table td:first-child {
+    font-weight: bold;
+    color: #555;
+    width: 150px;
+}
+ 
+/* --- Footer --- */
+.footer {
+    background-color: #1a73e8;
+    color: white;
+    text-align: center;
+    padding: 14px;
+    font-size: 13px;
+}
