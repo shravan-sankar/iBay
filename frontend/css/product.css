@@ -1,8 +1,6 @@
-/* ===========================
-   iBay - Product Page Styles
-   =========================== */
+/* iBay - Product Page Styles*/
  
-/* --- Reset & Base --- */
+/*  Reset & Base  */
 * {
     margin: 0;
     padding: 0;
@@ -20,7 +18,7 @@ a {
     color: inherit;
 }
  
-/* --- Navbar --- */
+/*  Navbar  */
 .navbar {
     background-color: #ffffff;
     padding: 12px 30px;
@@ -45,7 +43,7 @@ a {
     text-decoration: underline;
 }
  
-/* --- Breadcrumb --- */
+/*  Breadcrumb  */
 .breadcrumb {
     padding: 10px 30px;
     font-size: 14px;
@@ -66,7 +64,7 @@ a {
     color: #ffffff;
 }
  
-/* --- Main Content (full width like eBay) --- */
+/*  Main Content */
 .main-content {
     max-width: 1100px;
     margin: 25px auto;
@@ -74,7 +72,7 @@ a {
     background-color: #fff;
 }
  
-/* --- Item Title & Category --- */
+/* Item Title & Category */
 .item-title {
     font-size: 24px;
     font-weight: bold;
@@ -88,7 +86,7 @@ a {
     margin-bottom: 20px;
 }
  
-/* --- Product Layout (image left, info right) --- */
+/* Product Layout */
 .product-wrapper {
     display: flex;
     gap: 40px;
@@ -127,7 +125,7 @@ a {
     border-color: #0064d2;
 }
  
-/* --- Price Box --- */
+/*  Price Box */
 .price-box {
     background-color: #f0f6ff;
     border: 1px solid #c5d8f8;
@@ -148,7 +146,7 @@ a {
     margin-top: 5px;
 }
  
-/* --- Seller Info --- */
+/*  Seller Info  */
 .seller-info {
     font-size: 14px;
     color: #555;
@@ -168,7 +166,7 @@ a {
     flex: 1;
 }
  
-/* --- Buttons --- */
+/*  Buttons  */
 .btn-primary, .btn-secondary {
     padding: 12px 24px;
     font-size: 15px;
@@ -198,7 +196,7 @@ a {
     background-color: #e8f0fe;
 }
  
-/* --- Section (description & seller table) --- */
+/*  Description and Seller Details  */
 .section {
     margin-top: 25px;
     border-top: 1px solid #eee;
@@ -217,7 +215,7 @@ a {
     color: #444;
 }
  
-/* --- Seller Table --- */
+/*  Seller Table  */
 .seller-table {
     width: 100%;
     border-collapse: collapse;
@@ -235,7 +233,7 @@ a {
     width: 150px;
 }
  
-/* --- Footer --- */
+/*  Footer  */
 .footer {
     background-color: #0064d2;
     color: white;
