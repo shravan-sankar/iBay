@@ -27,34 +27,31 @@
         <span>Item Details</span>
     </div>
  
-    <!-- Page Background -->
-    <div class="page-bg">
- 
-        <!-- Product Card -->
-        <div class="card">
+    <!-- Main Content -->
+    <div class="main-content">
  
             <h1 class="item-title">Vintage Leather Jacket</h1>
             <p class="item-category">Category: <span>Clothing</span></p>
+ 
+            <!-- Product Layout -->
+            <div class="product-wrapper">
  
             <!-- Images -->
             <div class="product-images">
                 <img id="main-image" src="../images/placeholder.jpg" alt="Item Image" class="main-image">
                 <div class="thumbnail-row">
-                    <img src="../images/placeholder.jpg" alt="Thumbnail 1" class="thumbnail" onclick="changeImage(this)">
-                    <img src="../images/placeholder2.jpg" alt="Thumbnail 2" class="thumbnail" onclick="changeImage(this)">
+                    <img src="../images/placeholder.jpg" alt="Thumbnail 1" class="thumbnail">
+                    <img src="../images/placeholder.jpg" alt="Thumbnail 2" class="thumbnail">
                 </div>
             </div>
+ 
+            <!-- Right side: price,, seller, -->
+            <div class="product-info">
  
             <!-- Price -->
             <div class="price-box">
                 <p class="price">£<span id="item-price">45.00</span></p>
-                <p class="postage">Postage: £<span id="item-postage">3.99</span></p>
-            </div>
- 
-            <!-- Countdown -->
-            <div class="time-left">
-                <p>Auction ends: <strong id="item-finish">2025-06-01 18:00:00</strong></p>
-                <p id="time-remaining" class="countdown"></p>
+                <p class="Delivery">Delivery: £<span id="item-Delivery">3.99</span></p>
             </div>
  
             <!-- Seller Info -->
@@ -65,8 +62,14 @@
             </div>
  
             <!-- Buttons -->
-            <button class="btn-primary">Place Bid</button>
+            <button class="btn-primary">Buy Now</button>
             <button class="btn-secondary">Add to Watchlist</button>
+ 
+            </div>
+            <!-- End product-info -->
+ 
+            </div>
+            <!-- End product-wrapper -->
  
             <!-- Description -->
             <div class="section">
@@ -99,47 +102,15 @@
                 </table>
             </div>
  
-        </div>
-        <!-- End Card -->
- 
     </div>
-    <!-- End Page BG -->
+    <!-- End Main Content -->
  
     <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2025 iBay. All rights reserved.</p>
     </footer>
  
-    <script>
-        // Change main image when thumbnail is clicked
-        function changeImage(thumbnail) {
-            document.getElementById("main-image").src = thumbnail.src;
-        }
  
-        // Countdown timer to auction end
-        function updateCountdown() {
-            var finishTime = document.getElementById("item-finish").textContent;
-            var endDate = new Date(finishTime);
-            var now = new Date();
-            var diff = endDate - now;
- 
-            if (diff <= 0) {
-                document.getElementById("time-remaining").textContent = "Auction has ended";
-                return;
-            }
- 
-            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((diff % (1000 * 60)) / 1000);
- 
-            document.getElementById("time-remaining").textContent =
-                days + "d " + hours + "h " + minutes + "m " + seconds + "s remaining";
-        }
- 
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    </script>
  
 </body>
 </html>
