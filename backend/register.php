@@ -78,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 5. Insert user
     $stmt = mysqli_prepare($conn, "INSERT INTO iBayMembers (email, password, firstName, lastName, preferredGenres) VALUES (?, ?, ?, ?, ?)");
     mysqli_stmt_bind_param($stmt, "sssss", $email, $hashedPassword, $first_name, $last_name, $preferred_genres);
-
     if (mysqli_stmt_execute($stmt)) {
         mysqli_stmt_close($stmt);
         mysqli_close($conn);
