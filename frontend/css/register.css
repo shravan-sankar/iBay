@@ -40,7 +40,7 @@ h2 {
 }
 
 .form-section {
-    display: block; /* keep natural HTML flow order */
+    display: block; 
     text-align: left;
     margin-top: 18px;
 }
@@ -50,7 +50,7 @@ h2 {
 }
 
 .input-group {
-    display: block; /* keep natural HTML flow order */
+    display: block;
     margin-bottom: 14px;
     text-align: left;
 }
@@ -107,6 +107,14 @@ h2 {
     line-height: 1.4;
 }
 
+#error-message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #d93025;
+    min-height: 20px;
+    text-align: left;
+}
+
 .btn {
     width: 100%;
     padding: 12px;
@@ -146,7 +154,6 @@ h2 {
     }
 }
 
-/* Progressive reveal (JS) */
 .js-enabled .step-gate {
     display: none;
 }
@@ -157,4 +164,75 @@ h2 {
 
 .js-enabled .checkbox-group.step-gate.is-visible {
     display: flex;
+}
+
+.step-gate.is-hidden {
+    display: none !important;
+}
+
+.genre-step {
+    display: none;
+    margin-top: 16px;
+    text-align: left;
+}
+
+.genre-step.is-visible {
+    display: block;
+}
+
+.genre-step h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.genre-subtitle {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 14px;
+}
+
+.genre-bubble-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.genre-bubble {
+    border: 1px solid #0064d2;
+    color: #0064d2;
+    background: #eef5ff;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    animation: bubbleFloat 3s ease-in-out infinite;
+}
+
+.genre-bubble:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 6px 14px rgba(0, 100, 210, 0.2);
+}
+
+.genre-bubble.is-selected {
+    background: #0064d2;
+    color: #fff;
+    box-shadow: 0 7px 16px rgba(0, 100, 210, 0.3);
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #444;
+    margin-top: 14px;
+}
+
+.btn-secondary:hover {
+    background-color: #dfdfdf;
+}
+
+@keyframes bubbleFloat {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(0); }
 }

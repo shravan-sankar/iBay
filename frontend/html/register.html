@@ -1,70 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iBay - Register</title>
 
-<link rel="stylesheet" href="../css/register.css">
-<link rel="icon" type="image/png" href="../images/favicon.png">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iBay - Register</title>
+
+    <link rel="stylesheet" href="../css/register.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
 </head>
 
 <body>
 
-<main class="auth-container">
-    <div class="logo">
-        <img src="../images/iBay_logo.jpg" alt="iBay logo">
-    </div>
+    <main class="auth-container">
+        <div class="logo">
+            <img src="../images/iBay_logo.jpg" alt="iBay logo">
+        </div>
 
-    <h2>Create an Account</h2>
+        <h2>Create an Account</h2>
 
-<form id="register-form" action="../../backend/register.php" method="POST">
+        <form id="register-form" action="../../backend/register.php" method="POST">
 
-<section class="form-section">
+            <section class="form-section">
 
-<div class="input-group step-gate">
-<label for="email">Email address</label>
-<input type="email" name="email" id="email"
-       placeholder="Enter your email"
-       required maxlength="255">
-</div>
+                <div class="input-group step-gate">
+                    <label for="first_name">First Name</label>
+                    <input type="first_name" name="first_name" id="first_name" placeholder="Enter your First Name" required maxlength="255">
+                </div>
 
-<div class="input-group step-gate">
-<label for="password">Password</label>
-<input type="password" name="password" id="password"
-       placeholder="Enter your password"
-       required minlength="8">
-</div>
+                <div class="input-group step-gate">
+                    <label for="last_name">Last Name</label>
+                    <input type="last_name" name="last_name" id="last_name" placeholder="Enter your Last Name" required maxlength="255">
+                </div>
 
-<div class="input-group step-gate">
-<label for="confirm-password">Confirm Password</label>
-<input type="password" name="confirm_password" id="confirm-password"
-       placeholder="Confirm your password"
-       required minlength="8">
-</div>
+                <div class="input-group step-gate">
+                    <label for="email">Email address</label>
+                    <input type="email" name="email" id="email" placeholder="Enter your Email" required maxlength="255">
+                </div>
 
-</section>
+                <div class="input-group step-gate">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter your Password" required
+                        minlength="8">
+                </div>
 
-<div class="checkbox-group step-gate terms-gate">
-<input type="checkbox" id="terms" name="terms" required>
-<label for="terms">
-    I agree to the <a href="terms.html" target="_blank">Terms of Service</a>
-</label>
-</div>
+                <div class="input-group step-gate">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" name="confirm_password" id="confirm-password"
+                        placeholder="Confirm your Password" required minlength="8">
+                </div>
 
-<!-- ✅ Error message box -->
-<p id="error-message" style="color: red; margin-top: 10px;"></p>
+            </section>
 
-<button type="submit" class="btn step-gate submit-gate">Register</button>
+            <div class="checkbox-group step-gate terms-gate">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">
+                    I agree to the <a href="terms.html" target="_blank">Terms of Service</a>
+                </label>
+            </div>
 
-</form>
+            <p id="error-message" aria-live="polite"></p>
 
-<p class="signup">
-Already have an account? <a href="index.html">Sign in</a>
-</p>
+            <section id="genre-step" class="genre-step" aria-hidden="true">
+                <p class="genre-subtitle">Pick at least one category to personalise your experience.</p>
 
-</main>
+                <div class="genre-bubble-wrap">
+                    <button type="button" class="genre-bubble" data-genre="Fashion">Fashion</button>
+                    <button type="button" class="genre-bubble" data-genre="Electronics">Electronics</button>
+                    <button type="button" class="genre-bubble" data-genre="Home">Home</button>
+                    <button type="button" class="genre-bubble" data-genre="Gaming">Gaming</button>
+                    <button type="button" class="genre-bubble" data-genre="Books">Books</button>
+                    <button type="button" class="genre-bubble" data-genre="Sports">Sports</button>
+                    <button type="button" class="genre-bubble" data-genre="Beauty">Beauty</button>
+                    <button type="button" class="genre-bubble" data-genre="Toys">Toys</button>
+                </div>
 
-<script src="../js/auth.js" defer></script>
+                <input type="hidden" name="preferred_genres" id="preferred-genres">
+                <button type="button" id="genre-back-btn" class="btn btn-secondary">Back</button>
+            </section>
+
+            <button type="submit" class="btn step-gate submit-gate">Register</button>
+
+        </form>
+
+        <p class="signup">
+            Already have an account? <a href="main-G06.html">Sign in</a>
+        </p>
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/auth.js" defer></script>
 </body>
+
 </html>
