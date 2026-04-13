@@ -12,8 +12,5 @@ if (mysqli_connect_errno()) {
     exit();
 }
 
-echo "Connected successfully";
-
-mysqli_close($conn);
 
 ?>

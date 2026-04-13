@@ -1,0 +1,58 @@
+body{
+    margin:0;
+    padding:0;
+
+}
+
+
+#header{
+    background-color: #61ADFF;
+    height: 50px;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.logo {
+    float: left;
+    margin-right: 15px;
+    width: 150px;
+    height: auto;
+}
+
+#profile-image {
+  width: 50px;        /* adjust size */
+  height: 50px;       /* must match width */
+  border-radius: 50%; /* makes it a circle */
+  object-fit: cover;  /* prevents stretching */
+}
+
+#basket-image {
+  width: 50px;        /* adjust size */
+  height: 50px;       /* must match width */
+  object-fit: cover;  /* prevents stretching */
+  padding-right: 10px;
+}
+
+#page-layout {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+#filters {
+  width: 250px;              /* fixed sidebar width */
+  border-right: 2px solid #ccc;
+  padding-right: 15px;
+  padding-left: 10px;
+}
+
+#products-section {
+  flex: 1;                   /* takes remaining space */
+}
+
+#products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}

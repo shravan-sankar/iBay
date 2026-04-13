@@ -1,19 +1,19 @@
 body{
     margin:0;
     padding:0;
-
+    background-color: #61ADFF;
 }
 
 
 #header{
-    background-color: #61ADFF;
+    background-color: white;
     height: 50px;
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
 }
 #categories {
-    background-color: #61ADFF;
+    background-color: white;
     height: 80px;
     margin: 10px;
     border-radius: 10px;
@@ -39,17 +39,63 @@ body{
   object-fit: cover;  /* prevents stretching */
   padding-right: 10px;
 }
+#search {
+  display: flex;
+  align-items: center;   /* vertical centering */
+  gap: 15px;             /* space between image and search bar */
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+}
 
+.logo {
+  width: 100px;
+  height: auto;
+  align-items: center;   /* vertical centering */
+}
+
+#search_bar {
+  padding-left: 10px;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+#search_bar input {
+  flex: 1;
+  padding: 10px 15px;
+
+  border: 2px solid black;
+  border-radius: 25px 0 0 25px; /* rounded left side */
+
+  outline: none;
+  font-size: 16px;
+}
+
+#search_bar button {
+  padding: 10px 20px;
+
+  border: 2px solid black;
+  border-left: none; /* merges with input */
+  border-radius: 0 25px 25px 0; /* rounded right side */
+
+  background-color: lightblue;
+  cursor: pointer;
+  font-size: 16px;
+}
 
 .nav-container {
   display: flex;
   align-items: center;   /* vertically aligns image + bar */
   gap: 10px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
 }
-.nav-image {
-  width: 60px;     /* adjust size */
-  height: auto;
-}
+
 
 .category-bar {
   display: flex;
@@ -81,13 +127,15 @@ body{
 
 
 #Recommended_Products {
-    background-color: #61ADFF;
+    background-color: white;
+    border: 2px solid #61ADFF;
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
 }
 #Latest_Products {
-    background-color: #61ADFF;
+    background-color: white;
+    border: 2px solid #61ADFF;
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
@@ -108,7 +156,7 @@ body{
         }
 
 .product-card {
-  background-color: lightblue;
+  background-color: white;
   border: 2px solid black;
   border-radius: 10px;
   padding: 10px;
@@ -121,4 +169,9 @@ body{
     align-items: center;
     flex: 1;
     font-size: 12px;
+}
+
+.product-link {
+  color: black;
+  text-decoration: none;
 }
