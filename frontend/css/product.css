@@ -1,6 +1,4 @@
-/* ===========================
-   iBay - Product Page Styles
-   =========================== */
+/* iBay - Product Page Styles*/
  
 /* --- Reset & Base --- */
 * {
@@ -22,11 +20,12 @@ a {
  
 /* --- Navbar --- */
 .navbar {
-    background-color: #15223f;
+    background-color: #ffffff;
     padding: 12px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 2px solid #e0e0e0;
 }
  
 .nav-logo {
@@ -34,12 +33,13 @@ a {
 }
  
 .nav-links a {
-    color: white;
+    color: #333;
     margin-left: 20px;
     font-size: 15px;
 }
  
 .nav-links a:hover {
+    color: #0064d2;
     text-decoration: underline;
 }
  
@@ -47,58 +47,55 @@ a {
 .breadcrumb {
     padding: 10px 30px;
     font-size: 14px;
-    color: #555;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
+    color: #ffffff;
+    background-color: #0064d2;
+    border-bottom: 1px solid #0055b3;
 }
  
 .breadcrumb a {
-    color: #1a73e8;
+    color: #ffffff;
 }
  
 .breadcrumb a:hover {
     text-decoration: underline;
 }
  
-/* --- Page Background (blue gradient like login) --- */
-.page-bg {
-    min-height: calc(100vh - 120px);
-    background: linear-gradient(160deg, #1a73e8 0%, #6ab0f5 100%);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
+.breadcrumb span {
+    color: #ffffff;
 }
  
-/* --- White Card (like login card) --- */
-.card {
+/* --- Main Content (full width like eBay) --- */
+.main-content {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 20px;
     background-color: #fff;
-    border-radius: 12px;
-    padding: 35px 40px;
-    width: 100%;
-    max-width: 750px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
  
 /* --- Item Title & Category --- */
 .item-title {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
     color: #1a1a1a;
     margin-bottom: 5px;
-    text-align: center;
 }
  
 .item-category {
     font-size: 14px;
     color: #888;
-    text-align: center;
     margin-bottom: 20px;
 }
  
-/* --- Product Images --- */
+/* --- Product Layout (image left, info right) --- */
+.product-wrapper {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+ 
 .product-images {
-    margin-bottom: 20px;
+    flex: 1;
+    max-width: 450px;
 }
  
 .main-image {
@@ -125,7 +122,7 @@ a {
 }
  
 .thumbnail:hover {
-    border-color: #1a73e8;
+    border-color: #0064d2;
 }
  
 /* --- Price Box --- */
@@ -140,26 +137,13 @@ a {
 .price {
     font-size: 28px;
     font-weight: bold;
-    color: #1a73e8;
+    color: #0064d2;
 }
  
 .postage {
     font-size: 14px;
     color: #555;
     margin-top: 5px;
-}
- 
-/* --- Countdown --- */
-.time-left {
-    font-size: 14px;
-    color: #444;
-    margin-bottom: 15px;
-}
- 
-.countdown {
-    font-weight: bold;
-    color: #1a73e8;
-    margin-top: 4px;
 }
  
 /* --- Seller Info --- */
@@ -171,16 +155,47 @@ a {
 }
  
 .seller-info a {
-    color: #1a73e8;
+    color: #0064d2;
 }
  
 .seller-info a:hover {
     text-decoration: underline;
 }
  
+.product-info {
+    flex: 1;
+}
+ 
+/* --- Quantity Box --- */
+.quantity-box {
+    margin-bottom: 15px;
+}
+ 
+.quantity-box label {
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+ 
+.quantity-box input {
+    width: 80px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+ 
+.error-msg {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+}
+ 
 /* --- Buttons --- */
 .btn-primary, .btn-secondary {
-    padding: 12px 0;
+    padding: 12px 24px;
     font-size: 15px;
     border: none;
     border-radius: 6px;
@@ -190,7 +205,7 @@ a {
 }
  
 .btn-primary {
-    background-color: #1a73e8;
+    background-color: #0064d2;
     color: white;
 }
  
@@ -200,8 +215,8 @@ a {
  
 .btn-secondary {
     background-color: #fff;
-    color: #1a73e8;
-    border: 2px solid #1a73e8;
+    color: #0064d2;
+    border: 2px solid #0064d2;
 }
  
 .btn-secondary:hover {
@@ -217,7 +232,7 @@ a {
  
 .section h2 {
     font-size: 17px;
-    color: #1a73e8;
+    color: #0064d2;
     margin-bottom: 10px;
 }
  
@@ -247,7 +262,7 @@ a {
  
 /* --- Footer --- */
 .footer {
-    background-color: #1a73e8;
+    background-color: #0064d2;
     color: white;
     text-align: center;
     padding: 14px;
