@@ -194,7 +194,7 @@ a {
 }
  
 /* --- Buttons --- */
-.btn-primary, .btn-secondary {
+.btn-primary {
     padding: 12px 24px;
     font-size: 15px;
     border: none;
@@ -213,15 +213,6 @@ a {
     background-color: #1558b0;
 }
  
-.btn-secondary {
-    background-color: #fff;
-    color: #0064d2;
-    border: 2px solid #0064d2;
-}
- 
-.btn-secondary:hover {
-    background-color: #e8f0fe;
-}
  
 /* --- Section (description & seller table) --- */
 .section {
