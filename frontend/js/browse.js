@@ -4,7 +4,7 @@ const products = [
   { name: "Item 2", price: 20, seller: "Bob", category: "Clothes", image: "" }
 ];
 
-const Reccontainer = document.getElementById("products-container");
+const Reccontainer = document.getElementById("recommended-products-container");
 
 /////
 
@@ -12,7 +12,7 @@ fetch("../../backend/get_products.php")
 
   .then(response => response.json())
   .then(products => {
-    const container = document.getElementById("products-container");
+    //const container = document.getElementById("products-container");
 
     products.forEach(product => {
       const card = document.createElement("div");
@@ -26,7 +26,7 @@ fetch("../../backend/get_products.php")
           <p>${product.category}</p>
         </a>`;
 
-      container.appendChild(card);
+      Reccontainer.appendChild(card);
     });
   });
 

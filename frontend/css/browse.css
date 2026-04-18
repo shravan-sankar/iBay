@@ -1,17 +1,43 @@
 body{
+    font-family: Arial, sans-serif;
     margin:0;
     padding:0;
-    background-color: #61ADFF;
+    background-color: #e8f0fe;
 }
 
 
 #header{
     background-color: white;
     height: 50px;
-    margin: 10px;
+    padding: 10px;
+    align-items: center;  
+}
+#logout-link {
+    color: black;
+    text-decoration: none;
+}
+
+#navigator{
+    background-color: #0064d2;
+    padding-left: 30px;
+    padding: 10px;
+    padding-left: 30px;
+}
+h5{
+    color: white;
+    margin: 0px;
+}
+
+#main-content {
+    background-color: #f5f5f5;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 10px;
     padding: 10px;
     border-radius: 10px;
+
 }
+
 #categories {
     background-color: white;
     height: 80px;
@@ -24,6 +50,15 @@ body{
     margin-right: 15px;
     width: 150px;
     height: auto;
+}
+
+#profile-image-link{
+  float: right;
+  padding-right: 10px;
+}
+#basket-image-link{
+  float: right;
+  padding-right: 10px;
 }
 
 #profile-image {
@@ -47,6 +82,7 @@ body{
   padding: 10px;
   border-radius: 10px;
   margin: 10px;
+  justify-content: space-between;
 }
 
 .logo {
@@ -56,92 +92,87 @@ body{
 }
 
 #search_bar {
-  padding-left: 10px;
-  padding-top: 10px;
-  display: flex;
-  align-items: center;
-  width: 100%;
+    display: block;
+    margin-top: 0em;
+    unicode-bidi: isolate;
+    
+    
 }
 
 #search_bar input {
-  flex: 1;
-  padding: 10px 15px;
-
-  border: 2px solid black;
-  border-radius: 25px 0 0 25px; /* rounded left side */
-
-  outline: none;
-  font-size: 16px;
+  padding: 10px;
+    width: 250px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    
 }
 
 #search_bar button {
-  padding: 10px 20px;
-
-  border: 2px solid black;
-  border-left: none; /* merges with input */
-  border-radius: 0 25px 25px 0; /* rounded right side */
-
-  background-color: lightblue;
-  cursor: pointer;
-  font-size: 16px;
+    padding: 10px 15px;
+    background: #0064d2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
 }
 
 .nav-container {
-  display: flex;
-  align-items: center;   /* vertically aligns image + bar */
-  gap: 10px;
-  background-color: white;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px;
+  width: 100%;
+  background-color: #0064d2;
 }
 
 
 .category-bar {
-  display: flex;
-  flex: 1;   /* takes remaining space */
+    display: flex;
+    width: 100%;
 }
 
 .category-bar a {
-  flex: 1;
-  text-align: center;
-  text-decoration: none;
-  color: black;
-  position: relative;
-  padding: 10px 0;
+  flex: 1; /* each takes equal width */
+    text-align: center;
+    padding: 15px 0;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    border-right: 1px solid rgba(255,255,255,0.2);
+    transition: background 0.3s;
 }
 
-/* vertical dividers */
-.category-bar a:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 20%;
-  height: 60%;
-  width: 1px;
-  background-color: black;
+/* remove border on last item */
+.category-bar a:last-child {
+    border-right: none;
 }
 
-
+/* hover effect */
+.category-bar a:hover {
+    background-color: #0064d2;
+}
 
 
 
 #Recommended_Products {
-    background-color: white;
-    border: 2px solid #61ADFF;
+    background-color: #f5f5f5;
+
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
 }
 #Latest_Products {
-    background-color: white;
-    border: 2px solid #61ADFF;
+    background-color: #f5f5f5;
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
 }
 
-#products-container {
+#product_bars{
+    background-color: #f5f5f5;
+    gap: 16px;
+    padding: 5px;
+
+}
+
+#recommended-products-container {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 16px;
@@ -156,19 +187,20 @@ body{
         }
 
 .product-card {
-  background-color: white;
-  border: 2px solid black;
-  border-radius: 10px;
-  padding: 10px;
+  background: white;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 #footer {
-    display: flex;
-    background: black;
+    margin-top: 40px;
+    text-align: center;
     color: white;
-    align-items: center;
-    flex: 1;
-    font-size: 12px;
+    padding: 15px;
+    background: #0064d2;
 }
 
 .product-link {

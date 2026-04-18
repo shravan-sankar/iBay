@@ -5,48 +5,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Category</title>
+    <script src="../js/browse_category.js" defer></script>
 </head>
 <body>
 
-    <div id="header">
-            <a href="" style="margin: 20;" >Log out</a>
+        <div id="header">
+
+            <a href="" style="margin: 20px;" id="logout-link" >Log out</a>
 
             
-            <a href="profile.html" style="float:right" >
+            <a href="profile.html" id="profile-image-link">
                 <img src="../images/placeholder-profile.png" alt="Profile" id="profile-image"> 
             </a>
 
-            <a href="basket.html"style="float:right">
+            <a href="basket.html" id="basket-image-link">
                 <img src="../images/basket-image.png" alt="Basket" id="basket-image">
             </a>
-    </div>
+            
+        </div>
+
+        <div id="navigator">
+            <h5>Home</h5>
+        </div>
 
 
     <div id="page_layout">
-        <div id="filters">
-            <h3>Filters</h3>
 
-            <label>
-            <input type="checkbox"> Electronics
-            </label><br>
+        <!-- FILTERS -->
+        <form id="filters">
 
-            <label>
-            <input type="checkbox"> Fashion
-            </label><br>
+        <h3>Filters</h3>
 
-            <label>
-            <input type="checkbox"> Under £50
-            </label>
+        <!-- CATEGORY -->
+        <h4>Category</h4>
+        <label>
+            <input type="checkbox" name="category[]" value="Electronics"> Electronics
+        </label><br>
 
-        </div>
+        <label>
+            <input type="checkbox" name="category[]" value="Fashion"> Fashion
+        </label><br>
 
-    <!-- Products section -->
-        <div id="products-section">
-            <div id="products-container">
+        <label>
+            <input type="checkbox" name="category[]" value="Home"> Home
+        </label><br>
 
+        <label>
+            <input type="checkbox" name="category[]" value="Sports"> Sports
+        </label><br>
+
+        <!-- PRICE -->
+        <h4>Price</h4>
+        <label>
+            <input type="checkbox" name="price[]" value="0-50"> Under £50
+        </label><br>
+
+        <label>
+            <input type="checkbox" name="price[]" value="50-100"> £50 - £100
+        </label><br>
+
+        <label>
+            <input type="checkbox" name="price[]" value="100+"> Over £100
+        </label><br>
+
+        <!-- POSTAGE -->
+        <h4>Postage</h4>
+        <label>
+            <input type="checkbox" name="postage[]" value="Free"> Free Postage
+        </label><br>
+
+        <label>
+            <input type="checkbox" name="postage[]" value="Paid"> Paid Postage
+        </label><br>
+
+        <!-- CONDITION -->
+        <h4>Condition</h4>
+        <label>
+            <input type="checkbox" name="condition[]" value="new"> New
+        </label><br>
+
+        <label>
+            <input type="checkbox" name="item_condition[]" value="used"> Used
+        </label><br>
+
+        <!-- APPLY BUTTON -->
+        <br>
+        <button type="submit">Apply Filters</button>
+
+    </form>
+
+            <div id="products-section">
+                    <div id="products-container">
+                        
+                    </div>
             </div>
-        </div>
-    </div>
-</body>
 
+    </div>
+
+    </body>
 </html>

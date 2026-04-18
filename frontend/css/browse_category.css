@@ -1,16 +1,54 @@
 body{
+    font-family: Arial, sans-serif;
     margin:0;
     padding:0;
+    background-color: #e8f0fe;
 
 }
 
 
 #header{
-    background-color: #61ADFF;
+    background-color: white;
     height: 50px;
-    margin: 10px;
     padding: 10px;
-    border-radius: 10px;
+    align-items: center;
+}
+
+#logout-link {
+    color: black;
+    text-decoration: none;
+}
+
+#navigator{
+    background-color: #0064d2;
+    padding: 10px;
+    padding-left: 30px;
+}
+h5{
+    color: white;
+    margin: 0px;
+}
+#profile-image {
+  width: 50px;        /* adjust size */
+  height: 50px;       /* must match width */
+  border-radius: 50%; /* makes it a circle */
+  object-fit: cover;  /* prevents stretching */
+  
+}
+
+#basket-image {
+  width: 50px;        /* adjust size */
+  height: 50px;       /* must match width */
+  object-fit: cover;  /* prevents stretching */
+  border-radius: 50%;
+}
+#profile-image-link{
+  float: right;
+  padding-right: 10px;
+}
+#basket-image-link{
+  float: right;
+  padding-right: 10px;
 }
 
 .logo {
@@ -34,25 +72,60 @@ body{
   padding-right: 10px;
 }
 
-#page-layout {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
+#page_layout {
+    display: flex;
+    width: 90%;
+    margin: 20px auto;
+    gap: 20px;
 }
 
+/* FILTER SIDEBAR */
 #filters {
-  width: 250px;              /* fixed sidebar width */
-  border-right: 2px solid #ccc;
-  padding-right: 15px;
-  padding-left: 10px;
+    width: 220px;
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 10px;
 }
+
+#filters h3 {
+    margin-top: 0;
+    color: #1e5fa8;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group h4 {
+    margin-bottom: 8px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+/* PRODUCTS */
+
 
 #products-section {
-  flex: 1;                   /* takes remaining space */
+    flex: 1;
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+}
+#products-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 per row */
+    gap: 20px;
 }
 
-#products-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+.product-card {
+  background: white;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
