@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Upload</title> 
+    <link rel="stylesheet" type="text/css" href="../css/upload.css" /> 
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> 
+    <script src="../js/upload.js"></script>
+</head>
+
+<body>
+    <div id="header">
+        <div id="page_details">
+            <div id="logo">
+                <img src="../images/iBay_Logo.png" alt="Logo"/>
+            </div>
+            <h2>Your listings</h2>
+            
+        </div>
+    </div>
+
+    <div id="main">
+        <div id="user_content">
+            <div id="profile_pic">
+                <img src="../images/placeholder-profile.png" alt="avatar"> <!-- REPLACE W/ USER ICON -->
+            </div>
+            <div id="account_info">
+                <div id="full_name">Forename Surname</div>
+                <div id="email">Email</div>
+            </div>
+        </div>
+
+        <div id="listing_content">
+
+            <div id="existing_items">
+
+                <h2>Active listings</h2>
+
+                <div class="carousel-window">
+                    <div class="carousel-track">
+                        <div class="slide">Item 1</div>
+                        <div class="slide">Item 2</div>
+                        <div class="slide">Item 3</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="item_view">
+
+                <!-- No listing is currently being viewed-->
+                <div id="no_listing" class="viewing_state active">
+                    <div id="listing_instruction">
+                        <p>Select existing listing to view or add new below</p>
+                    </div>
+                    <div id="add_listing_btn">
+                        <button id="add_listing">Add new listing</button>
+                    </div>
+                </div>
+
+                <!-- Viewing existing listing -->
+                <div id="existing_listing" class="viewing_state">
+                    <h2>Listing details</h2>
+                    <button id="edit_listing">Edit listing</button> 
+                </div>
+
+                <!-- Adding new listing-->
+                <div id="adding_listing" class="viewing_state">
+                    <h2>New listing</h2>
+                    
+                    <form action="../../backend/upload_product.php" method="POST" enctype="multipart/form-data">
+                        
+                        <div id="title_box">
+                            <label id="itemNameLabel" for="itemName">Title</label><br>
+                            <input id="itemName" type="text" name="itemName" placeholder="E.g. Overrated shoes">
+                        </div>
+                        <br>
+
+                        <!-- Image Uploads -->
+                        <div id="upload_images">
+
+                            <label for="imgUpload1">
+                                <div class="imageBox" id="imageBox1"></div>
+                            </label>
+                            <input 
+                                type="file" 
+                                id="imgUpload1" 
+                                name="imgUpload1"
+                                accept="image/*" 
+                                style="display:none;"
+                            >
+                            <label for="imgUpload2">
+                                <div class="imageBox" id="imageBox2"></div>
+                            </label>
+                            <input 
+                                type="file" 
+                                id="imgUpload2" 
+                                name="imgUpload2"
+                                accept="image/*" 
+                                style="display:none;"
+                            >
+                        </div>
+
+                        <br>
+                        <div class="category_options">
+                            
+                            <input type="radio" id="electronics" name="category" value="electronics">
+                            <label for="electronics">Electronics</label>
+
+                            <input type="radio" id="fashion" name="category" value="fashion">
+                            <label for="fashion">Fashion</label>
+
+                            <input type="radio" id="home" name="category" value="home">
+                            <label for="home">Home</label>
+
+                            <input type="radio" id = "sports" name="category" value="sports">
+                            <label for="sports">Sports</label>
+                            
+                            <input type="radio" id="toys" name="category" value="toys">
+                            <label for="toys">Toys</label>
+
+                        </div>
+
+                        <br>
+                        <label for="desc">Description</label><br>
+                        <textarea id="desc" type="text" name="desc" placeholder="Describe listing item"></textarea>
+
+                        <br><br>
+                        <div class="prices">
+                            
+                            <div class="price_input">
+                                <label for="price">Price</label><span>£</span>
+                                <input id="price" type="number" name="price" step="0.01" min="0" class="input_line">
+                            </div>
+                            
+                            <div class="price_input">
+                                <label for="postage">Postage</label><span>£</span>
+                                <input id="postage" type="number" name="postage" step="0.01" min="0" class="input_line">
+                            </div>
+
+                        </div>
+
+                        <br>
+                        <div id="submit_row">
+                            <button id="listing_submit" type="submit">Add listing</button>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div> 
+
+</body>
