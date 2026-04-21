@@ -1,3 +1,28 @@
+
+
+window.addEventListener('DOMContentLoaded', () => {
+    // 1. Get the category from the URL (?cat=Electronics)
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryToSelect = urlParams.get('cat');
+
+    if (categoryToSelect) {
+        // 2. Find the checkbox with the matching value
+        // Note: Make sure the value in the URL matches the value="" in your HTML
+        const checkbox = document.querySelector(`input[name="category[]"][value="${categoryToSelect}"]`);
+
+        if (checkbox) {
+            // 3. Check the checkbox
+            checkbox.checked = true;
+
+            // 4. (Optional) Trigger the filter function automatically 
+            // so the user sees results immediately without clicking 'Apply'
+            // Assuming your form submission function is called 'applyFilters()'
+            filterForm.requestSubmit();
+        }
+    }
+});
+
+
 const container = document.getElementById("products-container");
 
 const filterForm = document.getElementById('filters');
@@ -34,7 +59,7 @@ filterForm.addEventListener('submit', function(e) {
     console.log('Prices:', formData.getAll('price[]'));
     console.log('Postage:', formData.getAll('postage[]'));
     console.log('item_Conditions:', formData.getAll('item_condition[]'));
-    
+
     // 2. Send the data to your PHP file
     fetch('../../backend/filter.php', {
         method: 'POST',

@@ -15,7 +15,7 @@
 
             
             <a href="profile.html" id="profile-image-link">
-                <img src="../images/placeholder-profile.png" alt="Profile" id="profile-image"> 
+                <img src="../images/avatar-empty.png" alt="Profile" id="profile-image"> 
             </a>
 
             <a href="basket.html" id="basket-image-link">
@@ -35,7 +35,12 @@
         <form id="filters">
 
         <h3>Filters</h3>
-
+        
+        <h4>Search</h4>
+        <div id="search_bar">
+            <input type="text" name="search_query" id="search-bar" placeholder="Search for products...">
+        </div>
+        <h4>Categories</h4>
         <div class="genre-bubble-wrap">
     <label class="genre-bubble">
         <input type="checkbox" name="category[]" value="Fashion">
@@ -50,6 +55,16 @@
     <label class="genre-bubble">
         <input type="checkbox" name="category[]" value="Home">
         <span>Home</span>
+    </label>
+
+    <label class="genre-bubble">
+        <input type="checkbox" name="category[]" value="Sports">
+        <span>Sports</span>
+    </label>
+
+    <label class="genre-bubble">
+        <input type="checkbox" name="category[]" value="Toys">
+        <span>Toys</span>
     </label>
     
     </div>

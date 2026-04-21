@@ -94,9 +94,7 @@ h5{
 #search_bar {
     display: block;
     margin-top: 0em;
-    unicode-bidi: isolate;
-    
-    
+    unicode-bidi: isolate;  
 }
 
 #search_bar input {

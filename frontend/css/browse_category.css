@@ -111,6 +111,21 @@ h5{
     cursor: pointer;
 }
 
+#search_bar {
+    display: block;
+    margin-top: 0em;
+    unicode-bidi: isolate;  
+}
+
+#search_bar input {
+    padding: 10px;
+    width: 90%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    
+}
+
 /* PRODUCTS */
 
 

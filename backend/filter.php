@@ -10,11 +10,22 @@ $categories = $_POST['category'] ?? [];
 $priceRange = $_POST['price_range'] ?? '[0, 200]';
 $postage    = $_POST['postage']  ?? [];
 $conditions = $_POST['item_condition']?? [];
+$searchTerm = $_POST['search_query'] ?? '';
 
 // 2. Base SQL
 $sql = "SELECT * FROM iBayProducts WHERE 1=1";
 $params = [];
 $types = "";
+
+
+// --- 4. SEARCH BAR LOGIC ---
+if (!empty(trim($searchTerm))) {
+    $sql .= " AND (productName LIKE ? OR category LIKE ?)";
+    $searchTermWildcard = "%" . $searchTerm . "%";
+    $params[] = $searchTermWildcard;
+    $params[] = $searchTermWildcard;
+    $types .= "ss";
+}
 
 // 3. Dynamic Filtering Logic
 // Category Filter
