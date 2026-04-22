@@ -65,6 +65,48 @@ async function loadCurrentCustomer() {
   return res.json();
 }
 
+function getUserIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id");
+}
+
+function redirectToLogin() {
+  window.location.replace("main-G06.html");
+}
+
+async function validateActiveSession() {
+  const customer = await loadCurrentCustomer();
+  if (!customer) {
+    redirectToLogin();
+    return null;
+  }
+
+  const urlUserId = getUserIdFromUrl();
+  const sessionUserId = String(customer.id);
+  if (!urlUserId || String(urlUserId) !== sessionUserId) {
+    window.location.replace(`browse.html?id=${encodeURIComponent(String(customer.id))}`);
+    return null;
+  }
+
+  window.iBayCurrentUser = customer;
+  window.iBaySignedInUserId = sessionUserId;
+  sessionStorage.setItem("iBayCurrentUser", JSON.stringify(customer));
+  return customer;
+}
+
+function setupLogoutLink() {
+  const logoutLink = document.getElementById("logout-link");
+  if (!logoutLink) {
+    return;
+  }
+
+  logoutLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    sessionStorage.removeItem("iBayCurrentUser");
+    window.location.replace(logoutLink.href);
+  });
+}
+
 function renderProductCard(product, container) {
   const card = document.createElement("div");
   card.className = "product-card";
@@ -81,18 +123,19 @@ function renderProductCard(product, container) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-  const customer = await loadCurrentCustomer();
+  setupLogoutLink();
+  const customer = await validateActiveSession();
   if (!customer) {
-    window.location.href = "main-G06.html";
     return;
   }
-
-  window.iBayCurrentUser = customer;
-  sessionStorage.setItem("iBayCurrentUser", JSON.stringify(customer));
 
   const Reccontainer = document.getElementById("products-container");
   const Latcontainer = document.getElementById("latest-products-container");
 
   products.forEach((product) => renderProductCard(product, Reccontainer));
   latestproducts.forEach((product) => renderProductCard(product, Latcontainer));
+});
+
+window.addEventListener("pageshow", async function () {
+  await validateActiveSession();
 });
