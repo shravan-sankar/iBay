@@ -7,8 +7,10 @@ function redirectToBrowseIfLoggedIn() {
     url: "../../backend/me.php",
     method: "GET",
     xhrFields: { withCredentials: true }
-  }).done(function () {
-    window.location.replace("browse.html");
+  }).done(function (user) {
+    const userId = user && user.id ? String(user.id) : "";
+    const browseUrl = userId ? `browse.html?id=${encodeURIComponent(userId)}` : "browse.html";
+    window.location.replace(browseUrl);
   });
 }
 
@@ -32,7 +34,9 @@ function handleLoginForm() {
     })
       .done(function (response) {
         if (response && response.success) {
-          window.location.replace(response.redirect || "browse.html");
+          const userId = response.id ? String(response.id) : "";
+          const fallbackUrl = userId ? `browse.html?id=${encodeURIComponent(userId)}` : "browse.html";
+          window.location.replace(response.redirect || fallbackUrl);
           return;
         }
 
