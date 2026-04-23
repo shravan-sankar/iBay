@@ -11,7 +11,7 @@
 
         <div id="header">
 
-            <a href="" style="margin: 20px;" id="logout-link" >Log out</a>
+            <a href="main-G06.html" style="margin: 20px;" id="logout-link" >Log out</a>
 
             
             <a href="upload.html" id="profile-image-link">
@@ -88,23 +88,23 @@
 
         <!-- POSTAGE -->
         <h4>Postage</h4>
-        <label>
-            <input type="checkbox" name="postage[]" value="Free"> Free Postage
-        </label><br>
+        <div class="toggle-wrapper">
+            <input type="checkbox" id="postage-free" name="postage[]" value="Free" checked>
+            <label for="postage-free">Free</label>
 
-        <label>
-            <input type="checkbox" name="postage[]" value="Paid"> Paid Postage
-        </label><br>
+            <input type="checkbox" id="postage-paid" name="postage[]" value="Paid" checked>
+            <label for="postage-paid">Paid</label>
+        </div>
 
         <!-- CONDITION -->
         <h4>Condition</h4>
-        <label>
-            <input type="checkbox" name="item_condition[]" value="new"> New
-        </label><br>
+        <div class="toggle-wrapper">
+            <input type="checkbox" id="condition-new" name="item_condition[]" value="new" checked>
+            <label for="condition-new">New</label>
 
-        <label>
-            <input type="checkbox" name="item_condition[]" value="used"> Used
-        </label><br>
+            <input type="checkbox" id="condition-used" name="item_condition[]" value="used" checked>
+            <label for="condition-used">Used</label>
+        </div>
 
         <!-- APPLY BUTTON -->
         <br>

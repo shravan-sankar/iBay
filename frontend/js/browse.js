@@ -1,21 +1,47 @@
 const API_BASE = "../../backend";
 
-const products = [
-  { id: 1, name: "Item 1", price: 10, seller: "Alice", category: "Tech", image: "" },
-  { name: "Item 2", price: 20, seller: "Bob", category: "Clothes", image: "" }
-];
 
-const Reccontainer = document.getElementById("recommended-products-container");
+window.addEventListener('DOMContentLoaded', () => {
+    // 1. Get the category from the URL (?cat=Electronics)
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
 
-/////
 
-fetch("../../backend/get_products.php")
+    console.log('User ID from URL:', userId);
+    document.getElementById('profile-image-link').href = `upload.html?id=${encodeURIComponent(String(userId))}`;
+    document.getElementById('basket-image-link').href = `basket.html?id=${encodeURIComponent(String(userId))}`;
 
-  .then(response => response.json())
-  .then(products => {
-    //const container = document.getElementById("products-container");
 
-    products.forEach(product => {
+        const categoryButtons = document.querySelectorAll('.category_btn');
+
+        categoryButtons.forEach(button => {
+
+
+            const currentHref = button.getAttribute('href');
+            
+            const separator = currentHref.includes('?') ? '&' : '?';
+            
+            button.href = `${currentHref}${separator}id=${userId}`;
+        });
+        
+        console.log(`Updated ${categoryButtons.length} buttons with User ID: ${userId}`);
+
+      const Reccontainer = document.getElementById("recommended-products-container");
+
+      const formData = new FormData();
+      formData.append('user_id', userId);
+
+    fetch('../../backend/get_recommended_products.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `user_id=${userId}`
+})
+.then(res => res.json())
+.then(data => {
+  console.log('Response from get_recommended_products.php:', data);
+    if (!data.success) return console.error('Error:', data.message);
+
+    data.products.forEach(product => {
       const card = document.createElement("div");
       card.className = "product-card";
 
@@ -25,37 +51,48 @@ fetch("../../backend/get_products.php")
           <p>£${product.price}</p>
           <p>Seller: ${product.seller}</p>
           <p>${product.category}</p>
+          <p>${product.item_condition}</p>
         </a>`;
 
       Reccontainer.appendChild(card);
     });
-  });
+})
+.catch(err => console.error('Fetch failed:', err));
 
 
-/*
+const container = document.getElementById("latest-products-container");
 
-////
-products.forEach(product => {
-  const card = document.createElement("div");
-  card.className = "product-card";
+fetch('../../backend/get_latest_products.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+})
+.then(res => res.json())
+.then(data => {
+    if (!data.success) return console.error('Error:', data.message);
 
-  card.innerHTML = `
-  <a href="product.html?id=${product.id}" class="product-link">
-    <img src="${product.image}" class="product-image">
-    <h2>${product.name}</h2>
-    <p>£${product.price}</p>
-    <p>Seller: ${product.seller}</p>
-    <p>${product.category}</p>
-  </a>
-  `;
+    data.products.forEach(product => {
+        const card = document.createElement("div");
+        card.className = "product-card";
 
-  Reccontainer.appendChild(card);
+        card.innerHTML = 
+        `<a href="product.html?id=${product.id}" class="product-link">
+            <h2>${product.productName}</h2>
+            <p>£${product.price}</p>
+            <p>Seller: ${product.seller}</p>
+            <p>${product.category}</p>
+            <p>${product.item_condition}</p>
+        </a>`;
+
+        container.appendChild(card);
+    });
+})
+.catch(err => console.error('Fetch failed:', err));
 });
-*/
-const latestproducts = [
-  { name: "Item 1", price: 10, seller: "Alice", category: "Tech", image: "" },
-  { name: "Item 2", price: 20, seller: "Bob", category: "Clothes", image: "" }
-];
+
+
+
+
+
 
 async function loadCurrentCustomer() {
   const res = await fetch(`${API_BASE}/me.php`, { credentials: "include" });
@@ -111,14 +148,13 @@ function renderProductCard(product, container) {
   const card = document.createElement("div");
   card.className = "product-card";
   card.innerHTML = `
-  <a href="product.html?id=${product.id}" class="product-link">
-    <img src="${product.image}" class="product-image">
-    <h2>${product.productName}</h2>
-    <p>£${product.price}</p>
-    <p>Seller: ${product.seller}</p>
-    <p>${product.category}</p>
-  </a>
-  `;
+    <a href="product.html?id=${product.id}" class="product-link">
+      <h2>${product.productName}</h2>
+      <p>£${product.price}</p>
+      <p>Seller: ${product.seller}</p>
+      <p>${product.category}</p>
+      <p>${product.item_condition}</p>
+    </a>`;
   container.appendChild(card);
 }
 
