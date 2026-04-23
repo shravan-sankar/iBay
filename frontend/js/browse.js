@@ -21,7 +21,7 @@ fetch("../../backend/get_products.php")
 
       card.innerHTML = 
       `<a href="product.html?id=${product.id}" class="product-link">
-          <h2>${product.name}</h2>
+          <h2>${product.productName}</h2>
           <p>£${product.price}</p>
           <p>Seller: ${product.seller}</p>
           <p>${product.category}</p>
@@ -71,7 +71,7 @@ function renderProductCard(product, container) {
   card.innerHTML = `
   <a href="product.html?id=${product.id}" class="product-link">
     <img src="${product.image}" class="product-image">
-    <h2>${product.name}</h2>
+    <h2>${product.productName}</h2>
     <p>£${product.price}</p>
     <p>Seller: ${product.seller}</p>
     <p>${product.category}</p>
