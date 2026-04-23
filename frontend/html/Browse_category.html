@@ -15,7 +15,7 @@
 
             
             <a href="profile.html" id="profile-image-link">
-                <img src="../images/placeholder-profile.png" alt="Profile" id="profile-image"> 
+                <img src="../images/avatar-empty.png" alt="Profile" id="profile-image"> 
             </a>
 
             <a href="basket.html" id="basket-image-link">
@@ -25,7 +25,7 @@
         </div>
 
         <div id="navigator">
-            <h5>Home</h5>
+            <h5> <a href="browse.html" id="home-link">Home</a> > Browse</h5>
         </div>
 
 
@@ -35,38 +35,56 @@
         <form id="filters">
 
         <h3>Filters</h3>
+        
+        <h4>Search</h4>
+        <div id="search_bar">
+            <input type="text" name="search_query" id="search-bar" placeholder="Search for products...">
+        </div>
+        <h4>Categories</h4>
+        <div class="genre-bubble-wrap">
+    <label class="genre-bubble">
+        <input type="checkbox" name="category[]" value="Fashion">
+        <span>Fashion</span>
+    </label>
 
-        <!-- CATEGORY -->
-        <h4>Category</h4>
-        <label>
-            <input type="checkbox" name="category[]" value="Electronics"> Electronics
-        </label><br>
+    <label class="genre-bubble">
+        <input type="checkbox" name="category[]" value="Electronics">
+        <span>Electronics</span>
+    </label>
 
-        <label>
-            <input type="checkbox" name="category[]" value="Fashion"> Fashion
-        </label><br>
+    <label class="genre-bubble">
+        <input type="checkbox" name="category[]" value="Home">
+        <span>Home</span>
+    </label>
 
-        <label>
-            <input type="checkbox" name="category[]" value="Home"> Home
-        </label><br>
+    <label class="genre-bubble">
+        <input type="checkbox" name="category[]" value="Sports">
+        <span>Sports</span>
+    </label>
 
-        <label>
-            <input type="checkbox" name="category[]" value="Sports"> Sports
-        </label><br>
-
+    <label class="genre-bubble">
+        <input type="checkbox" name="category[]" value="Toys">
+        <span>Toys</span>
+    </label>
+    
+    </div>
+        
         <!-- PRICE -->
         <h4>Price</h4>
-        <label>
-            <input type="checkbox" name="price[]" value="0-50"> Under £50
-        </label><br>
+        <div class="price-slider-container">
+            <div class="price-values">
+                <span id="min-price-display">£0</span> - <span id="max-price-display">£500+</span>
+            </div>
 
-        <label>
-            <input type="checkbox" name="price[]" value="50-100"> £50 - £100
-        </label><br>
+            <div class="range-slider">
+                <div class="slider-track"></div>
+                
+                <input type="range" min="0" max="500" value="0" id="slider-1">
+                <input type="range" min="0" max="500" value="500" id="slider-2">
+            </div>
 
-        <label>
-            <input type="checkbox" name="price[]" value="100+"> Over £100
-        </label><br>
+            <input type="hidden" name="price_range" id="price-range-input" value="[0, 500]">
+        </div>
 
         <!-- POSTAGE -->
         <h4>Postage</h4>
@@ -81,7 +99,7 @@
         <!-- CONDITION -->
         <h4>Condition</h4>
         <label>
-            <input type="checkbox" name="condition[]" value="new"> New
+            <input type="checkbox" name="item_condition[]" value="new"> New
         </label><br>
 
         <label>

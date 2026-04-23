@@ -10,28 +10,15 @@ function respondWithJson(int $statusCode, array $payload): void
     exit;
 }
 
-function isAjaxRequest(): bool
-{
-    return isset($_SERVER['HTTP_X_REQUESTED_WITH'])
-        && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
-}
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    if (isAjaxRequest()) {
-        respondWithJson(405, ['success' => false, 'message' => 'Invalid request method.']);
-    }
-    header('Location: ../frontend/html/main-G06.html');
-    exit;
+    respondWithJson(405, ['success' => false, 'message' => 'Invalid request method.']);
 }
 
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 
 if ($email === '' || $password === '') {
-    if (isAjaxRequest()) {
-        respondWithJson(422, ['success' => false, 'message' => 'Email and password are required.']);
-    }
-    die('Email and password are required');
+    respondWithJson(422, ['success' => false, 'message' => 'Email and password are required.']);
 }
 
 $stmt = mysqli_prepare($conn, 'SELECT id, email, password FROM iBayMembers WHERE email = ?');
@@ -62,18 +49,15 @@ if ($user && password_verify($password, $user['password'])) {
 mysqli_close($conn);
 
 if (!$isAuthenticated) {
-    if (isAjaxRequest()) {
-        respondWithJson(401, ['success' => false, 'message' => 'Invalid email or password.']);
-    }
-    die('Invalid email or password');
+    respondWithJson(401, ['success' => false, 'message' => 'Invalid email or password.']);
 }
 
 $_SESSION['user_id'] = (int) $user['id'];
 $_SESSION['user_email'] = $user['email'];
 
-if (isAjaxRequest()) {
-    respondWithJson(200, ['success' => true, 'redirect' => 'browse.html']);
-}
-
-header('Location: ../frontend/html/browse.html');
-exit;
+$userId = (int) $user['id'];
+respondWithJson(200, [
+    'success' => true,
+    'id' => $userId,
+    'redirect' => 'browse.html?id=' . $userId,
+]);
