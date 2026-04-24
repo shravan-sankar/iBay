@@ -1,15 +1,19 @@
 <?php
+session_start();
 require_once 'connection.php';
 header('Content-Type: application/json');
 
+// Testing purposes 
+// $_SESSION['user_id'] = 1; <------ Revert it from comment to code if testing without full logging process
+
 // User Logged In Validation
-/* if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     echo json_encode([
         "success" => false,
         "message" => "User not logged in."
     ]);
     exit;
-} */
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -20,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $listingDesc = htmlspecialchars(trim($_POST["desc"] ?? ''));
     $listingPrice = trim($_POST["price"] ?? '');
     $listingPostage = trim($_POST["postage"] ?? '');
+    $listingCondition = trim($_POST["condition"] ?? '');
 
     $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     $listingImage1 = null;
@@ -40,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_FILES['imgUpload1']) && $_FILES['imgUpload1']['error'] === 0) {
         $tmpName = $_FILES['imgUpload1']['tmp_name'];
         $listingImage1 = uniqid() . "_1_" . basename($_FILES['imgUpload1']['name']);
-        $uploadPath = "../frontend/images/" . $listingImage1;
+        $uploadPath = "../product_images/" . $listingImage1;
 
         // File Type Validation
         if (!in_array($_FILES['imgUpload1']['type'], $allowedTypes)) {
@@ -67,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $tmpName = $_FILES['imgUpload2']['tmp_name'];
         $listingImage2 = uniqid() . "_2_" . basename($_FILES['imgUpload2']['name']);
-        $uploadPath = "../frontend/images/" . $listingImage2;
+        $uploadPath = "../product_images/" . $listingImage2;
         
         // File Type Validation
         if (!in_array($_FILES['imgUpload2']['type'], $allowedTypes)) {
@@ -90,8 +95,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ///
 
     /// Preparing Database Insert
-    $sql_code = "INSERT INTO iBayProducts (productName, price, category, sellerId, description, postage, image_url_1, image_url_2)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql_code = "INSERT INTO iBayProducts (productName, price, category, sellerId, description, postage, image_url_1, image_url_2, item_condition)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = mysqli_prepare($conn, $sql_code);
 
@@ -105,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     mysqli_stmt_bind_param(
     $stmt,
-    "sdsisdss",
+    "sdsisdsss",
     $listingTitle,
     $listingPrice,
     $listingCategory,
@@ -113,8 +118,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $listingDesc,
     $listingPostage,
     $listingImage1,
-    $listingImage2
-    );
+    $listingImage2,
+    $listingCondition);
     ///
 
     // Insert into database

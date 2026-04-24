@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Upload</title> 
-    <link rel="stylesheet" type="text/css" href="../css/upload.css" /> 
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> 
+    <meta charset="UTF-8">
+    <title>iBay - Upload</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="stylesheet" href="../css/upload.css">
     <script src="../js/upload.js"></script>
 </head>
 
@@ -18,14 +20,19 @@
         </div>
     </div>
 
+    <div class="breadcrumb">
+        <a href="browse.html">Home</a> &gt;
+        <span>Upload</span>
+    </div>
+
     <div id="main">
         <div id="user_content">
             <div id="profile_pic">
-                <img src="../images/placeholder-profile.png" alt="avatar"> <!-- REPLACE W/ USER ICON -->
+                <img src="../images/avatar-empty.png" alt="avatar"> 
             </div>
             <div id="account_info">
-                <div id="full_name">Forename Surname</div>
-                <div id="email">Email</div>
+                <div id="full_name">Placeholder John</div>
+                <div id="email">JohnThePlaceholder@nomail.com</div>
             </div>
         </div>
 
@@ -35,12 +42,8 @@
 
                 <h2>Active listings</h2>
 
-                <div class="carousel-window">
-                    <div class="carousel-track">
-                        <div class="slide">Item 1</div>
-                        <div class="slide">Item 2</div>
-                        <div class="slide">Item 3</div>
-                    </div>
+                <div class="carousel-window listing-line">
+                    <div class="carousel-track" id="carousel_track"></div>
                 </div>
 
             </div>
@@ -50,11 +53,9 @@
                 <!-- No listing is currently being viewed-->
                 <div id="no_listing" class="viewing_state active">
                     <div id="listing_instruction">
-                        <p>Select existing listing to view or add new below</p>
+                        <p>Select existing listing to view or add new one below</p>
                     </div>
-                    <div id="add_listing_btn">
-                        <button id="add_listing">Add new listing</button>
-                    </div>
+                    <button id="add_listing">Add new listing</button>
                 </div>
 
                 <!-- Viewing existing listing -->
@@ -69,7 +70,7 @@
                     
                     <form action="../../backend/upload_product.php" method="POST" enctype="multipart/form-data">
                         
-                        <div id="title_box">
+                        <div id="title_box" class="section">
                             <label id="itemNameLabel" for="itemName">Title</label><br>
                             <input id="itemName" type="text" name="itemName" placeholder="E.g. Overrated shoes">
                         </div>
@@ -101,7 +102,7 @@
                         </div>
 
                         <br>
-                        <div class="category_options">
+                        <div class="radio_options">
                             
                             <input type="radio" id="electronics" name="category" value="electronics">
                             <label for="electronics">Electronics</label>
@@ -117,6 +118,15 @@
                             
                             <input type="radio" id="toys" name="category" value="toys">
                             <label for="toys">Toys</label>
+
+                        </div>
+                        <div class="radio_options section">
+                            
+                            <input type="radio" id="new" name="condition" value="new">
+                            <label for="new">New</label>
+
+                            <input type="radio" id="used" name="condition" value="used">
+                            <label for="used">Used</label>
 
                         </div>
 
@@ -151,5 +161,9 @@
 
         </div>
     </div> 
+
+    <footer id="footer">
+        <p>&copy; 2025 iBay. All rights reserved.</p>
+    </footer>
 
 </body>

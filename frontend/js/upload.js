@@ -53,6 +53,55 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Loading the listings for the slides
+    async function loadListings() {
+        try {
+            const response = await fetch('../../backend/my_products.php');
+
+            if (!response.ok) {
+                console.log('Failed to load listings');
+                return;
+            }
+
+            const listings = await response.json();
+            const track = document.getElementById('carousel_track');
+
+            if (!track) return; 
+            track.innerHTML = '';
+
+            // User has no listings yet 
+            if (!Array.isArray(listings) || listings.length === 0) {
+                track.innerHTML = '<div class="slide">No listings yet </div>';
+                return;
+            }
+
+            // Adding existing listings slides
+            listings.forEach((listing) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                slide.dataset.id = listing.id;
+                slide.innerHTML = `
+                                    <div class="slide_content">
+                                        <div class="product_image"><img src="../../product_images/${listing.image_url_1}" alt="listing_image"></div>
+                                        <div class="product_details">
+                                            <strong>${listing.productName}</strong>
+                                            <p>${listing.category}</p>
+                                            <p>£ ${listing.price}</p>
+                                        </div>
+                                    </div>`;
+
+                // Makes slides clickable
+                slide.addEventListener('click', function () {
+                    console.log('Clicked listing:', listing.id);
+                    showState('view');
+                });
+
+                track.appendChild(slide);
+            });
+
+        } catch (error) {console.error('Failed to load listings:', error);}
+    }
+
     // Stop form submit just by entering field value & hitting enter key
     form.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
@@ -79,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(data.message);
                 form.reset();
                 showState('empty');
+                loadListings();
             }
 
             else {
@@ -101,5 +151,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     showState('empty');
     loadUser();
+    loadListings();
 
 });
