@@ -12,38 +12,47 @@
 
 <body>
 
+    <!-- Register Container -->
     <main class="auth-container">
+        <!-- Logo -->
         <div class="logo">
             <img src="../images/iBay_logo.jpg" alt="iBay logo">
         </div>
 
+        <!-- Title -->
         <h2>Create an Account</h2>
 
+        <!-- Register Form -->
         <form id="register-form" action="../../backend/register.php" method="POST">
 
             <section class="form-section">
 
+                <!-- First Name Input -->
                 <div class="input-group step-gate">
                     <label for="first_name">First Name</label>
                     <input type="first_name" name="first_name" id="first_name" placeholder="Enter your First Name" required maxlength="255">
                 </div>
 
+                <!-- Last Name Input -->
                 <div class="input-group step-gate">
                     <label for="last_name">Last Name</label>
                     <input type="last_name" name="last_name" id="last_name" placeholder="Enter your Last Name" required maxlength="255">
                 </div>
 
+                <!-- Email Input -->
                 <div class="input-group step-gate">
                     <label for="email">Email address</label>
                     <input type="email" name="email" id="email" placeholder="Enter your Email" required maxlength="255">
                 </div>
 
+                <!-- Password Input -->
                 <div class="input-group step-gate">
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" placeholder="Enter your Password" required
                         minlength="8">
                 </div>
 
+                <!-- Confirm Password Input -->
                 <div class="input-group step-gate">
                     <label for="confirm-password">Confirm Password</label>
                     <input type="password" name="confirm_password" id="confirm-password"
@@ -52,6 +61,7 @@
 
             </section>
 
+            <!-- Terms of Service Checkbox -->
             <div class="checkbox-group step-gate terms-gate">
                 <input type="checkbox" id="terms" name="terms" required>
                 <label for="terms">
@@ -59,11 +69,14 @@
                 </label>
             </div>
 
+            <!-- Error Message -->
             <p id="error-message" aria-live="polite"></p>
 
+            <!-- Genre Step -->
             <section id="genre-step" class="genre-step" aria-hidden="true">
                 <p class="genre-subtitle">Pick at least one category to personalise your experience.</p>
 
+                <!-- Genre Bubble Wrap -->
                 <div class="genre-bubble-wrap">
                     <button type="button" class="genre-bubble" data-genre="Fashion">Fashion</button>
                     <button type="button" class="genre-bubble" data-genre="Electronics">Electronics</button>
@@ -75,20 +88,25 @@
                     <button type="button" class="genre-bubble" data-genre="Toys">Toys</button>
                 </div>
 
+                <!-- Preferred Genres Input -->
                 <input type="hidden" name="preferred_genres" id="preferred-genres">
+                <!-- Genre Back Button -->
                 <button type="button" id="genre-back-btn" class="btn btn-secondary">Back</button>
             </section>
 
+            <!-- Register Button -->
             <button type="submit" class="btn step-gate submit-gate">Register</button>
 
         </form>
 
+        <!-- Signup Link -->
         <p class="signup">
             Already have an account? <a href="main-G06.html">Sign in</a>
         </p>
 
     </main>
 
+    <!-- jQuery and Auth.js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/auth.js" defer></script>
 </body>

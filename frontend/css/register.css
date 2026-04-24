@@ -1,3 +1,4 @@
+/* Reset and Global Styles */
 * {
     margin: 0;
     padding: 0;
@@ -5,6 +6,7 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Body Styles */
 body {
     background: linear-gradient(135deg, #0064d2, #86b7fe);
     height: 100vh;
@@ -13,6 +15,7 @@ body {
     align-items: center;
 }
 
+/* Auth Container Styles */
 .auth-container {
     background: white;
     width: 380px;
@@ -22,12 +25,14 @@ body {
     text-align: center;
 }
 
+/* Title Styles */
 h2 {
     margin-bottom: 15px;
     color: #333;
     font-size: 24px;
 }
 
+/* Logo Styles */
 .logo {
     margin-bottom: 25px;
 }
@@ -39,22 +44,26 @@ h2 {
     margin: 0 auto;
 }
 
+/* Form Section Styles */
 .form-section {
     display: block; 
     text-align: left;
     margin-top: 18px;
 }
 
+/* First Form Section Styles */
 .form-section:first-of-type {
     margin-top: 0;
 }
 
+/* Input Group Styles */
 .input-group {
     display: block;
     margin-bottom: 14px;
     text-align: left;
 }
 
+/* Input Group Label Styles */
 .input-group label {
     font-size: 14px;
     margin-bottom: 5px;
@@ -62,6 +71,7 @@ h2 {
     color: #555;
 }
 
+/* Input Group Input Styles */
 .input-group input,
 .input-group textarea {
     width: 100%;
@@ -73,22 +83,26 @@ h2 {
     background: white;
 }
 
+/* Input Group Input Focus Styles */
 .input-group input:focus,
 .input-group textarea:focus {
     border-color: #0064d2;
     outline: none;
 }
 
+/* Input Group Textarea Styles */
 .input-group textarea {
     resize: vertical;
     min-height: 92px;
     max-height: 220px;
 }
 
+/* Input Group File Styles */
 .input-group input[type="file"] {
     padding: 6px;
 }
 
+/* Checkbox Group Styles */
 .checkbox-group {
     display: flex;
     align-items: flex-start;
@@ -97,16 +111,19 @@ h2 {
     text-align: left;
 }
 
+/* Checkbox Group Input Styles */
 .checkbox-group input {
     margin-top: 3px;
 }
 
+/* Checkbox Group Label Styles */
 .checkbox-group label {
     font-size: 13px;
     color: #555;
     line-height: 1.4;
 }
 
+/* Error Message Styles */
 #error-message {
     margin-top: 10px;
     font-size: 14px;
@@ -115,6 +132,7 @@ h2 {
     text-align: left;
 }
 
+/* Button Styles */
 .btn {
     width: 100%;
     padding: 12px;
@@ -128,36 +146,35 @@ h2 {
     margin-top: 18px;
 }
 
+/* Button Hover Styles */
 .btn:hover {
     background-color: #004ea8;
 }
 
+/* Signup Styles */
 .signup {
     margin-top: 20px;
     font-size: 14px;
 }
 
+/* Signup Link Styles */
 .signup a {
     color: #0064d2;
     text-decoration: none;
     font-weight: bold;
 }
 
+/* Signup Link Hover Styles */
 .signup a:hover {
     text-decoration: underline;
 }
 
-@media (max-width: 450px) {
-    .auth-container {
-        padding: 22px;
-        max-width: 95%;
-    }
-}
-
+/* Step Gate Styles */
 .js-enabled .step-gate {
     display: none;
 }
 
+/* Step Gate Visible Styles */
 .js-enabled .step-gate.is-visible {
     display: block;
 }
@@ -198,6 +215,7 @@ h2 {
     gap: 10px;
 }
 
+/* Genre Bubble Styles */
 .genre-bubble {
     border: 1px solid #0064d2;
     color: #0064d2;
@@ -210,27 +228,32 @@ h2 {
     animation: bubbleFloat 3s ease-in-out infinite;
 }
 
+/* Genre Bubble Hover Styles */
 .genre-bubble:hover {
     transform: translateY(-2px) scale(1.04);
     box-shadow: 0 6px 14px rgba(0, 100, 210, 0.2);
 }
 
+/* Genre Bubble Selected Styles */
 .genre-bubble.is-selected {
     background: #0064d2;
     color: #fff;
     box-shadow: 0 7px 16px rgba(0, 100, 210, 0.3);
 }
 
+/* Button Secondary Styles */
 .btn-secondary {
     background-color: #f0f0f0;
     color: #444;
     margin-top: 14px;
 }
 
+/* Button Secondary Hover Styles */
 .btn-secondary:hover {
     background-color: #dfdfdf;
 }
 
+/* Bubble Float Animation */
 @keyframes bubbleFloat {
     0% { transform: translateY(0); }
     50% { transform: translateY(-4px); }

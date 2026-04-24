@@ -1,3 +1,4 @@
+/* Reset and Global Styles */
 * {
     margin: 0;
     padding: 0;
@@ -5,6 +6,7 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Body Styles */
 body {
     background: linear-gradient(135deg, #0064d2, #86b7fe);
     height: 100vh;
@@ -13,6 +15,7 @@ body {
     align-items: center;
 }
 
+/* Login Container Styles */
 .login-container {
     background: white;
     width: 380px;
@@ -22,6 +25,7 @@ body {
     text-align: center;
 }
 
+/* Logo Styles */
 .logo {
     margin-bottom: 25px;
 }
@@ -33,16 +37,19 @@ body {
     margin: 0 auto;
 }
 
+/* Title Styles */
 h2 {
     margin-bottom: 20px;
     color: #333;
 }
 
+/* Input Group Styles */
 .input-group {
     margin-bottom: 18px;
     text-align: left;
 }
 
+/* Input Group Label Styles */
 .input-group label {
     font-size: 14px;
     margin-bottom: 5px;
@@ -50,6 +57,7 @@ h2 {
     color: #555;
 }
 
+/* Input Group Input Styles */
 .input-group input {
     width: 100%;
     padding: 10px;
@@ -59,11 +67,13 @@ h2 {
     transition: 0.3s;
 }
 
+/* Input Group Input Focus Styles */
 .input-group input:focus {
     border-color: #0064d2;
     outline: none;
 }
 
+/* Options Styles */
 .options {
     display: flex;
     justify-content: space-between;
@@ -72,15 +82,18 @@ h2 {
     margin-bottom: 20px;
 }
 
+/* Options Link Styles */
 .options a {
     text-decoration: none;
     color: #0064d2;
 }
 
+/* Options Link Hover Styles */
 .options a:hover {
     text-decoration: underline;
 }
 
+/* Button Styles */
 .btn {
     width: 100%;
     padding: 12px;
@@ -93,34 +106,32 @@ h2 {
     transition: 0.3s;
 }
 
+/* Button Hover Styles */
 .btn:hover {
     background-color: #004ea8;
 }
 
+/* Signup Styles */
 .signup {
     margin-top: 20px;
     font-size: 14px;
 }
 
+/* Signup Link Styles */
 .signup a {
     color: #0064d2;
     text-decoration: none;
     font-weight: bold;
 }
 
+/* Signup Link Hover Styles */
 .signup a:hover {
     text-decoration: underline;
 }
 
+/* Error Message Styles */
 .error-message {
     color: red;
     margin-top: 10px;
     margin-bottom: 10px;
-}
-
-@media (max-width: 400px) {
-    .login-container {
-        width: 90%;
-        padding: 25px;
-    }
 }
