@@ -9,16 +9,17 @@
 
         <div id="header">
         
-            <a href="../../backend/logout.php" style="margin: 20;" id="logout-link"> Log out</a>
+            <a href="../../backend/logout.php" id="logout-link">Log out</a>
 
-            
-            <a href="upload.html" id="profile-image-link">
-                <img src="../images/avatar-empty.png" alt="Profile" id="profile-image"> 
-            </a>
+            <div id="header-right">
+                <a href="basket.html" id="basket-image-link">
+                    <img src="../images/basket.svg" alt="Basket" id="basket-image">
+                </a>
 
-            <a href="basket.html" id="basket-image-link">
-                <img src="../images/basket-image.png" alt="Basket" id="basket-image">
-            </a>
+                <a href="upload.html" id="profile-image-link">
+                    <img src="../images/avatar-empty.png" alt="Profile" id="profile-image"> 
+                </a>
+            </div>
         
         </div>
         
@@ -33,10 +34,8 @@
         <div id ="search">
             <img src="../images/iBay_logo.jpg" class = "logo" style="margin: 5px;">
 
-            <form action="results.html" method="GET" id = "search_bar">
-                <input type="text" name="query" placeholder="Search products...">
-                <button type="submit">Search</button>
-            </form>
+                <a href="Browse_category.html?cat=all"><button  id = "filter_button" type="submit">Filter all Products</button></a>
+            
         </div>
 
         <div class="nav-container">
@@ -44,20 +43,20 @@
             
 
             <nav class="category-bar">
-                <a href="Browse_category.html?cat=Electronics">Electronics
+                <a href="Browse_category.html?cat=Electronics" class="category_btn">Electronics
 
                 </a>
 
-                <a href="Browse_category.html?cat=Fashion">Fashion
+                <a href="Browse_category.html?cat=Fashion" class="category_btn">Fashion
 
                 </a>
-                <a href="Browse_category.html?cat=Home">Home
+                <a href="Browse_category.html?cat=Home" class="category_btn">Home
 
                 </a>
-                <a href="Browse_category.html?cat=Sports">Sports
+                <a href="Browse_category.html?cat=Sports" class="category_btn">Sports
 
                 </a>
-                <a href="browse_category.html?cat=Toys">Toys
+                <a href="browse_category.html?cat=Toys" class="category_btn">Toys
 
                 </a>
             </nav>

@@ -1,15 +1,41 @@
 
+window.addEventListener('DOMContentLoaded', () => {
+    // 1. Get the category from the URL (?cat=Electronics)
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+    console.log('User ID from URL:', userId);
+    document.getElementById('profile-image-link').href = `upload.html?id=${encodeURIComponent(String(userId))}`;
+    document.getElementById('basket-image-link').href = `basket.html?id=${encodeURIComponent(String(userId))}`;
+
+
+    
+
+});
+
+
+
+
 
 window.addEventListener('DOMContentLoaded', () => {
     // 1. Get the category from the URL (?cat=Electronics)
     const urlParams = new URLSearchParams(window.location.search);
     const categoryToSelect = urlParams.get('cat');
 
-    if (categoryToSelect) {
+    if (categoryToSelect == 'all') {
+        const checkboxes = document.querySelectorAll(`input[name="category[]"]`);
+    
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
+        });
+
+        filterForm.requestSubmit();
+    }
+
+    else if (categoryToSelect) {
         // 2. Find the checkbox with the matching value
         // Note: Make sure the value in the URL matches the value="" in your HTML
         const checkbox = document.querySelector(`input[name="category[]"][value="${categoryToSelect}"]`);
-
+    
         if (checkbox) {
             // 3. Check the checkbox
             checkbox.checked = true;

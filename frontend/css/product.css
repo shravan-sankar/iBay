@@ -18,29 +18,48 @@ a {
     color: inherit;
 }
  
-/* --- Navbar --- */
-.navbar {
-    background-color: #ffffff;
-    padding: 12px 30px;
+#header{
+    background-color: white;
+    min-height: 70px;
+    padding: 10px 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #e0e0e0;
+    justify-content: space-between;
+    border-bottom: 1px solid #e6e6e6;
 }
- 
-.nav-logo {
-    height: 40px;
+
+#brand-link {
+    display: inline-flex;
+    align-items: center;
 }
- 
-.nav-links a {
-    color: #333;
-    margin-left: 20px;
-    font-size: 15px;
+
+#brand-logo {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
 }
- 
-.nav-links a:hover {
-    color: #0064d2;
-    text-decoration: underline;
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#profile-image-link,
+#basket-image-link{
+    display: inline-flex;
+    align-items: center;
+}
+#profile-image {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+#basket-image {
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
 }
  
 /* --- Breadcrumb --- */

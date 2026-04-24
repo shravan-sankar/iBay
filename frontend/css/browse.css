@@ -8,13 +8,35 @@ body{
 
 #header{
     background-color: white;
-    height: 50px;
-    padding: 10px;
-    align-items: center;  
+    min-height: 58px;
+    padding: 6px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#header-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
 }
 #logout-link {
-    color: black;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 6px;
+    border: 1px solid #c8d9f5;
+    background-color: #f4f8ff;
+    color: #064fa5;
     text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#logout-link:hover {
+    background-color: #e7f0ff;
 }
 
 #navigator{
@@ -53,26 +75,25 @@ h5{
 }
 
 #profile-image-link{
-  float: right;
-  padding-right: 10px;
+  display: inline-flex;
+  align-items: center;
 }
 #basket-image-link{
-  float: right;
-  padding-right: 10px;
+  display: inline-flex;
+  align-items: center;
 }
 
 #profile-image {
-  width: 50px;        /* adjust size */
-  height: 50px;       /* must match width */
+  width: 42px;        /* adjust size */
+  height: 42px;       /* must match width */
   border-radius: 50%; /* makes it a circle */
   object-fit: cover;  /* prevents stretching */
 }
 
 #basket-image {
-  width: 50px;        /* adjust size */
-  height: 50px;       /* must match width */
+  width: 28px;        /* adjust size */
+  height: 28px;       /* must match width */
   object-fit: cover;  /* prevents stretching */
-  padding-right: 10px;
 }
 #search {
   display: flex;
@@ -91,21 +112,10 @@ h5{
   align-items: center;   /* vertical centering */
 }
 
-#search_bar {
-    display: block;
-    margin-top: 0em;
-    unicode-bidi: isolate;  
-}
 
-#search_bar input {
-  padding: 10px;
-    width: 250px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    
-}
 
-#search_bar button {
+
+#filter_button {
     padding: 10px 15px;
     background: #0064d2;
     color: white;

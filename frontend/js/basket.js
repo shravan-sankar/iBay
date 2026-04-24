@@ -1,4 +1,5 @@
 const BASKET_STORAGE_KEY = "ibay_basket";
+const API_BASE = "../../backend";
 
 function readBasket() {
     try {
@@ -111,6 +112,173 @@ function escapeHtml(s) {
     return div.innerHTML;
 }
 
+function getUserIdFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const userId = params.get("id");
+    return userId ? String(userId) : "";
+}
+
+function buildBrowseUrl(query) {
+    const params = new URLSearchParams();
+    const userId = getUserIdFromUrl();
+    if (userId) {
+        params.set("id", userId);
+    }
+    if (query) {
+        params.set("q", query);
+    }
+    const suffix = params.toString();
+    return suffix ? `browse.html?${suffix}` : "browse.html";
+}
+
+function setupSearchRedirect() {
+    const searchForm = document.getElementById("search-form");
+    if (!searchForm) {
+        return;
+    }
+    searchForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const formData = new FormData(searchForm);
+        const query = String(formData.get("q") || "").trim();
+        window.location.assign(buildBrowseUrl(query));
+    });
+}
+
+function setupBuyNowFlow() {
+    const buyNowBtn = document.getElementById("buy-now-btn");
+    if (!buyNowBtn) {
+        return;
+    }
+    buyNowBtn.addEventListener("click", () => {
+        alert("Purchase successful! Redirecting to browse page.");
+        window.location.assign(buildBrowseUrl(""));
+    });
+}
+
+function getProductImage(product) {
+    return product.image || product.image_url || product.imageUrl || "../images/placeholder.jpg";
+}
+
+function renderCarouselProducts(products) {
+    const track = document.getElementById("track");
+    if (!track) {
+        return;
+    }
+    const userId = getUserIdFromUrl();
+    track.innerHTML = "";
+
+    products.forEach((product) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        const image = escapeHtml(getProductImage(product));
+        const name = escapeHtml(product.productName || product.title || "Item");
+        const price = parseFloat(product.price) || 0;
+        const id = encodeURIComponent(String(product.id || ""));
+        const href = userId ? `product.html?id=${id}&user_id=${encodeURIComponent(userId)}` : `product.html?id=${id}`;
+        card.innerHTML = `
+            <a href="${href}" class="product-link">
+                <img src="${image}" alt="${name}">
+                <p>${name}</p>
+                <p>${formatGBP(price)}</p>
+            </a>
+        `;
+        track.appendChild(card);
+    });
+}
+
+async function loadCarouselItems() {
+    const track = document.getElementById("track");
+    if (!track) {
+        return;
+    }
+    try {
+        const res = await fetch(`${API_BASE}/get_latest_products.php`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        });
+        const data = await res.json();
+        if (!data.success || !Array.isArray(data.products)) {
+            track.innerHTML = "";
+            return;
+        }
+        renderCarouselProducts(data.products.slice(0, 12));
+    } catch (e) {
+        track.innerHTML = "";
+    }
+}
+
+function setupCarouselControls() {
+    const track = document.getElementById("track");
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    const windowBox = document.querySelector(".carousel-window");
+
+    if (!track || !prev || !next || !windowBox) {
+        return;
+    }
+
+    let currentTranslate = 0;
+
+    function getCards() {
+        return track.querySelectorAll(".card");
+    }
+
+    function getStepSize() {
+        const cards = getCards();
+        if (cards.length === 0) {
+            return 0;
+        }
+        const firstCard = cards[0];
+        const trackStyle = window.getComputedStyle(track);
+        const gap = parseInt(trackStyle.gap, 10) || 0;
+        return firstCard.offsetWidth + gap;
+    }
+
+    function getMaxTranslate() {
+        const cards = getCards();
+        if (cards.length === 0) {
+            return 0;
+        }
+        const lastCard = cards[cards.length - 1];
+        const windowStyle = window.getComputedStyle(windowBox);
+        const paddingLeft = parseInt(windowStyle.paddingLeft, 10) || 0;
+        const paddingRight = parseInt(windowStyle.paddingRight, 10) || 0;
+        const usableWidth = windowBox.clientWidth - paddingLeft - paddingRight;
+        return Math.max(0, lastCard.offsetLeft + lastCard.offsetWidth - usableWidth);
+    }
+
+    function applyTranslate() {
+        track.style.transform = `translateX(-${currentTranslate}px)`;
+    }
+
+    function clampTranslate() {
+        const maxTranslate = getMaxTranslate();
+        if (currentTranslate > maxTranslate) {
+            currentTranslate = maxTranslate;
+        }
+        if (currentTranslate < 0) {
+            currentTranslate = 0;
+        }
+        applyTranslate();
+    }
+
+    next.addEventListener("click", () => {
+        const step = getStepSize();
+        const maxTranslate = getMaxTranslate();
+        currentTranslate = Math.min(currentTranslate + step, maxTranslate);
+        applyTranslate();
+    });
+
+    prev.addEventListener("click", () => {
+        const step = getStepSize();
+        currentTranslate = Math.max(currentTranslate - step, 0);
+        applyTranslate();
+    });
+
+    window.addEventListener("resize", clampTranslate);
+    clampTranslate();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const listEl = document.getElementById("basket-list");
     if (listEl) {
@@ -130,71 +298,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderBasketFromStorage();
-
-    const track = document.getElementById("track");
-    const prev = document.getElementById("prev");
-    const next = document.getElementById("next");
-    const windowBox = document.querySelector(".carousel-window");
-    const searchForm = document.getElementById("search-form");
-
-    if (searchForm) {
-        searchForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-        });
-    }
-
-    if (!track || !prev || !next || !windowBox) {
-        return;
-    }
-
-    const cards = track.querySelectorAll(".card");
-    if (cards.length === 0) {
-        return;
-    }
-
-    let currentTranslate = 0;
-
-    function getStepSize() {
-        const firstCard = cards[0];
-        const trackStyle = window.getComputedStyle(track);
-        const gap = parseInt(trackStyle.gap, 10) || 0;
-        return firstCard.offsetWidth + gap;
-    }
-
-    function getMaxTranslate() {
-        const lastCard = cards[cards.length - 1];
-        const windowStyle = window.getComputedStyle(windowBox);
-        const paddingLeft = parseInt(windowStyle.paddingLeft, 10) || 0;
-        const paddingRight = parseInt(windowStyle.paddingRight, 10) || 0;
-        const usableWidth = windowBox.clientWidth - paddingLeft - paddingRight;
-        return Math.max(0, lastCard.offsetLeft + lastCard.offsetWidth - usableWidth);
-    }
-
-    function clampTranslate() {
-        const maxTranslate = getMaxTranslate();
-        if (currentTranslate > maxTranslate) {
-            currentTranslate = maxTranslate;
-        }
-        if (currentTranslate < 0) {
-            currentTranslate = 0;
-        }
-        track.style.transform = `translateX(-${currentTranslate}px)`;
-    }
-
-    next.addEventListener("click", () => {
-        const step = getStepSize();
-        const maxTranslate = getMaxTranslate();
-        currentTranslate = Math.min(currentTranslate + step, maxTranslate);
-        track.style.transform = `translateX(-${currentTranslate}px)`;
-    });
-
-    prev.addEventListener("click", () => {
-        const step = getStepSize();
-        currentTranslate = Math.max(currentTranslate - step, 0);
-        track.style.transform = `translateX(-${currentTranslate}px)`;
-    });
-
-    window.addEventListener("resize", () => {
-        clampTranslate();
+    setupSearchRedirect();
+    setupBuyNowFlow();
+    setupCarouselControls();
+    loadCarouselItems().then(() => {
+        window.dispatchEvent(new Event("resize"));
     });
 });

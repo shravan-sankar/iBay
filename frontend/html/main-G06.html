@@ -11,34 +11,43 @@
 
 <body>
 
+    <!-- Login Container -->
     <div class="login-container">
+        <!-- Logo -->
         <div class="logo">
             <img src="../images/iBay_logo.jpg" alt="iBay logo">
         </div>
 
+        <!-- Title -->
         <h2>Sign in to your Account</h2>
 
+        <!-- Login Form -->
         <form id="login-form">
+            <!-- Email Input -->
             <div class="input-group">
                 <label for="email">Email address</label>
                 <input type="email" id="email" name="email" required>
             </div>
 
+            <!-- Password Input -->
             <div class="input-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
             </div>
 
+            <!-- Error Message -->
             <div id="error-message" class="error-message">
             </div>
             <button type="submit" class="btn">Sign In</button>
         </form>
 
+        <!-- Signup Link -->
         <div class="signup">
             Don’t have an account? <a href="register.html">Create an account</a>
         </div>
     </div>
 
+    <!-- jQuery and Auth.js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/auth.js" defer></script>
 </body>
