@@ -54,11 +54,10 @@ function renderBasketFromStorage() {
     let totalPostage = 0;
 
     items.forEach((row) => {
-        const q = Math.max(0, parseInt(row.quantity, 10) || 0);
         const p = parseFloat(row.price) || 0;
         const post = parseFloat(row.postage) || 0;
-        const line = p * q;
-        const linePost = post * q;
+        const line = p;
+        const linePost = post;
         totalPrice += line;
         totalPostage += linePost;
 
@@ -72,7 +71,7 @@ function renderBasketFromStorage() {
                 <div class="basket-item__head">
                     <h3 class="basket-item__title">${escapeHtml(row.title || "Item")}</h3>
                 </div>
-                <p class="basket-item__meta">Qty: ${q} · ${formatGBP(p)} each</p>
+                <p class="basket-item__meta">${formatGBP(p)}</p>
             </div>
             <div class="basket-item__line">
                 <span class="basket-item__sub">${formatGBP(line)}</span>
@@ -118,9 +117,26 @@ function getUserIdFromUrl() {
     return userId ? String(userId) : "";
 }
 
+function getUserIdFromSession() {
+    try {
+        const raw = sessionStorage.getItem("iBayCurrentUser");
+        if (!raw) {
+            return "";
+        }
+        const parsed = JSON.parse(raw);
+        return parsed && parsed.id != null ? String(parsed.id) : "";
+    } catch (e) {
+        return "";
+    }
+}
+
+function getActiveUserId() {
+    return getUserIdFromUrl() || getUserIdFromSession();
+}
+
 function buildBrowseUrl(query) {
     const params = new URLSearchParams();
-    const userId = getUserIdFromUrl();
+    const userId = getActiveUserId();
     if (userId) {
         params.set("id", userId);
     }
@@ -129,6 +145,31 @@ function buildBrowseUrl(query) {
     }
     const suffix = params.toString();
     return suffix ? `browse.html?${suffix}` : "browse.html";
+}
+
+function buildCategorySearchUrl(query) {
+    const params = new URLSearchParams();
+    const userId = getActiveUserId();
+    if (userId) {
+        params.set("id", userId);
+    }
+    if (query) {
+        params.set("search_query", query);
+    }
+    const suffix = params.toString();
+    return suffix ? `Browse_category.html?${suffix}` : "Browse_category.html";
+}
+
+function setupHeaderLinks() {
+    const userId = getActiveUserId();
+    if (!userId) {
+        return;
+    }
+
+    const logoLink = document.getElementById("logo-link");
+    if (logoLink) {
+        logoLink.href = buildBrowseUrl("");
+    }
 }
 
 function setupSearchRedirect() {
@@ -140,7 +181,7 @@ function setupSearchRedirect() {
         e.preventDefault();
         const formData = new FormData(searchForm);
         const query = String(formData.get("q") || "").trim();
-        window.location.assign(buildBrowseUrl(query));
+        window.location.assign(buildCategorySearchUrl(query));
     });
 }
 
@@ -149,9 +190,32 @@ function setupBuyNowFlow() {
     if (!buyNowBtn) {
         return;
     }
-    buyNowBtn.addEventListener("click", () => {
-        alert("Purchase successful! Redirecting to browse page.");
-        window.location.assign(buildBrowseUrl(""));
+    buyNowBtn.addEventListener("click", async () => {
+        const basketItems = readBasket();
+        if (basketItems.length === 0) {
+            return;
+        }
+
+        const itemIds = basketItems
+            .map((item) => Number.parseInt(item.id, 10))
+            .filter((id) => Number.isInteger(id));
+
+        if (itemIds.length > 0) {
+            try {
+                await fetch(`${API_BASE}/purchase_items.php`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ item_ids: itemIds })
+                });
+            } catch (e) {
+                // Continue checkout flow even if server call fails.
+            }
+        }
+
+        writeBasket([]);
+        const nextUrl = new URL(buildBrowseUrl(""), window.location.href);
+        nextUrl.searchParams.set("purchased", "1");
+        window.location.assign(nextUrl.toString());
     });
 }
 
@@ -298,6 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderBasketFromStorage();
+    setupHeaderLinks();
     setupSearchRedirect();
     setupBuyNowFlow();
     setupCarouselControls();

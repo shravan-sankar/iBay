@@ -29,19 +29,10 @@ function changeImage(thumbnail) {
 // --- Add to basket ---
 
 function addToBasket() {
-    var quantityInput = document.getElementById("quantity");
-    var quantity = parseInt(quantityInput.value, 10);
-    var errorMsg = document.getElementById("quantity-error");
-
-    if (isNaN(quantity) || quantity < 1) {
-        errorMsg.textContent = "Please enter a valid quantity (minimum 1).";
-        return;
-    }
-
-    errorMsg.textContent = "";
-
     var root = document.getElementById("product-page");
-    var id = (root && root.getAttribute("data-product-id")) || "item-default";
+    var urlParams = new URLSearchParams(window.location.search);
+    var id = urlParams.get("id") || ((root && root.getAttribute("data-product-id")) || "item-default");
+    var userId = urlParams.get("user_id") || "";
     var titleEl = document.querySelector(".item-title");
     var priceEl = document.getElementById("item-price");
     var postageEl = document.getElementById("item-postage");
@@ -61,7 +52,6 @@ function addToBasket() {
         title: (titleEl && titleEl.textContent.trim()) || "Item",
         price: price,
         postage: postage,
-        quantity: quantity,
         image: (imgEl && imgEl.getAttribute("src")) || ""
     };
 
@@ -74,33 +64,14 @@ function addToBasket() {
         }
     }
     if (idx >= 0) {
-        items[idx].quantity += quantity;
+        return;
     } else {
         items.push(line);
     }
     setBasket(items);
-
-    window.location.href = "basket.html";
-}
-
-// --- Buy Now Validation ---
-
-function handleBuyNow() {
- 
-    // Get the quantity input
-    var quantityInput = document.getElementById("quantity");
-    var quantity = parseInt(quantityInput.value);
- 
-    var errorMsg = document.getElementById("quantity-error");
- 
-    // Check the quantity
-    if (isNaN(quantity) || quantity < 1) {
-        errorMsg.textContent = "Please enter a valid quantity (minimum 1).";
-        return; // Stop here, do not proceed
+    if (userId) {
+        window.location.href = "basket.html?id=" + encodeURIComponent(userId);
+        return;
     }
- 
-    // If validation passes, clear any error and continue
-    errorMsg.textContent = "";
-    alert("Proceeding to checkout with quantity: " + quantity);
-
+    window.location.href = "basket.html";
 }

@@ -1,162 +1,208 @@
-
-window.addEventListener('DOMContentLoaded', () => {
-    // 1. Get the category from the URL (?cat=Electronics)
-    const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('id');
-    console.log('User ID from URL:', userId);
-    document.getElementById('profile-image-link').href = `upload.html?id=${encodeURIComponent(String(userId))}`;
-    document.getElementById('basket-image-link').href = `basket.html?id=${encodeURIComponent(String(userId))}`;
-
-
-    
-
-});
-
-
-
-
-
-window.addEventListener('DOMContentLoaded', () => {
-    // 1. Get the category from the URL (?cat=Electronics)
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryToSelect = urlParams.get('cat');
-
-    if (categoryToSelect == 'all') {
-        const checkboxes = document.querySelectorAll(`input[name="category[]"]`);
-    
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = true;
-        });
-
-        filterForm.requestSubmit();
-    }
-
-    else if (categoryToSelect) {
-        // 2. Find the checkbox with the matching value
-        // Note: Make sure the value in the URL matches the value="" in your HTML
-        const checkbox = document.querySelector(`input[name="category[]"][value="${categoryToSelect}"]`);
-    
-        if (checkbox) {
-            // 3. Check the checkbox
-            checkbox.checked = true;
-
-            // 4. (Optional) Trigger the filter function automatically 
-            // so the user sees results immediately without clicking 'Apply'
-            // Assuming your form submission function is called 'applyFilters()'
-            filterForm.requestSubmit();
-        }
-    }
-});
-
-
+const filterForm = document.getElementById("filters");
 const container = document.getElementById("products-container");
+const searchInput = document.getElementById("search-bar");
+const s1 = document.getElementById("slider-1");
+const s2 = document.getElementById("slider-2");
+const minTxt = document.getElementById("min-price-display");
+const maxTxt = document.getElementById("max-price-display");
+const track = document.querySelector(".slider-track");
+const hiddenInput = document.getElementById("price-range-input");
 
-const filterForm = document.getElementById('filters');
+let requestCounter = 0;
+let searchDebounceTimer = null;
 
-filterForm.addEventListener('submit', function(e) {
-    e.preventDefault(); // Prevents the page from refreshing
+function escapeHtml(text) {
+    const node = document.createElement("div");
+    node.textContent = String(text || "");
+    return node.innerHTML;
+}
 
-    const formData = new FormData(filterForm);
-    
-    // To get all values for a specific group (e.g., Category)
-    const selectedCategories = formData.getAll('category[]');
+function getUserIdFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("id");
+}
 
-    const selectedPostage = formData.getAll('postage[]');
-    const selectedConditions = formData.getAll('item_condition[]');
-    const Prices = formData.get('price_range'); 
-    const selectedPrices = Prices
-            .replace(/[\[\]\s]/g, '')
-            .split(',')               
-            .map(Number);
-
-    console.log('Categories:', selectedCategories);
-    console.log('Prices:', selectedPrices);
-    console.log('Postage:', selectedPostage);
-    console.log('item_Conditions:', selectedConditions);
-});
-
-filterForm.addEventListener('submit', function(e) {
-    e.preventDefault(); // Prevents the page from refreshing
-
-    const formData = new FormData(filterForm);
-    
-    // 1. You can still log these for debugging
-    console.log('Categories:', formData.getAll('category[]'));
-    console.log('Prices:', formData.getAll('price[]'));
-    console.log('Postage:', formData.getAll('postage[]'));
-    console.log('item_Conditions:', formData.getAll('item_condition[]'));
-
-    // 2. Send the data to your PHP file
-    fetch('../../backend/filter.php', {
-        method: 'POST',
-        body: formData // No need to set headers, Fetch handles FormData automatically
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json(); 
-    })
-    .then(products => { // Changed 'data' to 'products' to match your loop below
-        console.log('Success! Products found:', products);
-        
-        // 1. Clear the container first so filters don't just stack on top of old results
-        const container = document.getElementById('products-container'); // Ensure this ID exists
-        container.innerHTML = ""; 
-
-        // 2. Loop through the products
-        products.forEach(product => {
-            console.log('Product:', product); // Log each product for debugging
-            const card = document.createElement("div");
-            card.className = "product-card";
-
-            card.innerHTML = `
-                <a href="product.html?id=${product.id}" class="product-link">
-                    <h2>${product.productName}</h2>
-                    <p>£${product.price}</p>
-                    <p>Seller: ${product.seller}</p>
-                    <p>${product.category}</p>
-                    <p>${product.item_condition}</p>
-                </a>`;
-
-            container.appendChild(card);
-        });
-    }) // Removed the extra semicolon that was here
-    .catch(error => {
-        console.error('Error sending data to PHP:', error);
-    });
-});
-
-const s1 = document.getElementById('slider-1');
-const s2 = document.getElementById('slider-2');
-const minTxt = document.getElementById('min-price-display');
-const maxTxt = document.getElementById('max-price-display');
-const track = document.querySelector('.slider-track');
-const hiddenInput = document.getElementById('price-range-input');
+function updateHeaderLinks() {
+    const userId = getUserIdFromUrl();
+    const profileLink = document.getElementById("profile-image-link");
+    const basketLink = document.getElementById("basket-image-link");
+    if (!profileLink || !basketLink || !userId) {
+        return;
+    }
+    profileLink.href = `upload.html?id=${encodeURIComponent(userId)}`;
+    basketLink.href = `basket.html?id=${encodeURIComponent(userId)}`;
+}
 
 function updatePriceRange() {
-    let val1 = parseInt(s1.value);
-    let val2 = parseInt(s2.value);
+    let val1 = parseInt(s1.value, 10);
+    let val2 = parseInt(s2.value, 10);
 
-    // Swap if they cross
     if (val1 > val2) {
         [val1, val2] = [val2, val1];
     }
 
-    // Move the blue track
     const p1 = (val1 / s1.max) * 100;
     const p2 = (val2 / s2.max) * 100;
-    track.style.left = p1 + "%";
-    track.style.width = (p2 - p1) + "%";
+    track.style.left = `${p1}%`;
+    track.style.width = `${p2 - p1}%`;
 
-    // Update displays
     minTxt.textContent = `£${val1}`;
-    maxTxt.textContent = (val2 === 500) ? `500+` : `£${val2}`;
-
-    // Update the form data
+    maxTxt.textContent = val2 === 500 ? "500+" : `£${val2}`;
     hiddenInput.value = `[${val1}, ${val2}]`;
 }
 
-s1.addEventListener('input', updatePriceRange);
-s2.addEventListener('input', updatePriceRange);
-updatePriceRange();
+function setInitialFiltersFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryToSelect = urlParams.get("cat");
+    const searchQuery = urlParams.get("search_query");
+
+    if (searchInput && searchQuery) {
+        searchInput.value = searchQuery;
+    }
+
+    if (categoryToSelect === "all") {
+        const checkboxes = document.querySelectorAll('input[name="category[]"]');
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = true;
+        });
+    } else if (categoryToSelect) {
+        const checkbox = document.querySelector(`input[name="category[]"][value="${categoryToSelect}"]`);
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+    }
+}
+
+function setLoadingState(isLoading) {
+    container.classList.toggle("is-loading", isLoading);
+}
+
+function buildFormData() {
+    return new FormData(filterForm);
+}
+
+function updateUrlFromCurrentFilters() {
+    const params = new URLSearchParams(window.location.search);
+    const userId = getUserIdFromUrl();
+    params.delete("cat");
+
+    const query = String(searchInput.value || "").trim();
+    if (query) {
+        params.set("search_query", query);
+    } else {
+        params.delete("search_query");
+    }
+
+    if (userId) {
+        params.set("id", userId);
+    }
+
+    const nextUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.pushState({}, "", nextUrl);
+}
+
+function renderProducts(products) {
+    container.innerHTML = "";
+
+    if (!Array.isArray(products) || products.length === 0) {
+        container.innerHTML = `<p class="products-empty-msg">No products match these filters.</p>`;
+        return;
+    }
+
+    const userId = getUserIdFromUrl();
+    products.forEach((product) => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        const productName = escapeHtml(product.productName);
+        const price = escapeHtml(product.price);
+        const seller = escapeHtml(product.seller);
+        const category = escapeHtml(product.category);
+        const condition = escapeHtml(product.item_condition);
+        const href = userId
+            ? `product.html?id=${encodeURIComponent(String(product.id))}&user_id=${encodeURIComponent(userId)}`
+            : `product.html?id=${encodeURIComponent(String(product.id))}`;
+
+        card.innerHTML = `
+            <a href="${href}" class="product-link">
+                <h2>${productName}</h2>
+                <p>£${price}</p>
+                <p>Seller: ${seller}</p>
+                <p>${category}</p>
+                <p>${condition}</p>
+            </a>`;
+        container.appendChild(card);
+    });
+}
+
+async function fetchAndRenderProducts() {
+    requestCounter += 1;
+    const currentRequest = requestCounter;
+    setLoadingState(true);
+
+    try {
+        const response = await fetch("../../backend/filter.php", {
+            method: "POST",
+            body: buildFormData()
+        });
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const products = await response.json();
+        if (currentRequest !== requestCounter) {
+            return;
+        }
+        renderProducts(products);
+        updateUrlFromCurrentFilters();
+    } catch (error) {
+        if (currentRequest !== requestCounter) {
+            return;
+        }
+        container.innerHTML = `<p class="products-empty-msg">Unable to load products right now.</p>`;
+        console.error("Error loading filtered products:", error);
+    } finally {
+        if (currentRequest === requestCounter) {
+            setLoadingState(false);
+        }
+    }
+}
+
+function handleSearchInput() {
+    window.clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = window.setTimeout(() => {
+        fetchAndRenderProducts();
+    }, 250);
+}
+
+function setupFormEvents() {
+    filterForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        fetchAndRenderProducts();
+    });
+
+    searchInput.addEventListener("input", handleSearchInput);
+
+    const autoInputs = filterForm.querySelectorAll(
+        'input[name="category[]"], input[name="postage[]"], input[name="item_condition[]"]'
+    );
+    autoInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+            fetchAndRenderProducts();
+        });
+    });
+}
+
+function setupPriceSliderEvents() {
+    s1.addEventListener("input", updatePriceRange);
+    s2.addEventListener("input", updatePriceRange);
+    s1.addEventListener("change", fetchAndRenderProducts);
+    s2.addEventListener("change", fetchAndRenderProducts);
+    updatePriceRange();
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    updateHeaderLinks();
+    setInitialFiltersFromUrl();
+    setupPriceSliderEvents();
+    setupFormEvents();
+    fetchAndRenderProducts();
+});

@@ -215,3 +215,58 @@ h5{
   color: black;
   text-decoration: none;
 }
+
+.purchase-toast {
+  position: fixed;
+  top: 105px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 280px;
+  max-width: 360px;
+  padding: 12px 14px;
+  border: 1px solid #cfe3ff;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #064fa5;
+  box-shadow: 0 12px 26px rgba(0, 67, 148, 0.2);
+  opacity: 0;
+  transform: translateY(-10px) translateX(8px);
+  transition: opacity 0.32s ease, transform 0.32s ease;
+}
+
+.purchase-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0) translateX(0);
+}
+
+.purchase-toast__logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: #ffffff;
+  border: 1px solid #e2efff;
+  flex-shrink: 0;
+}
+
+.purchase-toast__text-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.purchase-toast__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0064d2;
+}
+
+.purchase-toast__subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #2f5f9b;
+}
