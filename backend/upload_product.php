@@ -4,7 +4,7 @@ require_once 'connection.php';
 header('Content-Type: application/json');
 
 // Testing purposes 
-// $_SESSION['user_id'] = 1; <------ Revert it from comment to code if testing without full logging process
+// $_SESSION['user_id'] = 1; //<------ Revert it from comment to code if testing without full logging process
 
 // User Logged In Validation
 if (!isset($_SESSION['user_id'])) {
@@ -17,7 +17,7 @@ if (!isset($_SESSION['user_id'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $sellerID = (int) 1; // NEED TO CHANGE
+    $sellerID = (int) $_SESSION['user_id'];
 
     $listingTitle = htmlspecialchars(trim($_POST["itemName"] ?? ''));
     $listingCategory = trim($_POST["category"] ?? '');

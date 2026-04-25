@@ -109,6 +109,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Form Image Upload Preview Handling
+    function setupImagePreview(inputId, boxId) {
+        const input = document.getElementById(inputId);
+        const box = document.getElementById(boxId);
+
+        input.addEventListener('change', function () {
+            const file = input.files[0];
+
+            if (!file) {
+                box.style.backgroundImage = '';
+                return;
+            }
+
+            const imageUrl = URL.createObjectURL(file);
+
+            box.style.backgroundImage = `url('${imageUrl}')`;
+            box.style.border = 'none';
+            box.style.backgroundColor = 'transparent';
+        });
+    }
+
     //Form sumbission handling
     form.addEventListener('submit', async function(e) {
 
@@ -127,6 +148,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 alert(data.message);
                 form.reset();
+
+                document.getElementById('imageBox1').style.backgroundImage = '';
+                document.getElementById('imageBox1').style.border = '2px dashed #aaa';
+                document.getElementById('imageBox1').style.backgroundColor = '#e0e0e0';
+
+                document.getElementById('imageBox2').style.backgroundImage = '';
+                document.getElementById('imageBox2').style.border = '2px dashed #aaa';
+                document.getElementById('imageBox2').style.backgroundColor = '#e0e0e0';
+
                 showState('empty');
                 loadListings();
             }
@@ -148,6 +178,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('add_listing').addEventListener('click', function () {
         showState('add');
     });
+
+    setupImagePreview('imgUpload1', 'imageBox1');
+    setupImagePreview('imgUpload2', 'imageBox2');
 
     showState('empty');
     loadUser();

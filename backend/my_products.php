@@ -4,7 +4,7 @@ require_once 'connection.php';
 header('Content-Type: application/json');
 
 // Testing purposes 
-// $_SESSION['user_id'] = 1; <------ Revert it from comment to code if testing without full logging process
+// $_SESSION['user_id'] = 1; //<------ Revert it from comment to code if testing without full logging process
 
 // User Logged In Validation
 if (!isset($_SESSION['user_id'])) {
