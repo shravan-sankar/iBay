@@ -1,3 +1,4 @@
+/* Basket page layout and component styles */
 body {
     display: flex;
     flex-direction: column;
@@ -7,6 +8,7 @@ body {
     justify-content: flex-start;
 }
 
+/* Top navigation header */
 .basket-header {
     display: flex;
     align-items: center;
@@ -114,6 +116,7 @@ body {
     flex-shrink: 0;
 }
 
+/* Two-column main area: summary + basket content */
 #main {
     display: flex;
     flex-wrap: wrap;
@@ -217,6 +220,7 @@ body {
     margin-top: 8px;
 }
 
+/* Individual basket item card */
 .basket-item {
     display: flex;
     flex-wrap: wrap;
@@ -313,6 +317,7 @@ body {
     color: #777;
 }
 
+/* Suggested products carousel section */
 #more_products {
     width: 100%;
 }
@@ -373,6 +378,7 @@ body {
     color: #333;
 }
 
+/* Carousel navigation arrows */
 .carousel-btn {
     width: 44px;
     height: 44px;
@@ -408,26 +414,4 @@ body {
 
 #copyright {
     text-align: center;
-}
-
-@media (max-width: 768px) {
-    .basket-header {
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-
-    #search-bar {
-        order: 3;
-        flex: 1 1 100%;
-        padding: 0;
-    }
-
-    #main {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    #order_summary {
-        max-width: none;
-    }
 }

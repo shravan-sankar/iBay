@@ -1,6 +1,7 @@
 const BASKET_STORAGE_KEY = "ibay_basket";
 const API_BASE = "../../backend";
 
+// Reads basket rows from localStorage, returning a safe empty array on parse errors
 function readBasket() {
     try {
         const raw = localStorage.getItem(BASKET_STORAGE_KEY);
@@ -18,10 +19,12 @@ function writeBasket(items) {
     localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(items));
 }
 
+// Formats numeric prices as GBP values for modularity
 function formatGBP(n) {
     return "£" + (Math.round(n * 100) / 100).toFixed(2);
 }
 
+// Renders basket rows and summary totals from localStorage state if page reloaded
 function renderBasketFromStorage() {
     const listEl = document.getElementById("basket-list");
     const emptyMsg = document.getElementById("basket-empty-msg");
@@ -111,12 +114,14 @@ function escapeHtml(s) {
     return div.innerHTML;
 }
 
+// Attempts to read user id from query string first for double authentication
 function getUserIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const userId = params.get("id");
     return userId ? String(userId) : "";
 }
 
+// Falls back to sessionStorage user object if no query id exists
 function getUserIdFromSession() {
     try {
         const raw = sessionStorage.getItem("iBayCurrentUser");
@@ -130,10 +135,12 @@ function getUserIdFromSession() {
     }
 }
 
+// Resolves active user id from URL or session
 function getActiveUserId() {
     return getUserIdFromUrl() || getUserIdFromSession();
 }
 
+// Builds browse URL while preserving user and optional query
 function buildBrowseUrl(query) {
     const params = new URLSearchParams();
     const userId = getActiveUserId();
@@ -147,6 +154,7 @@ function buildBrowseUrl(query) {
     return suffix ? `browse.html?${suffix}` : "browse.html";
 }
 
+// Builds category search URL while preserving user and optional query
 function buildCategorySearchUrl(query) {
     const params = new URLSearchParams();
     const userId = getActiveUserId();
@@ -160,6 +168,7 @@ function buildCategorySearchUrl(query) {
     return suffix ? `Browse_category.html?${suffix}` : "Browse_category.html";
 }
 
+// Updates shared header links to keep user context
 function setupHeaderLinks() {
     const userId = getActiveUserId();
     if (!userId) {
@@ -172,6 +181,7 @@ function setupHeaderLinks() {
     }
 }
 
+// Handles search submit and routes to category browse page
 function setupSearchRedirect() {
     const searchForm = document.getElementById("search-form");
     if (!searchForm) {
@@ -185,6 +195,7 @@ function setupSearchRedirect() {
     });
 }
 
+// Handles checkout action: purchase call, basket clear, and redirect to browse page
 function setupBuyNowFlow() {
     const buyNowBtn = document.getElementById("buy-now-btn");
     if (!buyNowBtn) {
@@ -208,7 +219,7 @@ function setupBuyNowFlow() {
                     body: JSON.stringify({ item_ids: itemIds })
                 });
             } catch (e) {
-                // Continue checkout flow even if server call fails.
+                // Continue checkout flow even if server call fails
             }
         }
 
@@ -219,10 +230,12 @@ function setupBuyNowFlow() {
     });
 }
 
+// Chooses a usable product image field with a placeholder fallback
 function getProductImage(product) {
     return product.image || product.image_url || product.imageUrl || "../images/placeholder.jpg";
 }
 
+// Renders carousel product cards from API response objects to give real product suggestions to user
 function renderCarouselProducts(products) {
     const track = document.getElementById("track");
     if (!track) {
@@ -250,6 +263,7 @@ function renderCarouselProducts(products) {
     });
 }
 
+// Loads latest products used in the "You may also like" carousel
 async function loadCarouselItems() {
     const track = document.getElementById("track");
     if (!track) {
@@ -271,6 +285,7 @@ async function loadCarouselItems() {
     }
 }
 
+// Adds previous/next controls and resize handling for the carousel track
 function setupCarouselControls() {
     const track = document.getElementById("track");
     const prev = document.getElementById("prev");
@@ -344,6 +359,7 @@ function setupCarouselControls() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Handle remove clicks centrally on the list container so dynamically rendered buttons still work
     const listEl = document.getElementById("basket-list");
     if (listEl) {
         listEl.addEventListener("click", (e) => {
