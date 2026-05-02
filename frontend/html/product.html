@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iBay - Item Details</title>
     <link rel="stylesheet" href="../css/product.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/product.js" defer></script>
 </head>
 <body>
 
@@ -63,9 +61,7 @@
 
                 <!-- Seller Info -->
                 <div class="seller-info">
-                    <p>Seller: <a href="#">john_doe</a></p>
-                    <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734;</p>
-                    <p>Location: LE11 3TU</p>
+                    <p>Seller: <a href="#" id="seller-email-header"></a></p>
                 </div>
 
                 <!-- Add To Basket Button -->
@@ -88,20 +84,12 @@
             <h2>Seller Details</h2>
             <table class="seller-table">
                 <tr>
-                    <td>Username:</td>
-                    <td>john_doe</td>
-                </tr>
-                <tr>
-                    <td>Rating:</td>
-                    <td>142</td>
+                    <td>Email:</td>
+                    <td id="seller-email"></td>
                 </tr>
                 <tr>
                     <td>Member Since:</td>
-                    <td>January 2020</td>
-                </tr>
-                <tr>
-                    <td>Postcode:</td>
-                    <td>LE11 3TU</td>
+                    <td id="seller-since"></td>
                 </tr>
             </table>
         </div>
@@ -113,6 +101,10 @@
     <footer class="footer">
         <p>&copy; 2026 iBay. All rights reserved.</p>
     </footer>
+
+    <!-- jQuery needed for AJAX calls in product.js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/product.js"></script>
 
 </body>
 </html>
