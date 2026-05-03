@@ -1,5 +1,34 @@
 const API_BASE = "../../backend";
 
+function showPurchaseToastIfNeeded() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("purchased") !== "1") {
+    return;
+  }
+
+  const toast = document.createElement("div");
+  toast.className = "purchase-toast";
+  toast.innerHTML = `
+    <img src="../images/iBay_logo.jpg" alt="iBay logo" class="purchase-toast__logo">
+    <div class="purchase-toast__text-wrap">
+      <p class="purchase-toast__title">Thank you for purchasing!</p>
+      <p class="purchase-toast__subtitle">Your order has been placed successfully.</p>
+    </div>
+  `;
+  document.body.appendChild(toast);
+
+  window.requestAnimationFrame(() => {
+    toast.classList.add("is-visible");
+  });
+
+  window.setTimeout(() => {
+    toast.classList.remove("is-visible");
+    window.setTimeout(() => {
+      toast.remove();
+    }, 320);
+  }, 3200);
+}
+
 
 window.addEventListener('DOMContentLoaded', () => {
     // 1. Get the category from the URL (?cat=Electronics)
@@ -8,6 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     console.log('User ID from URL:', userId);
+    showPurchaseToastIfNeeded();
     document.getElementById('profile-image-link').href = `upload.html?id=${encodeURIComponent(String(userId))}`;
     document.getElementById('basket-image-link').href = `basket.html?id=${encodeURIComponent(String(userId))}`;
 

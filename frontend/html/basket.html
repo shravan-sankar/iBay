@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <!-- Basket page header with logo, search, and profile shortcut -->
     <header id="header" class="basket-header">
         <div id="logo">
             <a href="browse.html" id="logo-link" aria-label="iBay home">
@@ -35,6 +36,7 @@
     <div id="categories" aria-hidden="true"></div>
 
     <main id="main">
+        <!-- Sticky order summary panel so user can buy selected item(s)-->
         <aside id="order_summary" aria-labelledby="order-summary-heading">
             <h2 id="order-summary-heading">Order summary</h2>
 
@@ -61,12 +63,14 @@
         </aside>
 
         <div id="main_content_right">
+            <!-- Basket items list populated by basket.js -->
             <section id="basket" aria-labelledby="basket-heading">
                 <h2 id="basket-heading">Basket</h2>
                 <div id="basket-list" class="basket-list" hidden></div>
                 <p class="basket-empty-msg" id="basket-empty-msg">Your basket is empty — browse items to add them here.</p>
             </section>
 
+            <!-- Suggested items carousel for user-->
             <section id="more_products" aria-label="Suggested products">
                 <h3 class="more-products-title">You may also like</h3>
                 <div class="carousel-wrapper">

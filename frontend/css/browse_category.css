@@ -9,14 +9,36 @@ body{
 
 #header{
     background-color: white;
-    height: 50px;
-    padding: 10px;
+    min-height: 58px;
+    padding: 6px 20px;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+#header-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
 }
 
 #logout-link {
-    color: black;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 6px;
+    border: 1px solid #c8d9f5;
+    background-color: #f4f8ff;
+    color: #064fa5;
     text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#logout-link:hover {
+    background-color: #e7f0ff;
 }
 
 #navigator{
@@ -33,27 +55,13 @@ h5{
     color: white;
     margin: 0px;
 }
-#profile-image {
-  width: 50px;        /* adjust size */
-  height: 50px;       /* must match width */
-  border-radius: 50%; /* makes it a circle */
-  object-fit: cover;  /* prevents stretching */
-  
-}
-
-#basket-image {
-  width: 50px;        /* adjust size */
-  height: 50px;       /* must match width */
-  object-fit: cover;  /* prevents stretching */
-  border-radius: 50%;
-}
 #profile-image-link{
-  float: right;
-  padding-right: 10px;
+  display: inline-flex;
+  align-items: center;
 }
 #basket-image-link{
-  float: right;
-  padding-right: 10px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .logo {
@@ -64,17 +72,16 @@ h5{
 }
 
 #profile-image {
-  width: 50px;        /* adjust size */
-  height: 50px;       /* must match width */
-  border-radius: 50%; /* makes it a circle */
-  object-fit: cover;  /* prevents stretching */
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 #basket-image {
-  width: 50px;        /* adjust size */
-  height: 50px;       /* must match width */
-  object-fit: cover;  /* prevents stretching */
-  padding-right: 10px;
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
 }
 
 #page_layout {
@@ -139,6 +146,18 @@ h5{
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 per row */
     gap: 20px;
+}
+
+#products-container.is-loading {
+    opacity: 0.55;
+    pointer-events: none;
+    transition: opacity 0.18s ease-in-out;
+}
+
+.products-empty-msg {
+    margin: 8px 0;
+    color: #3d4a5f;
+    font-weight: 600;
 }
 .product-link {
     text-decoration: none;
@@ -222,6 +241,7 @@ input[type="range"] {
     width: 100%;
     background: none;
     pointer-events: none;
+    appearance: none;
     -webkit-appearance: none;
     top: 50%;
     transform: translateY(-50%);

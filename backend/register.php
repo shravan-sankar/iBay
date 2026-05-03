@@ -1,6 +1,7 @@
 <?php
 require_once 'connection.php';
 
+// Sends a JSON response and exits immediately
 function respondWithJson(int $statusCode, array $payload): void
 {
     http_response_code($statusCode);
@@ -11,7 +12,7 @@ function respondWithJson(int $statusCode, array $payload): void
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // 1. Get & sanitise input
+    // 1) Read and sanitise incoming form values from user
     $email = trim($_POST['email'] ?? '');
     $first_name = trim($_POST['first_name'] ?? '');
     $last_name = trim($_POST['last_name'] ?? '');
@@ -21,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
-    // 2. Validate
+    // 2) Validate required fields and data format
     if (empty($email) || empty($first_name) || empty($last_name) || empty($password) || empty($confirm_password)) {
         respondWithJson(422, ['success' => false, 'message' => 'All fields are required.']);
     }
@@ -38,10 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         respondWithJson(422, ['success' => false, 'message' => 'Please choose at least one shopping genre.']);
     }
 
-    // 3. Hash password
+    // 3) Hash password before storing it in the database
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // 4. Check if email already exists
+    // 4) Check if user email is already registered in database
     $stmt = mysqli_prepare($conn, "SELECT id FROM iBayMembers WHERE email = ?");
     mysqli_stmt_bind_param($stmt, "s", $email);
     mysqli_stmt_execute($stmt);
@@ -54,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     mysqli_stmt_close($stmt);
 
-    // 5. Insert user
+    // 5) Insert the new member record into the database
     $stmt = mysqli_prepare($conn, "INSERT INTO iBayMembers (email, password, firstName, lastName, preferredGenres) VALUES (?, ?, ?, ?, ?)");
     mysqli_stmt_bind_param($stmt, "sssss", $email, $hashedPassword, $first_name, $last_name, $preferred_genres);
     if (mysqli_stmt_execute($stmt)) {

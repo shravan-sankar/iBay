@@ -1,6 +1,7 @@
 const BASKET_STORAGE_KEY = "ibay_basket";
 const API_BASE = "../../backend";
 
+// Reads basket rows from localStorage, returning a safe empty array on parse errors
 function readBasket() {
     try {
         const raw = localStorage.getItem(BASKET_STORAGE_KEY);
@@ -18,10 +19,12 @@ function writeBasket(items) {
     localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(items));
 }
 
+// Formats numeric prices as GBP values for modularity
 function formatGBP(n) {
     return "£" + (Math.round(n * 100) / 100).toFixed(2);
 }
 
+// Renders basket rows and summary totals from localStorage state if page reloaded
 function renderBasketFromStorage() {
     const listEl = document.getElementById("basket-list");
     const emptyMsg = document.getElementById("basket-empty-msg");
@@ -54,11 +57,10 @@ function renderBasketFromStorage() {
     let totalPostage = 0;
 
     items.forEach((row) => {
-        const q = Math.max(0, parseInt(row.quantity, 10) || 0);
         const p = parseFloat(row.price) || 0;
         const post = parseFloat(row.postage) || 0;
-        const line = p * q;
-        const linePost = post * q;
+        const line = p;
+        const linePost = post;
         totalPrice += line;
         totalPostage += linePost;
 
@@ -72,7 +74,7 @@ function renderBasketFromStorage() {
                 <div class="basket-item__head">
                     <h3 class="basket-item__title">${escapeHtml(row.title || "Item")}</h3>
                 </div>
-                <p class="basket-item__meta">Qty: ${q} · ${formatGBP(p)} each</p>
+                <p class="basket-item__meta">${formatGBP(p)}</p>
             </div>
             <div class="basket-item__line">
                 <span class="basket-item__sub">${formatGBP(line)}</span>
@@ -112,15 +114,36 @@ function escapeHtml(s) {
     return div.innerHTML;
 }
 
+// Attempts to read user id from query string first for double authentication
 function getUserIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const userId = params.get("id");
     return userId ? String(userId) : "";
 }
 
+// Falls back to sessionStorage user object if no query id exists
+function getUserIdFromSession() {
+    try {
+        const raw = sessionStorage.getItem("iBayCurrentUser");
+        if (!raw) {
+            return "";
+        }
+        const parsed = JSON.parse(raw);
+        return parsed && parsed.id != null ? String(parsed.id) : "";
+    } catch (e) {
+        return "";
+    }
+}
+
+// Resolves active user id from URL or session
+function getActiveUserId() {
+    return getUserIdFromUrl() || getUserIdFromSession();
+}
+
+// Builds browse URL while preserving user and optional query
 function buildBrowseUrl(query) {
     const params = new URLSearchParams();
-    const userId = getUserIdFromUrl();
+    const userId = getActiveUserId();
     if (userId) {
         params.set("id", userId);
     }
@@ -131,6 +154,34 @@ function buildBrowseUrl(query) {
     return suffix ? `browse.html?${suffix}` : "browse.html";
 }
 
+// Builds category search URL while preserving user and optional query
+function buildCategorySearchUrl(query) {
+    const params = new URLSearchParams();
+    const userId = getActiveUserId();
+    if (userId) {
+        params.set("id", userId);
+    }
+    if (query) {
+        params.set("search_query", query);
+    }
+    const suffix = params.toString();
+    return suffix ? `Browse_category.html?${suffix}` : "Browse_category.html";
+}
+
+// Updates shared header links to keep user context
+function setupHeaderLinks() {
+    const userId = getActiveUserId();
+    if (!userId) {
+        return;
+    }
+
+    const logoLink = document.getElementById("logo-link");
+    if (logoLink) {
+        logoLink.href = buildBrowseUrl("");
+    }
+}
+
+// Handles search submit and routes to category browse page
 function setupSearchRedirect() {
     const searchForm = document.getElementById("search-form");
     if (!searchForm) {
@@ -140,25 +191,51 @@ function setupSearchRedirect() {
         e.preventDefault();
         const formData = new FormData(searchForm);
         const query = String(formData.get("q") || "").trim();
-        window.location.assign(buildBrowseUrl(query));
+        window.location.assign(buildCategorySearchUrl(query));
     });
 }
 
+// Handles checkout action: purchase call, basket clear, and redirect to browse page
 function setupBuyNowFlow() {
     const buyNowBtn = document.getElementById("buy-now-btn");
     if (!buyNowBtn) {
         return;
     }
-    buyNowBtn.addEventListener("click", () => {
-        alert("Purchase successful! Redirecting to browse page.");
-        window.location.assign(buildBrowseUrl(""));
+    buyNowBtn.addEventListener("click", async () => {
+        const basketItems = readBasket();
+        if (basketItems.length === 0) {
+            return;
+        }
+
+        const itemIds = basketItems
+            .map((item) => Number.parseInt(item.id, 10))
+            .filter((id) => Number.isInteger(id));
+
+        if (itemIds.length > 0) {
+            try {
+                await fetch(`${API_BASE}/purchase_items.php`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ item_ids: itemIds })
+                });
+            } catch (e) {
+                // Continue checkout flow even if server call fails
+            }
+        }
+
+        writeBasket([]);
+        const nextUrl = new URL(buildBrowseUrl(""), window.location.href);
+        nextUrl.searchParams.set("purchased", "1");
+        window.location.assign(nextUrl.toString());
     });
 }
 
+// Chooses a usable product image field with a placeholder fallback
 function getProductImage(product) {
     return product.image || product.image_url || product.imageUrl || "../images/placeholder.jpg";
 }
 
+// Renders carousel product cards from API response objects to give real product suggestions to user
 function renderCarouselProducts(products) {
     const track = document.getElementById("track");
     if (!track) {
@@ -186,6 +263,7 @@ function renderCarouselProducts(products) {
     });
 }
 
+// Loads latest products used in the "You may also like" carousel
 async function loadCarouselItems() {
     const track = document.getElementById("track");
     if (!track) {
@@ -207,6 +285,7 @@ async function loadCarouselItems() {
     }
 }
 
+// Adds previous/next controls and resize handling for the carousel track
 function setupCarouselControls() {
     const track = document.getElementById("track");
     const prev = document.getElementById("prev");
@@ -280,6 +359,7 @@ function setupCarouselControls() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Handle remove clicks centrally on the list container so dynamically rendered buttons still work
     const listEl = document.getElementById("basket-list");
     if (listEl) {
         listEl.addEventListener("click", (e) => {
@@ -298,6 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderBasketFromStorage();
+    setupHeaderLinks();
     setupSearchRedirect();
     setupBuyNowFlow();
     setupCarouselControls();
