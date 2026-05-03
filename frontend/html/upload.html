@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <!-- Header -->
     <div id="header">
         <div id="page_details">
             <div id="logo">
@@ -20,29 +21,33 @@
         </div>
     </div>
 
+    <!-- Breadcrumb -->
     <div class="breadcrumb">
         <a href="browse.html">Home</a> &gt;
         <span>Upload</span>
     </div>
 
     <div id="main">
+
+        <!-- User Info -->
         <div id="user_content">
             <div id="profile_pic">
                 <img src="../images/avatar-empty.png" alt="avatar"> 
             </div>
             <div id="account_info">
-                <div id="full_name">Placeholder John</div>
-                <div id="email">JohnThePlaceholder@nomail.com</div>
+                <div id="full_name">Account not logged in</div>
+                <div id="email"></div>
             </div>
         </div>
 
         <div id="listing_content">
 
+            <!-- Existing Products Carousel -->
             <div id="existing_items">
 
-                <h2>Active listings</h2>
+                    <h2 class="panel_heading">Active listings</h2>
 
-                <div class="carousel-window listing-line">
+                <div class="carousel-window">
                     <div class="carousel-track" id="carousel_track"></div>
                 </div>
 
@@ -60,100 +65,170 @@
 
                 <!-- Viewing existing listing -->
                 <div id="existing_listing" class="viewing_state">
-                    <h2>Listing details</h2>
-                    <button id="edit_listing">Edit listing</button> 
+                    <h2 class="panel_heading">Listing details</h2>
+
+                    <input id="view_itemName" class="listing_title" type="text" disabled>
+
+                    <div id="view_images">
+                        <label for="view_imgUpload1">
+                            <div class="imageBox" id="view_img1"></div>
+                        </label>
+                        <input type="file" id="view_imgUpload1" name="view_imgUpload1" accept="image/*" style="display:none;">
+
+                        <label for="view_imgUpload2">
+                            <div class="imageBox" id="view_img2"></div>
+                        </label>
+                        <input type="file" id="view_imgUpload2" name="view_imgUpload2" accept="image/*" style="display:none;">
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="radio_options" id="view_categories">
+                        <input type="radio" id="v_electronics" name="v_category" value="electronics">
+                        <label for="v_electronics">Electronics</label>
+
+                        <input type="radio" id="v_fashion" name="v_category" value="fashion">
+                        <label for="v_fashion">Fashion</label>
+
+                        <input type="radio" id="v_home" name="v_category" value="home">
+                        <label for="v_home">Home</label>
+
+                        <input type="radio" id="v_sports" name="v_category" value="sports">
+                        <label for="v_sports">Sports</label>
+
+                        <input type="radio" id="v_toys" name="v_category" value="toys">
+                        <label for="v_toys">Toys</label>
+                    </div>
+
+                    <!-- Condition -->
+                    <div class="radio_options section" id="view_condition">
+                        <input type="radio" id="v_new" name="v_condition" value="new">
+                        <label for="v_new">New</label>
+
+                        <input type="radio" id="v_used" name="v_condition" value="used">
+                        <label for="v_used">Used</label>
+                    </div>
+                    <br>
+
+                    <label for="view_desc">Description</label>
+                    <textarea id="view_desc" disabled></textarea>
+                    <br>
+
+                    <div class="prices">
+                        <div class="price_input">
+                            <label for="view_price">Price</label><span>£</span>
+                            <input id="view_price" type="number" disabled class="input_line">
+                        </div>
+
+                        <div class="price_input">
+                            <label for="view_postage">Postage</label><span>£</span>
+                            <input id="view_postage" type="number" disabled class="input_line">
+                        </div>
+                    </div>
+                    <br>
+
+                    <div id="submit_row">
+                        <button id="return" class="listing_buttons">Return</button>
+                        <button id="edit_listing" class="listing_buttons">Edit listing</button>
+                        <button id="save_listing" class="listing_buttons" style="display:none;">Save</button>
+                    </div>
                 </div>
 
                 <!-- Adding new listing-->
                 <div id="adding_listing" class="viewing_state">
-                    <h2>New listing</h2>
+                    <h2 class="panel_heading">New listing</h2>
                     
-                    <form action="../../backend/upload_product.php" method="POST" enctype="multipart/form-data">
-                        
-                        <div id="title_box" class="section">
-                            <label id="itemNameLabel" for="itemName">Title</label><br>
-                            <input id="itemName" type="text" name="itemName" placeholder="E.g. Overrated shoes">
-                        </div>
-                        <br>
-
-                        <!-- Image Uploads -->
-                        <div id="upload_images">
-
-                            <label for="imgUpload1">
-                                <div class="imageBox" id="imageBox1"></div>
-                            </label>
-                            <input 
-                                type="file" 
-                                id="imgUpload1" 
-                                name="imgUpload1"
-                                accept="image/*" 
-                                style="display:none;"
-                            >
-                            <label for="imgUpload2">
-                                <div class="imageBox" id="imageBox2"></div>
-                            </label>
-                            <input 
-                                type="file" 
-                                id="imgUpload2" 
-                                name="imgUpload2"
-                                accept="image/*" 
-                                style="display:none;"
-                            >
-                        </div>
-
-                        <br>
-                        <div class="radio_options">
+                    <div id="section">
+                        <form action="../../backend/upload_product.php" method="POST" enctype="multipart/form-data">
                             
-                            <input type="radio" id="electronics" name="category" value="electronics">
-                            <label for="electronics">Electronics</label>
-
-                            <input type="radio" id="fashion" name="category" value="fashion">
-                            <label for="fashion">Fashion</label>
-
-                            <input type="radio" id="home" name="category" value="home">
-                            <label for="home">Home</label>
-
-                            <input type="radio" id = "sports" name="category" value="sports">
-                            <label for="sports">Sports</label>
-                            
-                            <input type="radio" id="toys" name="category" value="toys">
-                            <label for="toys">Toys</label>
-
-                        </div>
-                        <div class="radio_options section">
-                            
-                            <input type="radio" id="new" name="condition" value="new">
-                            <label for="new">New</label>
-
-                            <input type="radio" id="used" name="condition" value="used">
-                            <label for="used">Used</label>
-
-                        </div>
-
-                        <br>
-                        <label for="desc">Description</label><br>
-                        <textarea id="desc" type="text" name="desc" placeholder="Describe listing item"></textarea>
-
-                        <br><br>
-                        <div class="prices">
-                            
-                            <div class="price_input">
-                                <label for="price">Price</label><span>£</span>
-                                <input id="price" type="number" name="price" step="0.01" min="0" class="input_line">
+                            <!-- Product Title -->
+                            <div id="title_box">
+                                <input id="itemName" class="listing_title" type="text" name="itemName" placeholder="Enter listing title...">
                             </div>
-                            
-                            <div class="price_input">
-                                <label for="postage">Postage</label><span>£</span>
-                                <input id="postage" type="number" name="postage" step="0.01" min="0" class="input_line">
+                            <br>
+
+                            <!-- Image Uploads -->
+                            <div id="upload_images">
+
+                                <label for="imgUpload1">
+                                    <div class="imageBox" id="imageBox1"></div>
+                                </label>
+                                <input 
+                                    type="file" 
+                                    id="imgUpload1" 
+                                    name="imgUpload1"
+                                    accept="image/*" 
+                                    style="display:none;"
+                                >
+                                <label for="imgUpload2">
+                                    <div class="imageBox" id="imageBox2"></div>
+                                </label>
+                                <input 
+                                    type="file" 
+                                    id="imgUpload2" 
+                                    name="imgUpload2"
+                                    accept="image/*" 
+                                    style="display:none;"
+                                >
                             </div>
+                            <br>
+                            
+                            <!-- Radio Options (Product Category + Condition)-->
+                            <div class="radio_options">
+                                
+                                <input type="radio" id="electronics" name="category" value="electronics">
+                                <label for="electronics">Electronics</label>
 
-                        </div>
+                                <input type="radio" id="fashion" name="category" value="fashion">
+                                <label for="fashion">Fashion</label>
 
-                        <br>
-                        <div id="submit_row">
-                            <button id="listing_submit" type="submit">Add listing</button>
-                        </div>
-                    </form>
+                                <input type="radio" id="home" name="category" value="home">
+                                <label for="home">Home</label>
+
+                                <input type="radio" id = "sports" name="category" value="sports">
+                                <label for="sports">Sports</label>
+                                
+                                <input type="radio" id="toys" name="category" value="toys">
+                                <label for="toys">Toys</label>
+
+                            </div>
+                            <div class="radio_options section">
+                                
+                                <input type="radio" id="new" name="condition" value="new">
+                                <label for="new">New</label>
+
+                                <input type="radio" id="used" name="condition" value="used">
+                                <label for="used">Used</label>
+
+                            </div>
+                            <br>
+                            
+                            <!-- Product Description -->
+                            <label for="desc">Description</label><br>
+                            <textarea id="desc" type="text" name="desc" placeholder="Describe listing item"></textarea>
+                            <br><br>
+
+                            <!-- Product Price + Postage -->
+                            <div class="prices">
+                                
+                                <div class="price_input">
+                                    <label for="price">Price</label><span>£</span>
+                                    <input id="price" type="number" name="price" step="0.01" min="0" class="input_line">
+                                </div>
+                                
+                                <div class="price_input">
+                                    <label for="postage">Postage</label><span>£</span>
+                                    <input id="postage" type="number" name="postage" step="0.01" min="0" class="input_line">
+                                </div>
+
+                            </div>
+                            <br>
+                            
+                            <!-- Submit Button -->
+                            <div id="submit_row">
+                                <button id="listing_submit" class="listing_buttons" type="submit">Add listing</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
 
@@ -162,6 +237,7 @@
         </div>
     </div> 
 
+    <!-- Footer/Copyright Notice -->
     <footer id="footer">
         <p>&copy; 2025 iBay. All rights reserved.</p>
     </footer>
