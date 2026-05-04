@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iBay - Item Details</title>
     <link rel="stylesheet" href="../css/product.css">
-    <script src="../js/product.js" defer></script>
 </head>
 <body>
- 
+
     <!-- Navigation Bar -->
     <div id="header">
         <a href="browse.html" id="brand-link">
@@ -25,23 +24,22 @@
             </a>
         </div>
     </div>
- 
+
     <!-- Breadcrumb -->
     <div class="breadcrumb">
         <a href="browse.html">Home</a> &gt;
-        <a href="search.html">Search Results</a> &gt;
         <span>Item Details</span>
     </div>
- 
+
     <!-- Main Content -->
-    <div class="main-content" id="product-page" data-product-id="jacket-1">
- 
-            <h1 class="item-title">Vintage Leather Jacket</h1>
-            <p class="item-category">Category: <span>Clothing</span></p>
- 
-            <!-- Product Layout -->
-            <div class="product-wrapper">
- 
+    <div class="main-content" id="product-page">
+
+        <h1 class="item-title"></h1>
+        <p class="item-category">Condition: <span id="item-condition"></span></p>
+
+        <!-- Product Layout -->
+        <div class="product-wrapper">
+
             <!-- Images -->
             <div class="product-images">
                 <img id="main-image" src="../images/placeholder.jpg" alt="Item Image" class="main-image">
@@ -50,72 +48,62 @@
                     <img src="../images/placeholder2.jpg" alt="Thumbnail 2" class="thumbnail" onclick="changeImage(this)">
                 </div>
             </div>
- 
-            <!-- Right side: price, countdown, seller, buttons -->
+
+            <!-- Right side: price, seller, buttons -->
             <div class="product-info">
- 
-            <!-- Price -->
-            <div class="price-box">
-                <p class="price">£<span id="item-price">45.00</span></p>
-                <p class="postage">Postage: £<span id="item-postage">3.99</span></p>
-            </div>
- 
-            <!-- Seller Info -->
-            <div class="seller-info">
-                <p>Seller: <a href="#">john_doe</a></p>
-                <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734;</p>
-                <p>Location: LE11 3TU</p>
-            </div>
- 
-            <!-- Add To Basket Button -->
-            <button class="btn-primary" onclick="addToBasket()">Add to Basket</button>
- 
+
+                <!-- Price -->
+                <div class="price-box">
+                    <p class="price">£<span id="item-price"></span></p>
+                    <p class="postage">Postage: £<span id="item-postage"></span></p>
+                </div>
+
+                <!-- Seller Info -->
+                <div class="seller-info">
+                    <p>Seller: <a href="#" id="seller-email-header"></a></p>
+                </div>
+
+                <!-- Add To Basket Button -->
+                <button class="btn-primary" onclick="addToBasket()">Add to Basket</button>
+
             </div>
             <!-- End product-info -->
- 
-            </div>
-            <!-- End product-wrapper -->
- 
-            <!-- Description -->
-            <div class="section">
-                <h2>Item Description</h2>
-                <p>This is a great quality vintage leather jacket in excellent condition.
-                Only worn a handful of times. Size M. Brown colour with brass zips.
-                Comes from a smoke-free and pet-free home.</p>
-            </div>
- 
-            <!-- Seller Table -->
-            <div class="section">
-                <h2>Seller Details</h2>
-                <table class="seller-table">
-                    <tr>
-                        <td>Username:</td>
-                        <td>john_doe</td>
-                    </tr>
-                    <tr>
-                        <td>Rating:</td>
-                        <td>142</td>
-                    </tr>
-                    <tr>
-                        <td>Member Since:</td>
-                        <td>January 2020</td>
-                    </tr>
-                    <tr>
-                        <td>Postcode:</td>
-                        <td>LE11 3TU</td>
-                    </tr>
-                </table>
-            </div>
- 
+
+        </div>
+        <!-- End product-wrapper -->
+
+        <!-- Description -->
+        <div class="section">
+            <h2>Item Description</h2>
+            <p id="item-description"></p>
+        </div>
+
+        <!-- Seller Table -->
+        <div class="section">
+            <h2>Seller Details</h2>
+            <table class="seller-table">
+                <tr>
+                    <td>Email:</td>
+                    <td id="seller-email"></td>
+                </tr>
+                <tr>
+                    <td>Member Since:</td>
+                    <td id="seller-since"></td>
+                </tr>
+            </table>
+        </div>
+
     </div>
     <!-- End Main Content -->
- 
+
     <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2026 iBay. All rights reserved.</p>
     </footer>
- 
- 
- 
+
+    <!-- jQuery needed for AJAX calls in product.js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/product.js"></script>
+
 </body>
 </html>

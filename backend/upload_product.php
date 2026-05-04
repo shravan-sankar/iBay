@@ -3,9 +3,6 @@ session_start();
 require_once 'connection.php';
 header('Content-Type: application/json');
 
-// Testing purposes 
-// $_SESSION['user_id'] = 1; //<------ Revert it from comment to code if testing without full logging process
-
 // User Logged In Validation
 if (!isset($_SESSION['user_id'])) {
     echo json_encode([
@@ -122,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $listingCondition);
     ///
 
-    // Insert into database
+    /// Insert into database
     if (!mysqli_stmt_execute($stmt)) {
         echo json_encode([
             "success" => false,
@@ -137,6 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     ]);
     exit;
+    ///
 
 }
 

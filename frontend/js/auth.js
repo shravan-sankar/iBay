@@ -1,4 +1,4 @@
-// Redirect to browse.html if user is logged in
+// If a session exists, skip auth screens and send user to browse
 function redirectToBrowseIfLoggedIn() {
   if (!$("#login-form").length && !$("#register-form").length) {
     return;
@@ -15,7 +15,7 @@ function redirectToBrowseIfLoggedIn() {
   });
 }
 
-// Handle login form submission
+// Wires login form submission and displays API errors inline
 function handleLoginForm() {
   const $form = $("#login-form");
   if (!$form.length) {
@@ -54,7 +54,7 @@ function handleLoginForm() {
   });
 }
 
-// Handle register form submission
+// Manages two-step register flow (details first, genres second)
 function handleRegisterForm() {
   const form = document.getElementById("register-form");
   if (!form) {
@@ -72,7 +72,7 @@ function handleRegisterForm() {
   let genreStepActive = false;
 
   
-  // Show genre step
+  // Shows the second step where user selects preferred genres
   function showGenreStep() {
     genreStepActive = true;
     firstStepFields.forEach((field) => field.classList.add("is-hidden"));
@@ -82,7 +82,7 @@ function handleRegisterForm() {
     errorBox.textContent = "";
   }
 
-  // Show registration step
+  // Returns to the first step to edit basic registration details
   function showRegistrationStep() {
     genreStepActive = false;
     firstStepFields.forEach((field) => field.classList.remove("is-hidden"));
@@ -92,28 +92,28 @@ function handleRegisterForm() {
     errorBox.textContent = "";
   }
 
-  // Get selected genres for user preferences
+  // Collects selected genres from active bubble chips
   function selectedGenres() {
     return Array.from(genreBubbleButtons)
       .filter((button) => button.classList.contains("is-selected"))
       .map((button) => button.dataset.genre);
   }
 
-  // Add event listeners to genre bubble buttons
+  // Toggles selected state for each genre chip
   genreBubbleButtons.forEach((button) => {
     button.addEventListener("click", function () {
       this.classList.toggle("is-selected");
     });
   });
 
-  // Add event listener to genre back button
+  // Allows user to navigate back from genre step
   if (genreBackButton) {
     genreBackButton.addEventListener("click", function () {
       showRegistrationStep();
     });
   }
 
-  // Handle form submission
+  // Handles validation, step transitions, and register API call
   form.addEventListener("submit", function (e) {
     if (genreStepActive) {
       const genres = selectedGenres();
@@ -200,7 +200,7 @@ window.addEventListener("pageshow", function (event) {
   }
 });
 
-// Initialize auth functionality
+// Initialise auth functionality
 $(function () {
   // Handle registered parameter in URL
   const params = new URLSearchParams(window.location.search);
