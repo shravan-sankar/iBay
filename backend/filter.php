@@ -74,12 +74,11 @@ if ($min > 0 || $max < 500) {
 
 
 // Postage Filter
-if (!empty($postage)) {
-    $placeholders = implode(',', array_fill(0, count($postage), '?'));
-    $sql .= " AND postage IN ($placeholders)";
-    foreach ($postage as $p) {
-        $params[] = $p;
-        $types .= "s";
+if (!empty($postage) && count($postage) < 2) {
+    if (in_array('Free', $postage)) {
+        $sql .= " AND postage = 0.00";
+    } elseif (in_array('Paid', $postage)) {
+        $sql .= " AND postage > 0.00";
     }
 }
 
