@@ -9,6 +9,29 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+// Image File Validation Function
+function validateImageUpload($file, $fieldname) {
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+
+    if (!isset($file) || $file['error'] === UPLOAD_ERR_NO_FILE) {
+        return null; // User did not change image - Hence, keep old
+    }
+
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return "$fieldname failed to upload.";
+    }
+
+    if (!in_array($file['type'], $allowedTypes)) {
+        return "$fieldname must be a JPG, PNG, WEBP, or GIF image.";
+    }
+
+    if ($file['size'] > 5 * 1024 * 1024) {
+        return "$fieldname must be less than 5MB.";
+    }
+
+    return null;
+}
+
 // User Logged In Validation
 if (!isset($_SESSION['user_id'])) {
     echo json_encode([
@@ -32,19 +55,45 @@ if (!$id) {
     exit;
 }
 
-$uploadDir = "../product_images/";
+// Call Image File Validation Function
+$image1Error = validateImageUpload($_FILES['imgUpload1'] ?? null, 'Image 1');
+$image2Error = validateImageUpload($_FILES['imgUpload2'] ?? null, 'Image 2');
+
+if ($image1Error !== null || $image2Error !== null) {
+    echo json_encode([
+        'success' => false,
+        'message' => $image1Error ?? $image2Error
+    ]);
+    exit;
+}
 
 $image1Name = null;
 $image2Name = null;
 
 if (isset($_FILES['imgUpload1']) && $_FILES['imgUpload1']['error'] === UPLOAD_ERR_OK) {
-    $image1Name = time() . "_1_" . basename($_FILES['imgUpload1']['name']);
-    move_uploaded_file($_FILES['imgUpload1']['tmp_name'], $uploadDir . $image1Name);
+    $image1Name = uniqid("product_", true) . "_" . basename($_FILES['imgUpload1']['name']);
+    
+    // Checks image 1 saved successfully
+    if (!move_uploaded_file($_FILES['imgUpload1']['tmp_name'], "../product_images/" . $image1Name)) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Failed to save image 1."
+        ]);
+        exit;
+    }
 }
 
 if (isset($_FILES['imgUpload2']) && $_FILES['imgUpload2']['error'] === UPLOAD_ERR_OK) {
-    $image2Name = time() . "_2_" . basename($_FILES['imgUpload2']['name']);
-    move_uploaded_file($_FILES['imgUpload2']['tmp_name'], $uploadDir . $image2Name);
+    $image2Name = uniqid("product_", true) . "_" . basename($_FILES['imgUpload2']['name']);
+
+    // Checks image 2 saved successfully
+    if (!move_uploaded_file($_FILES['imgUpload2']['tmp_name'], "../product_images/" . $image2Name)) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Failed to save image 2."
+        ]);
+        exit;
+    }
 }
 
 $sql = "UPDATE iBayProducts
