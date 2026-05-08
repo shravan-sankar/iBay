@@ -1,5 +1,6 @@
 const API_BASE = "../../backend";
 
+// function to show a toast notification after a successful purchase, triggered by the presence of ?purchased=1 in the URL
 function showPurchaseToastIfNeeded() {
   const params = new URLSearchParams(window.location.search);
   if (params.get("purchased") !== "1") {
@@ -29,7 +30,7 @@ function showPurchaseToastIfNeeded() {
   }, 3200);
 }
 
-
+// assigns variables to the relevant DOM elements
 window.addEventListener('DOMContentLoaded', () => {
     // 1. Get the category from the URL (?cat=Electronics)
     const urlParams = new URLSearchParams(window.location.search);
@@ -60,7 +61,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
       const formData = new FormData();
       formData.append('user_id', userId);
-
+    // Fetch recommended products for the user using get_recommended_products.php and renders 
+    // them in the recommended products section
     fetch('../../backend/get_recommended_products.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -93,6 +95,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 const container = document.getElementById("latest-products-container");
 
+// Fetches the latest products using get_latest_products.php and 
+// renders them in the latest products section
 fetch('../../backend/get_latest_products.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
@@ -120,7 +124,6 @@ fetch('../../backend/get_latest_products.php', {
 })
 .catch(err => console.error('Fetch failed:', err));
 });
-
 
 
 

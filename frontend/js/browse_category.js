@@ -1,3 +1,6 @@
+
+// gets the vlaues of the various filter inputs and sends them to filter.php to get the filtered products,
+//  then renders those products in the page
 const filterForm = document.getElementById("filters");
 const container = document.getElementById("products-container");
 const searchInput = document.getElementById("search-bar");
@@ -33,6 +36,7 @@ function updateHeaderLinks() {
     basketLink.href = `basket.html?id=${encodeURIComponent(userId)}`;
 }
 
+// Updates the price range slider visuals and the hidden input value based on the current slider positions
 function updatePriceRange() {
     let val1 = parseInt(s1.value, 10);
     let val2 = parseInt(s2.value, 10);
@@ -50,6 +54,7 @@ function updatePriceRange() {
     maxTxt.textContent = val2 === 500 ? "500+" : `£${val2}`;
     hiddenInput.value = `[${val1}, ${val2}]`;
 }
+
 
 function setInitialFiltersFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -101,6 +106,7 @@ function updateUrlFromCurrentFilters() {
     window.history.pushState({}, "", nextUrl);
 }
 
+// Renders the given products in the products container, or shows a message if no products are found
 function renderProducts(products) {
     container.innerHTML = "";
 

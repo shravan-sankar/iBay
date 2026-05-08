@@ -5,7 +5,7 @@ body{
     background-color: #e8f0fe;
 }
 
-
+/*header styling*/
 #header{
     background-color: white;
     min-height: 58px;
@@ -15,11 +15,14 @@ body{
     justify-content: space-between;
 }
 
+/*header right styling*/
 #header-right {
     display: inline-flex;
     align-items: center;
     gap: 12px;
 }
+
+/*logout button styling*/
 #logout-link {
     display: inline-flex;
     align-items: center;
@@ -39,17 +42,20 @@ body{
     background-color: #e7f0ff;
 }
 
+/*navigation bar styling*/
 #navigator{
     background-color: #0064d2;
     padding-left: 30px;
     padding: 10px;
     padding-left: 30px;
 }
+
 h5{
     color: white;
     margin: 0px;
 }
 
+/*main content styling*/
 #main-content {
     background-color: #f5f5f5;
     margin-left: 50px;
@@ -60,6 +66,7 @@ h5{
 
 }
 
+/*category button styling*/
 #categories {
     background-color: white;
     height: 80px;
@@ -67,6 +74,7 @@ h5{
     border-radius: 10px;
 }
 
+/*logo styling*/
 .logo {
     float: left;
     margin-right: 15px;
@@ -74,15 +82,19 @@ h5{
     height: auto;
 }
 
+/*profile link styling*/
 #profile-image-link{
   display: inline-flex;
   align-items: center;
 }
+
+/*basket link styling*/
 #basket-image-link{
   display: inline-flex;
   align-items: center;
 }
 
+/*profile image styling*/
 #profile-image {
   width: 42px;        /* adjust size */
   height: 42px;       /* must match width */
@@ -90,11 +102,14 @@ h5{
   object-fit: cover;  /* prevents stretching */
 }
 
+/*basket image styling*/
 #basket-image {
   width: 28px;        /* adjust size */
   height: 28px;       /* must match width */
   object-fit: cover;  /* prevents stretching */
 }
+
+/*search bar styling*/
 #search {
   display: flex;
   align-items: center;   /* vertical centering */
@@ -106,6 +121,7 @@ h5{
   justify-content: space-between;
 }
 
+/*logo styling*/
 .logo {
   width: 100px;
   height: auto;
@@ -114,7 +130,7 @@ h5{
 
 
 
-
+/*filter button styling*/
 #filter_button {
     padding: 10px 15px;
     background: #0064d2;
@@ -125,17 +141,19 @@ h5{
     float: right;
 }
 
+/*navigation container styling*/
 .nav-container {
   width: 100%;
   background-color: #0064d2;
 }
 
-
+/*category bar styling*/
 .category-bar {
     display: flex;
     width: 100%;
 }
 
+/*category bar links styling*/
 .category-bar a {
   flex: 1; /* each takes equal width */
     text-align: center;
@@ -158,7 +176,7 @@ h5{
 }
 
 
-
+/*recommended products styling*/
 #Recommended_Products {
     background-color: #f5f5f5;
 
@@ -166,6 +184,8 @@ h5{
     padding: 10px;
     border-radius: 10px;
 }
+
+/*latest products styling*/
 #Latest_Products {
     background-color: #f5f5f5;
     margin: 10px;
@@ -173,6 +193,7 @@ h5{
     border-radius: 10px;
 }
 
+/*product bars styling*/
 #product_bars{
     background-color: #f5f5f5;
     gap: 16px;
@@ -180,32 +201,35 @@ h5{
 
 }
 
+/*recommended products container styling*/
 #recommended-products-container {
         display: flex;             /* Switch from grid to flex */
     overflow-x: auto;          /* Enables horizontal scrolling */
     overflow-y: hidden;        /* Prevents vertical scrolling */
     gap: 16px;
     padding: 15px 5px;         /* Added top/bottom padding for shadows */
-    scroll-behavior: smooth;   /* Makes it feel premium when scrolling */
+    scroll-behavior: smooth;   
     
-    /* These two lines are the "magic" for mobile/touch feel */
     -webkit-overflow-scrolling: touch; 
     scroll-snap-type: x mandatory;
 }
 
+
+/*latest products container styling*/
 #latest-products-container {
         display: flex;             /* Switch from grid to flex */
     overflow-x: auto;          /* Enables horizontal scrolling */
     overflow-y: hidden;        /* Prevents vertical scrolling */
     gap: 16px;
     padding: 15px 5px;         /* Added top/bottom padding for shadows */
-    scroll-behavior: smooth;   /* Makes it feel premium when scrolling */
+    scroll-behavior: smooth;   
     
-    /* These two lines are the "magic" for mobile/touch feel */
     -webkit-overflow-scrolling: touch; 
     scroll-snap-type: x mandatory;
         }
 
+
+/*styles the sliders for the product bars*/
 #recommended-products-container::-webkit-scrollbar {
     height: 8px;
     
@@ -233,7 +257,7 @@ h5{
     background: transparent;
 }
 
-/* 1. The Scrollbar track (the background line) */
+
 #recommended-products-container::-webkit-scrollbar
 {
     height: 10px; /* Height of the horizontal bar */
@@ -242,31 +266,32 @@ h5{
     height: 10px; /* Height of the horizontal bar */
 }
 
-/* 2. The Slider Thumb (the part that moves) */
+
 #recommended-products-container::-webkit-scrollbar-thumb
 {
-    background-color: #0064d2; /* Your signature blue */
+    background-color: #0064d2; 
     border-radius: 10px;
-    border: 2px solid #f5f5f5; /* Adds a little gap around the blue bar */
+    border: 2px solid #f5f5f5; 
 }
 #latest-products-container::-webkit-scrollbar-thumb {
-    background-color: #0064d2; /* Your signature blue */
+    background-color: #0064d2; 
     border-radius: 10px;
-    border: 2px solid #f5f5f5; /* Adds a little gap around the blue bar */
+    border: 2px solid #f5f5f5; 
 }
 
-/* 3. The Hover effect for the slider */
+
 #recommended-products-container::-webkit-scrollbar-thumb:hover
 {
-    background-color: #004da1; /* A slightly darker blue when interacting */
+    background-color: #004da1; /* darker blue when hovered */
 }
 #latest-products-container::-webkit-scrollbar-thumb:hover {
-    background-color: #004da1; /* A slightly darker blue when interacting */
+    background-color: #004da1; /* darker blue when hovered */
 }
 
+/*product card styling*/
 .product-card {
-  flex: 0 0 220px;          /* Grow: 0, Shrink: 0, Width: 220px */
-    scroll-snap-align: start; /* Cards "snap" into place while scrolling */
+  flex: 0 0 220px;         
+    scroll-snap-align: start; 
     background: white;
     border-radius: 8px;
   background: white;
@@ -278,6 +303,7 @@ h5{
     width: 205px;
 }
 
+/*product image styling*/
 .product-image {
   width: 200px;
   height: auto;
@@ -285,6 +311,7 @@ h5{
 
 }
 
+/*footer styling*/
 #footer {
     margin-top: 40px;
     text-align: center;
@@ -293,11 +320,13 @@ h5{
     background: #0064d2;
 }
 
+/*product link styling*/
 .product-link {
   color: black;
   text-decoration: none;
 }
 
+/*style for the purchase toast that appears when a product is purchased*/
 .purchase-toast {
   position: fixed;
   top: 105px;

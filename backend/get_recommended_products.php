@@ -3,10 +3,10 @@ include 'connection.php';
 
 header('Content-Type: application/json');
 
-// 1. Capture the data from the request (assuming POST)
+
 $userId = $_POST['user_id'] ?? null;
 
-// 1. Get preferred genres for the user
+//Get preferred genres for the user
 $genres = [];
 
 

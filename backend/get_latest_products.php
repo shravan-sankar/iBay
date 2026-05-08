@@ -3,6 +3,7 @@ include 'connection.php';
 
 header('Content-Type: application/json');
 
+// Fetches the latest products by selecting all products from the iBayProducts table ordered by id in descending order
 $result = $conn->query("SELECT * FROM iBayProducts ORDER BY id DESC");
 
 $products = [];

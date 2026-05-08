@@ -22,6 +22,7 @@ body{
     gap: 12px;
 }
 
+/*logout button styling*/
 #logout-link {
     display: inline-flex;
     align-items: center;
@@ -41,6 +42,7 @@ body{
     background-color: #e7f0ff;
 }
 
+/*navigation bar styling*/
 #navigator{
     background-color: #0064d2;
     padding: 10px;
@@ -55,29 +57,32 @@ h5{
     color: white;
     margin: 0px;
 }
+
+/*profile link styling*/
 #profile-image-link{
   display: inline-flex;
   align-items: center;
 }
+/*basket link styling*/
 #basket-image-link{
   display: inline-flex;
   align-items: center;
 }
-
+/*logo styling*/
 .logo {
     float: left;
     margin-right: 15px;
     width: 150px;
     height: auto;
 }
-
+/*profile image styling*/
 #profile-image {
   width: 42px;
   height: 42px;
   border-radius: 50%;
   object-fit: cover;
 }
-
+/*basket image styling*/
 #basket-image {
   width: 28px;
   height: 28px;
@@ -91,7 +96,7 @@ h5{
     gap: 20px;
 }
 
-/* FILTER SIDEBAR */
+/* Filter sidebar styling */
 #filters {
     width: 220px;
     background: #f5f5f5;
@@ -118,6 +123,7 @@ h5{
     cursor: pointer;
 }
 
+/* Search bar styling */
 #search_bar {
     display: block;
     margin-top: 0em;
@@ -147,22 +153,26 @@ h5{
     grid-template-columns: repeat(6, 1fr); /* 6 per row */
     gap: 20px;
 }
-
+/*reduces opacity while loading*/
 #products-container.is-loading {
     opacity: 0.55;
     pointer-events: none;
     transition: opacity 0.18s ease-in-out;
 }
 
+/*message when no products are found*/
 .products-empty-msg {
     margin: 8px 0;
     color: #3d4a5f;
     font-weight: 600;
 }
+
 .product-link {
     text-decoration: none;
     color: inherit;
 }
+
+/*product card styling*/
 .product-card {
   flex: 0 0 220px;          /* Grow: 0, Shrink: 0, Width: 220px */
     scroll-snap-align: start; /* Cards "snap" into place while scrolling */
@@ -177,6 +187,7 @@ h5{
     width: 205px;
 }
 
+/*product image styling*/
 .product-image {
   width: 200px;
   height: auto;
@@ -184,6 +195,7 @@ h5{
 
 }
 
+/*genre bubble styling*/
 .genre-bubble {
     display: inline-block; 
     border: 1px solid #0064d2;
@@ -206,19 +218,19 @@ h5{
     height: 0;
     width: 0;
 }
-
+/*hover effect*/
 .genre-bubble:hover {
     transform: translateY(-2px) scale(1.04);
     box-shadow: 0 6px 14px rgba(0, 100, 210, 0.2);
 }
 
-
+/*selected state*/
 .genre-bubble:has(input:checked) {
     background: #0064d2;
     color: #fff;
     box-shadow: 0 7px 16px rgba(0, 100, 210, 0.3);
 }
-
+/*price slider styling*/
 .price-slider-container {
     width: 90%;
     margin: 10px auto 30px auto;
@@ -246,6 +258,7 @@ h5{
     border-radius: 5px;
 }
 
+/*range input styling*/
 input[type="range"] {
     position: absolute;
     width: 100%;
@@ -282,6 +295,7 @@ input[type="range"]::-moz-range-thumb {
     border: 2px solid #fff;
 }
 
+/*toggle wrapper styling*/
 .toggle-wrapper {
     display: flex;
     background-color: #e0e0e0;
