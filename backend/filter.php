@@ -5,20 +5,24 @@ include 'connection.php';
 
 header('Content-Type: application/json');
 
-// 1. Capture the data from the request (assuming POST)
+// Capture the data from the request
 $categories = $_POST['category'] ?? [];
 $priceRange = $_POST['price_range'] ?? '[0, 200]';
 $postage    = $_POST['postage']  ?? [];
 $conditions = $_POST['item_condition']?? [];
 $searchTerm = $_POST['search_query'] ?? '';
 
-// 2. Base SQL
-$sql = "SELECT * FROM iBayProducts WHERE 1=1";
+// Base SQL
+$sql = "SELECT p.*, m.firstName AS sellerName 
+        FROM iBayProducts p 
+        JOIN iBayMembers m ON p.sellerId = m.id 
+        WHERE 1=1";
 $params = [];
 $types = "";
 
 
-// --- 4. SEARCH BAR LOGIC ---
+// SEARCH BAR LOGIC 
+// select products where productName or category contains the search term
 if (!empty(trim($searchTerm))) {
     $sql .= " AND (productName LIKE ? OR category LIKE ?)";
     $searchTermWildcard = "%" . $searchTerm . "%";
@@ -27,7 +31,7 @@ if (!empty(trim($searchTerm))) {
     $types .= "ss";
 }
 
-// 3. Dynamic Filtering Logic
+
 // Category Filter
 if (!empty($categories)) {
     $placeholders = implode(',', array_fill(0, count($categories), '?'));
@@ -38,12 +42,10 @@ if (!empty($categories)) {
     }
 }
 
-// Price Filter (Example: "0-50" becomes BETWEEN 0 AND 50)
-// 1. Initialize variables to prevent "Undefined Index" errors
+// Price Filter 
 $min = 0;
 $max = 500;
 
-// 2. Handle the price_range string "[a,b]"
 if (isset($_POST['price_range']) && !empty($_POST['price_range'])) {
     $priceRangeRaw = $_POST['price_range']; // e.g., "[10,150]"
     
@@ -59,11 +61,11 @@ if (isset($_POST['price_range']) && !empty($_POST['price_range'])) {
     }
 }
 
-// 3. Build the SQL based on the integers
-// Only add to SQL if the user has actually moved the sliders away from 0-200
+// Build the SQL based on the input
+// Only add to SQL if the user has actually moved the sliders away from 0-500
 if ($min > 0 || $max < 500) {
     if ($max === 500) {
-        // If max is 200, it means "200 and everything above"
+    
         $sql .= " AND price >= $min";
     } else {
         // Standard range
@@ -74,12 +76,11 @@ if ($min > 0 || $max < 500) {
 
 
 // Postage Filter
-if (!empty($postage)) {
-    $placeholders = implode(',', array_fill(0, count($postage), '?'));
-    $sql .= " AND postage IN ($placeholders)";
-    foreach ($postage as $p) {
-        $params[] = $p;
-        $types .= "s";
+if (!empty($postage) && count($postage) < 2) {
+    if (in_array('Free', $postage)) {
+        $sql .= " AND postage = 0.00";
+    } elseif (in_array('Paid', $postage)) {
+        $sql .= " AND postage > 0.00";
     }
 }
 

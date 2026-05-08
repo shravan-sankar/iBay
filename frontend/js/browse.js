@@ -103,7 +103,7 @@ fetch('../../backend/get_latest_products.php', {
     data.products.forEach(product => {
         const card = document.createElement("div");
         card.className = "product-card";
-
+        console.log('Rendering product:', product);
         card.innerHTML = 
         `<a href="product.html?id=${product.id}" class="product-link">
             <h2>${product.productName}</h2>
