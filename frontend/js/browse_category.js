@@ -114,19 +114,22 @@ function renderProducts(products) {
         const card = document.createElement("div");
         card.className = "product-card";
         const productName = escapeHtml(product.productName);
+        const productImage = escapeHtml(product.image_url_1);
         const price = escapeHtml(product.price);
         const seller = escapeHtml(product.seller);
         const category = escapeHtml(product.category);
         const condition = escapeHtml(product.item_condition);
+        const sellerName = escapeHtml(product.sellerName);
         const href = userId
             ? `product.html?id=${encodeURIComponent(String(product.id))}&user_id=${encodeURIComponent(userId)}`
             : `product.html?id=${encodeURIComponent(String(product.id))}`;
 
         card.innerHTML = `
             <a href="${href}" class="product-link">
+                <img src="../../product_images/${productImage}" alt="${productName}" class="product-image">
                 <h2>${productName}</h2>
                 <p>£${price}</p>
-                <p>Seller: ${seller}</p>
+                <p>Seller: ${sellerName}</p>
                 <p>${category}</p>
                 <p>${condition}</p>
             </a>`;
