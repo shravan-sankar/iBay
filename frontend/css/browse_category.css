@@ -144,7 +144,7 @@ h5{
 }
 #products-container {
     display: grid;
-    grid-template-columns: repeat(8, 1fr); /* 8 per row */
+    grid-template-columns: repeat(6, 1fr); /* 6 per row */
     gap: 20px;
 }
 
@@ -164,6 +164,10 @@ h5{
     color: inherit;
 }
 .product-card {
+  flex: 0 0 220px;          /* Grow: 0, Shrink: 0, Width: 220px */
+    scroll-snap-align: start; /* Cards "snap" into place while scrolling */
+    background: white;
+    border-radius: 8px;
   background: white;
     border-radius: 2px;
     padding: 5px;
