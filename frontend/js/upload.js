@@ -1,11 +1,11 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     
     const emptyState = document.getElementById('no_listing');
     const viewState = document.getElementById('existing_listing');
     const addState = document.getElementById('adding_listing');
     const form = document.querySelector('form');
     let currentListingId = null;
-    let isLogginIn = false;
+    let isLoggedIn = false;
 
     /// Displaying different page states
     function showState(stateName) {
@@ -32,12 +32,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await fetch('../../backend/me.php');
 
             if (!response.ok) {
-                isLogginIn = false; 
+                isLoggedIn = false; 
 
                 instructionText.innerHTML = `
                 Please <a href="main-G06.html">log in</a> 
                 or <a href="register.html">sign up</a> 
-                to add listings
+                to add/view listings
                 `;
                 addListingBtn.style.display = 'none';
 
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 instructionText.innerHTML = `
                 Please <a href="main-G06.html">log in</a> 
                 or <a href="register.html">sign up</a> 
-                to add listings
+                to add/view listings
                 `;
                 addListingBtn.style.display = 'none';
 
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
             instructionText.innerHTML = `
             Please <a href="main-G06.html">log in</a> 
             or <a href="register.html">sign up</a> 
-            to add listings
+            to add/view listings
             `;
             addListingBtn.style.display = 'none';
 
@@ -106,21 +106,22 @@ document.addEventListener('DOMContentLoaded', function () {
     async function loadListings() {
         try {
             const response = await fetch('../../backend/my_products.php');
+            const track = document.getElementById('carousel_track');
 
-            if (!response.ok) {
-                console.log('Failed to load listings');
+            if (!track) return;
+            track.innerHTML = '';
+
+            const listings = await response.json();
+
+            // Not logged in
+            if (!response.ok || listings.success === false) {
+                track.innerHTML = '';
                 return;
             }
 
-            const listings = await response.json();
-            const track = document.getElementById('carousel_track');
-
-            if (!track) return; 
-            track.innerHTML = '';
-
             // User has no listings yet 
             if (!Array.isArray(listings) || listings.length === 0) {
-                track.innerHTML = '<div class="slide">No listings yet </div>';
+                track.innerHTML = '<div class="no-listings">No listings yet</div>';
                 return;
             }
 
@@ -129,11 +130,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 const slide = document.createElement('div');
                 slide.className = 'slide';
                 slide.dataset.id = listing.id;
+                const safeTitle = document.createElement('div');
+                safeTitle.textContent = listing.productName;
+                
                 slide.innerHTML = `
                                     <div class="slide_content">
                                         <div class="product_image"><img src="../../product_images/${listing.image_url_1}" alt="listing_image"></div>
                                         <div class="product_details">
-                                            <strong>${listing.productName}</strong>
+                                            <strong>${safeTitle.innerHTML}</strong>
                                             <p>${listing.category}</p>
                                             <p>£${listing.price}</p>
                                         </div>
@@ -141,7 +145,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Makes slides clickable
                 slide.addEventListener('click', function () {
-                    console.log('Clicked listing:', listing.id);
                     showState('view');
                     displayListing(listing);
                 });
@@ -156,6 +159,9 @@ document.addEventListener('DOMContentLoaded', function () {
     /// Displaying a selected existing listing
     function displayListing(listing) {
         
+        document.getElementById('edit_submit_error').textContent = '';
+        document.getElementById('edit_submit_error').style.color = '#d93025';
+
         currentListingId = listing.id;
         document.getElementById('view_itemName').value = listing.productName;
 
@@ -222,9 +228,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         input.addEventListener('change', function () {
             const file = input.files[0];
+            const text = box.querySelector('.upload-text');
 
             if (!file) {
                 box.style.backgroundImage = '';
+
+                if (text) {
+                    text.style.display = 'block';
+                }
+
                 return;
             }
 
@@ -233,8 +245,42 @@ document.addEventListener('DOMContentLoaded', function () {
             box.style.backgroundImage = `url('${imageUrl}')`;
             box.style.border = 'none';
             box.style.backgroundColor = 'transparent';
+
+            if (text) {
+                text.style.display = 'none';
+            }
         });
     }
+    ///
+
+    /// Reset add listing form
+    function resetAddListingForm() {
+
+        form.reset();
+
+        // Reset image previews
+        document.getElementById('imageBox1').style.backgroundImage = '';
+        document.getElementById('imageBox1').style.border = '2px dashed #aaa';
+        document.getElementById('imageBox1').style.backgroundColor = '#e0e0e0';
+
+        document.getElementById('imageBox2').style.backgroundImage = '';
+        document.getElementById('imageBox2').style.border = '2px dashed #aaa';
+        document.getElementById('imageBox2').style.backgroundColor = '#e0e0e0';
+
+        // Show upload text again
+        document.querySelector('#imageBox1 .upload-text').style.display = 'block';
+        document.querySelector('#imageBox2 .upload-text').style.display = 'block';
+
+        // Clear all error messages
+        document.querySelectorAll('#adding_listing .field-error')
+        .forEach(el => el.textContent = '');
+    }
+    ///
+
+    ///
+    document.getElementById('clear_listing').addEventListener('click', function () {
+        resetAddListingForm();
+    });
     ///
 
     /// Form sumbission handling
@@ -242,6 +288,76 @@ document.addEventListener('DOMContentLoaded', function () {
 
         e.preventDefault();
         const formData = new FormData(form);
+
+        let valid = true;
+
+        const titleError = document.getElementById('title_error');
+        const image1Error = document.getElementById('upload_1_error');
+        const image2Error = document.getElementById('upload_2_error');
+        const categoryError = document.getElementById('category_error');
+        const conditionError = document.getElementById('condition_error');
+        const descError = document.getElementById('desc_error');
+        const priceError = document.getElementById('price_error');
+        const postageError = document.getElementById('postage_error');
+        const submitError = document.getElementById('submit_error');
+        submitError.style.color = '#d93025';
+
+        [titleError, image1Error, image2Error, categoryError, conditionError,
+            descError, priceError, postageError, submitError].forEach(el => el.textContent = '');
+
+        const title = document.getElementById('itemName').value.trim();
+        const img1 = document.getElementById('imgUpload1').files[0];
+        const img2 = document.getElementById('imgUpload2').files[0];
+        const desc = document.getElementById('desc').value.trim();
+        const price = document.getElementById('price').value;
+        const postage = document.getElementById('postage').value;
+        const selectedCategory = document.querySelector('input[name="category"]:checked');
+        const selectedCondition = document.querySelector('input[name="condition"]:checked');
+        
+        if (!title) {
+            titleError.textContent = 'Please enter a listing title.';
+            valid = false;
+        }
+
+        if (!img1) {
+            image1Error.textContent = 'Please upload the first image.';
+            valid = false;
+        }
+
+        if (!img2) {
+            image2Error.textContent = 'Please upload the second image.';
+            valid = false;
+        }
+
+        if (!selectedCategory) {
+            categoryError.textContent = 'Please choose a category.';
+            valid = false;
+        }
+
+        if (!selectedCondition) {
+            conditionError.textContent = 'Please choose a condition.';
+            valid = false;
+        }
+
+        if (!desc) {
+            descError.textContent = 'Please enter a description.';
+            valid = false;
+        }
+
+        if (!price || Number(price) <= 0) {
+            priceError.textContent = 'Please enter a valid price.';
+            valid = false;
+        }
+
+        if (!postage || Number(postage) < 0) {
+            postageError.textContent = 'Please enter valid postage.';
+            valid = false;
+        }
+
+        if (!valid) {
+            submitError.textContent = 'Please fill in all fields.';
+            return;
+        }
 
         try {
             const response = await fetch('../../backend/upload_product.php', {
@@ -253,40 +369,106 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (data.success) {
 
-                alert(data.message);
-                form.reset();
+                resetAddListingForm();
 
-                // Reset product images display to blank
-                document.getElementById('imageBox1').style.backgroundImage = '';
-                document.getElementById('imageBox1').style.border = '2px dashed #aaa';
-                document.getElementById('imageBox1').style.backgroundColor = '#e0e0e0';
+                submitError.style.color = 'green';
+                submitError.textContent = data.message;
 
-                document.getElementById('imageBox2').style.backgroundImage = '';
-                document.getElementById('imageBox2').style.border = '2px dashed #aaa';
-                document.getElementById('imageBox2').style.backgroundColor = '#e0e0e0';
-
-                showState('empty');
-                loadListings();
+                setTimeout(() => {
+                    showState('empty');
+                    loadListings();
+                }, 1500);
             }
 
             else {
-                alert(data.message || 'Item upload failed.');
+                submitError.textContent = data.message;
             }
         }
 
         catch (error) {
 
             console.error('Upload error:', error);
-            alert('Something went wrong.');
+            submitError.textContent = 'Something went wrong';
         }
 
     });
+    ///
+
+    /// Clears error feedback for fields if correction detected
+    function clearError(selector, errorId, event = 'input') {
+        const elements = document.querySelectorAll(selector);
+        const error = document.getElementById(errorId);
+
+        // Clear error box
+        elements.forEach(el => {
+            el.addEventListener(event, () => {
+                error.textContent = '';
+            });
+        });
+    }
     ///
 
     /// Editing Existing Listings
     document.getElementById('save_listing').addEventListener('click', async function () {
         if (!currentListingId) {
             alert('No listing selected.');
+            return;
+        }
+
+        // Editing Validation
+        let valid = true;
+
+        const viewTitleError = document.getElementById('view_title_error');
+        const viewCategoryError = document.getElementById('view_category_error');
+        const viewConditionError = document.getElementById('view_condition_error');
+        const viewDescError = document.getElementById('view_desc_error');
+        const viewPriceError = document.getElementById('view_price_error');
+        const viewPostageError = document.getElementById('view_postage_error');
+        const editSumbitError = document.getElementById('edit_submit_error');
+        editSumbitError.style.color = '#d93025';
+
+        [viewTitleError, viewCategoryError, viewConditionError, viewDescError,
+            viewPriceError, viewPostageError, editSumbitError].forEach(el => el.textContent = '');
+
+        const title = document.getElementById('view_itemName').value.trim();
+        const desc = document.getElementById('view_desc').value.trim();
+        const price = document.getElementById('view_price').value;
+        const postage = document.getElementById('view_postage').value;
+        const selectedCategory = document.querySelector('input[name="v_category"]:checked');
+        const selectedCondition = document.querySelector('input[name="v_condition"]:checked');
+
+        if (!title) {
+            viewTitleError.textContent = 'Please enter a listing title.';
+            valid = false;
+        }
+
+        if (!selectedCategory) {
+            viewCategoryError.textContent = 'Please choose a category.';
+            valid = false;
+        }
+
+        if (!selectedCondition) {
+            viewConditionError.textContent = 'Please choose a condition.';
+            valid = false;
+        }
+
+        if (!desc) {
+            viewDescError.textContent = 'Please enter a description.';
+            valid = false;
+        }
+
+        if (!price || Number(price) <= 0) {
+            viewPriceError.textContent = 'Please enter a valid price.';
+            valid = false;
+        }
+
+        if (!postage || Number(postage) < 0) {
+            viewPostageError.textContent = 'Please enter valid postage.';
+            valid = false;
+        }
+
+        if (!valid) {
+            editSumbitError.textContent = 'Please fill in all fields.';
             return;
         }
 
@@ -318,30 +500,32 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
 
             if (data.success) {
-                alert('Listing updated successfully.');
+                editSumbitError.style.color = 'green';
+                editSumbitError.textContent = data.message;
                 disableEditMode();
-                loadListings();
-                showState('empty');
+
+                setTimeout(() => {
+                    showState('empty');
+                    loadListings();
+                }, 1500);
+
             } else {
-                alert(data.message || 'Update failed.');
+                editSumbitError.textContent = data.message;
             }
 
         } catch (error) {
             console.error('Update error:', error);
-            alert('Something went wrong.');
+            editSumbitError.textContent = 'Something went wrong';
         }
     });
     ///
 
-    /// Button behaviour
-    document.getElementById('add_listing').addEventListener('click', function () {
-        showState('add');
+    document.querySelectorAll('.return_btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            showState('empty');
+        });
     });
-
-    document.getElementById('return').addEventListener('click', function () {
-        showState('empty');
-    });
-
+    
     document.getElementById('edit_listing').addEventListener('click', enableEditMode);
     ///
 
@@ -350,8 +534,27 @@ document.addEventListener('DOMContentLoaded', function () {
     setupImagePreview('imgUpload1', 'imageBox1');
     setupImagePreview('imgUpload2', 'imageBox2');
 
+    clearError('#itemName', 'title_error');
+    clearError('#desc', 'desc_error');
+    clearError('#price', 'price_error');
+    clearError('#postage', 'postage_error');
+
+    clearError('#view_itemName', 'view_title_error');
+    clearError('#view_desc', 'view_desc_error');
+    clearError('#view_price', 'view_price_error');
+    clearError('#view_postage', 'view_postage_error');
+
+    clearError('#imgUpload1', 'upload_1_error', 'change');
+    clearError('#imgUpload2', 'upload_2_error', 'change');
+
+    clearError('input[name="v_category"]', 'view_category_error', 'change');
+    clearError('input[name="v_condition"]', 'view_condition_error', 'change');
+
+    clearError('input[name="category"]', 'category_error', 'change');
+    clearError('input[name="condition"]', 'condition_error', 'change');
+
     showState('empty');
-    loadUser();
+    await loadUser();
     loadListings();
 
 });

@@ -68,17 +68,24 @@
                     <h2 class="panel_heading">Listing details</h2>
 
                     <input id="view_itemName" class="listing_title" type="text" disabled>
+                    <p class="field-error" id="view_title_error"></p>
 
                     <div id="view_images">
-                        <label for="view_imgUpload1">
-                            <div class="imageBox" id="view_img1"></div>
-                        </label>
-                        <input type="file" id="view_imgUpload1" name="view_imgUpload1" accept="image/*" style="display:none;">
+                        <div class="view_image_content">
+                            <label for="view_imgUpload1">
+                                <div class="imageBox" id="view_img1"></div>
+                            </label>
+                            <input type="file" id="view_imgUpload1" name="view_imgUpload1" accept="image/*" style="display:none;">
+                            <p class="field-error" id="view_upload_1_error"></p>
+                        </div>
 
-                        <label for="view_imgUpload2">
-                            <div class="imageBox" id="view_img2"></div>
-                        </label>
-                        <input type="file" id="view_imgUpload2" name="view_imgUpload2" accept="image/*" style="display:none;">
+                        <div class="view_image_content">
+                            <label for="view_imgUpload2">
+                                <div class="imageBox" id="view_img2"></div>
+                            </label>
+                            <input type="file" id="view_imgUpload2" name="view_imgUpload2" accept="image/*" style="display:none;">
+                            <p class="field-error" id="view_upload_2_error"></p>
+                        </div>
                     </div>
 
                     <!-- Categories -->
@@ -98,6 +105,7 @@
                         <input type="radio" id="v_toys" name="v_category" value="toys">
                         <label for="v_toys">Toys</label>
                     </div>
+                    <p class="field-error" id="view_category_error"></p>
 
                     <!-- Condition -->
                     <div class="radio_options section" id="view_condition">
@@ -107,27 +115,38 @@
                         <input type="radio" id="v_used" name="v_condition" value="used">
                         <label for="v_used">Used</label>
                     </div>
+                    <p class="field-error" id="view_condition_error"></p>
                     <br>
 
                     <label for="view_desc">Description</label>
                     <textarea id="view_desc" disabled></textarea>
+                    <p class="field-error" id="view_desc_error"></p>
                     <br>
 
                     <div class="prices">
-                        <div class="price_input">
-                            <label for="view_price">Price</label><span>£</span>
-                            <input id="view_price" type="number" disabled class="input_line">
+                        <div class="price_content">
+                            <div class="price_input">
+                                <label for="view_price">Price</label><span>£</span>
+                                <input id="view_price" type="number" disabled class="input_line">
+                                <p class="field-error" id="view_price_error"></p>
+                            </div>
                         </div>
 
-                        <div class="price_input">
-                            <label for="view_postage">Postage</label><span>£</span>
-                            <input id="view_postage" type="number" disabled class="input_line">
+                        <div class="postage_content">
+                            <div class="price_input">
+                                <label for="view_postage">Postage</label><span>£</span>
+                                <input id="view_postage" type="number" disabled class="input_line">
+                                <p class="field-error" id="view_postage_error"></p>
+                            </div>
                         </div>
                     </div>
                     <br>
 
-                    <div id="submit_row">
-                        <button id="return" class="listing_buttons">Return</button>
+                    <div class="submit_feedback">
+                        <p class="field-error submission" id="edit_submit_error"></p>
+                    </div>
+                    <div class="submit_row">
+                        <button class="listing_buttons return_btn">Return</button>
                         <button id="edit_listing" class="listing_buttons">Edit listing</button>
                         <button id="save_listing" class="listing_buttons" style="display:none;">Save</button>
                     </div>
@@ -143,34 +162,44 @@
                             <!-- Product Title -->
                             <div id="title_box">
                                 <input id="itemName" class="listing_title" type="text" name="itemName" placeholder="Enter listing title...">
+                                <p class="field-error" id="title_error"></p>
                             </div>
-                            <br>
 
                             <!-- Image Uploads -->
                             <div id="upload_images">
 
-                                <label for="imgUpload1">
-                                    <div class="imageBox" id="imageBox1"></div>
-                                </label>
-                                <input 
-                                    type="file" 
-                                    id="imgUpload1" 
-                                    name="imgUpload1"
-                                    accept="image/*" 
-                                    style="display:none;"
-                                >
-                                <label for="imgUpload2">
-                                    <div class="imageBox" id="imageBox2"></div>
-                                </label>
-                                <input 
-                                    type="file" 
-                                    id="imgUpload2" 
-                                    name="imgUpload2"
-                                    accept="image/*" 
-                                    style="display:none;"
-                                >
+                                <div id="image_1_content">
+                                    <label for="imgUpload1">
+                                        <div class="imageBox" id="imageBox1">
+                                            <span class="upload-text">Click to insert image</span>
+                                        </div>
+                                    </label>
+                                    <input 
+                                        type="file" 
+                                        id="imgUpload1" 
+                                        name="imgUpload1"
+                                        accept="image/*" 
+                                        style="display:none;"
+                                    >
+                                    <p class="field-error" id="upload_1_error"></p>
+                                </div>
+
+                                <div id="image_2_content">
+                                    <label for="imgUpload2">
+                                        <div class="imageBox" id="imageBox2">
+                                            <span class="upload-text">Click to insert image</span>
+                                        </div>
+                                    </label>
+                                    <input 
+                                        type="file" 
+                                        id="imgUpload2" 
+                                        name="imgUpload2"
+                                        accept="image/*" 
+                                        style="display:none;"
+                                    >
+                                    <p class="field-error" id="upload_2_error"></p>
+                                </div>
                             </div>
-                            <br>
                             
                             <!-- Radio Options (Product Category + Condition)-->
                             <div class="radio_options">
@@ -191,6 +220,8 @@
                                 <label for="toys">Toys</label>
 
                             </div>
+                            <p class="field-error" id="category_error"></p>
+
                             <div class="radio_options section">
                                 
                                 <input type="radio" id="new" name="condition" value="new">
@@ -200,31 +231,43 @@
                                 <label for="used">Used</label>
 
                             </div>
-                            <br>
+                            <p class="field-error" id="condition_error"></p>
                             
                             <!-- Product Description -->
                             <label for="desc">Description</label><br>
                             <textarea id="desc" type="text" name="desc" placeholder="Describe listing item"></textarea>
-                            <br><br>
+                            <p class="field-error" id="desc_error"></p>
+                            <br>
 
                             <!-- Product Price + Postage -->
                             <div class="prices">
                                 
-                                <div class="price_input">
-                                    <label for="price">Price</label><span>£</span>
-                                    <input id="price" type="number" name="price" step="0.01" min="0" class="input_line">
+                                <div id="price_content">
+                                    <div class="price_input">
+                                        <label for="price">Price</label><span>£</span>
+                                        <input id="price" type="number" name="price" step="0.01" min="0" class="input_line">
+                                    </div>
+                                    <p class="field-error" id="price_error"></p>
                                 </div>
                                 
-                                <div class="price_input">
-                                    <label for="postage">Postage</label><span>£</span>
-                                    <input id="postage" type="number" name="postage" step="0.01" min="0" class="input_line">
+                                <div id="postage_content">
+                                    <div class="price_input">
+                                        <label for="postage">Postage</label><span>£</span>
+                                        <input id="postage" type="number" name="postage" step="0.01" min="0" class="input_line">
+                                    </div>
+                                    <p class="field-error" id="postage_error"></p>
                                 </div>
 
                             </div>
                             <br>
                             
-                            <!-- Submit Button -->
-                            <div id="submit_row">
+                            <!-- Form Buttons -->
+                            <div class="submit_feedback">
+                                <p class="field-error submission" id="submit_error"></p>
+                            </div>
+                            <div class="submit_row">
+                                <button class="listing_buttons return_btn" type="button">Return</button>
+                                <button id="clear_listing" class="listing_buttons" type="button">Clear</button>
                                 <button id="listing_submit" class="listing_buttons" type="submit">Add listing</button>
                             </div>
                         </form>

@@ -12,140 +12,126 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(["success" => false, "message" => "Invalid request method."]);
+    exit;
+}
 
-    $sellerID = (int) $_SESSION['user_id'];
-
-    $listingTitle = htmlspecialchars(trim($_POST["itemName"] ?? ''));
-    $listingCategory = trim($_POST["category"] ?? '');
-    $listingDesc = htmlspecialchars(trim($_POST["desc"] ?? ''));
-    $listingPrice = trim($_POST["price"] ?? '');
-    $listingPostage = trim($_POST["postage"] ?? '');
-    $listingCondition = trim($_POST["condition"] ?? '');
-
+function validateImageUpload($file, $fieldname) {
     $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    $listingImage1 = null;
-    $listingImage2 = null;
 
-    // Need to add better validation - This is temp
-    if ($listingTitle === '' || $listingCategory === '' || $listingDesc === '' || $listingPrice === '' || $listingPostage === '') {
-
-        echo json_encode([
-            "success" => false,
-            "message" => "Please fill in all fields."
-        ]);
-
-        exit;
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return "$fieldname failed to upload.";
     }
 
-    /// Listing Image 1 Upload
-    if (isset($_FILES['imgUpload1']) && $_FILES['imgUpload1']['error'] === 0) {
-        $tmpName = $_FILES['imgUpload1']['tmp_name'];
-        $listingImage1 = uniqid() . "_1_" . basename($_FILES['imgUpload1']['name']);
-        $uploadPath = "../product_images/" . $listingImage1;
-
-        // File Type Validation
-        if (!in_array($_FILES['imgUpload1']['type'], $allowedTypes)) {
-            echo json_encode([
-                "success" => false,
-                "message" => "Invalid file type."
-            ]);
-            exit;
-        }
-
-        // Upload Image
-        if (!move_uploaded_file($tmpName, $uploadPath)) {
-            echo json_encode([
-                "success" => false,
-                "message" => "Failed to upload image.",
-            ]);
-            exit;
-        }
-    }
-    ///
-
-    /// Listing Image 2 Upload
-    if (isset($_FILES['imgUpload2']) && $_FILES['imgUpload2']['error'] === 0) {
-
-        $tmpName = $_FILES['imgUpload2']['tmp_name'];
-        $listingImage2 = uniqid() . "_2_" . basename($_FILES['imgUpload2']['name']);
-        $uploadPath = "../product_images/" . $listingImage2;
-        
-        // File Type Validation
-        if (!in_array($_FILES['imgUpload2']['type'], $allowedTypes)) {
-            echo json_encode([
-                "success" => false,
-                "message" => "Invalid file type."
-            ]);
-            exit;
-        }
-        
-        // Upload Image
-        if (!move_uploaded_file($tmpName, $uploadPath)) {
-            echo json_encode([
-                "success" => false,
-                "message" => "Failed to upload image."
-            ]);
-            exit;
-        }
-    }
-    ///
-
-    /// Preparing Database Insert
-    $sql_code = "INSERT INTO iBayProducts (productName, price, category, sellerId, description, postage, image_url_1, image_url_2, item_condition)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    $stmt = mysqli_prepare($conn, $sql_code);
-
-    if (!$stmt) {
-        echo json_encode([
-            "success" => false,
-            "message" => "Failed to prepare SQL statement."
-        ]);
-        exit;
+    if (!in_array($file['type'], $allowedTypes)) {
+        return "$fieldname must be a JPG, PNG, WEBP, or GIF image.";
     }
 
-    mysqli_stmt_bind_param(
-    $stmt,
-    "sdsisdsss",
-    $listingTitle,
-    $listingPrice,
-    $listingCategory,
-    $sellerID,
-    $listingDesc,
-    $listingPostage,
-    $listingImage1,
-    $listingImage2,
-    $listingCondition);
-    ///
-
-    /// Insert into database
-    if (!mysqli_stmt_execute($stmt)) {
-        echo json_encode([
-            "success" => false,
-            "message" => "Failed to insert listing into database."
-        ]);
-        exit;
+    if ($file['size'] > 5 * 1024 * 1024) {
+        return "$fieldname must be less than 5MB.";
     }
 
+    return null;
+}
+
+$sellerID = (int) $_SESSION['user_id'];
+
+$listingTitle = trim($_POST["itemName"] ?? '');
+$listingCategory = trim($_POST["category"] ?? '');
+$listingDesc = trim($_POST["desc"] ?? '');
+$listingPrice = trim($_POST["price"] ?? '');
+$listingPostage = trim($_POST["postage"] ?? '');
+$listingCondition = trim($_POST["condition"] ?? '');
+
+// Call Image File Validation Function
+$image1Error = validateImageUpload($_FILES['imgUpload1'] ?? null, 'Image 1');
+$image2Error = validateImageUpload($_FILES['imgUpload2'] ?? null, 'Image 2');
+
+if ($image1Error !== null || $image2Error !== null) {
     echo json_encode([
-        "success" => true,
-        "message" => "Listing uploaded successfully",
-
+        'success' => false,
+        'message' => $image1Error ?? $image2Error
     ]);
     exit;
-    ///
-
 }
 
-// Incorrect request method handling
-else {
+$image1Name = null;
+$image2Name = null;
 
+/// Listing Image 1 Upload
+if (isset($_FILES['imgUpload1']) && $_FILES['imgUpload1']['error'] === UPLOAD_ERR_OK) {
+    $image1Name = uniqid("product_", true) . "_" . basename($_FILES['imgUpload1']['name']);
+    
+    // Checks image 1 saved successfully
+    if (!move_uploaded_file($_FILES['imgUpload1']['tmp_name'], "../product_images/" . $image1Name)) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Failed to save image 1."
+        ]);
+        exit;
+    }
+}
+///
+
+/// Listing Image 2 Upload
+if (isset($_FILES['imgUpload2']) && $_FILES['imgUpload2']['error'] === UPLOAD_ERR_OK) {
+    $image2Name = uniqid("product_", true) . "_" . basename($_FILES['imgUpload2']['name']);
+
+    // Checks image 2 saved successfully
+    if (!move_uploaded_file($_FILES['imgUpload2']['tmp_name'], "../product_images/" . $image2Name)) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Failed to save image 2."
+        ]);
+        exit;
+    }
+}
+///
+
+/// Preparing Database Insert
+$sql_code = "INSERT INTO iBayProducts (productName, price, category, sellerId, description, postage, image_url_1, image_url_2, item_condition)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+$stmt = mysqli_prepare($conn, $sql_code);
+
+if (!$stmt) {
     echo json_encode([
         "success" => false,
-        "message" => "Invalid request method."
-        ]);
+        "message" => "Failed to prepare SQL statement."
+    ]);
     exit;
 }
+
+mysqli_stmt_bind_param(
+$stmt,
+"sdsisdsss",
+$listingTitle,
+$listingPrice,
+$listingCategory,
+$sellerID,
+$listingDesc,
+$listingPostage,
+$image1Name,
+$image2Name,
+$listingCondition);
+///
+
+/// Insert into database
+if (!mysqli_stmt_execute($stmt)) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Listing upload failed."
+    ]);
+    exit;
+}
+
+echo json_encode([
+    "success" => true,
+    "message" => "Listing uploaded successfully!",
+
+]);
+exit;
+///
 
 ?>

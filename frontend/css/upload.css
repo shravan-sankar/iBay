@@ -82,12 +82,12 @@ body {
 #main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     margin: 70px auto 0 auto;
     gap: 20px;
     background-color: white;
     padding: 10px;
-    max-width: 100%
+    max-width: 100%;
+    flex: 1;
 }
 
 #user_content {
@@ -152,7 +152,7 @@ body {
 
 .carousel-window {
     width: 300px;
-    height: 450px;
+    height: 600px;
 
     overflow-y: auto;  
     overflow-x: hidden;
@@ -199,7 +199,7 @@ body {
     flex-shrink: 0;
 
     overflow: hidden;
-    background-color: #0064d2;
+    background-color: #e0e0e0;
 }
 
 .product_image img{
@@ -223,6 +223,19 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px
+}
+
+.no-listings {
+    display: flex;
+    width: 300px;
+    min-height: 150px;
+    align-items: center;
+    justify-content: center;
+
+    background-color: white;
+    color: #777;
+    font-style: italic;
+    border-bottom: 1px solid #ccc;
 }
 
 #existing_listing.active {
@@ -276,6 +289,22 @@ body {
 #existing_listing.editing #view_images label {
     pointer-events: auto;
     cursor: pointer;
+}
+
+#existing_listing {
+    width: 100%;
+    max-width: 650px;
+}
+
+#view_itemName {
+    width: 100%;
+    max-width: 100%;
+}
+
+.view_image_content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 #listing_instruction {
@@ -332,6 +361,10 @@ body {
     font-weight: bold;
 }
 
+#title_box {
+    margin-bottom: 15px;
+}
+
 .listing_title:focus {
     border-bottom: 2px solid #0064d2;
 }
@@ -351,12 +384,22 @@ body {
     gap: 10px;
 }
 
-#upload_images label {
+#image_1_content,
+#image_2_content {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#image_1_content label, #image_2_content label {
     display: block;
 }
 
 .imageBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     height: 300px;
     box-sizing: border-box;
 
@@ -367,6 +410,11 @@ body {
 
     background-size: cover;
     background-position: center;
+
+    color: #777;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .radio_options input[type="radio"] {
@@ -444,9 +492,26 @@ body {
     gap: 20px;
 }
 
-#submit_row {
+#price_content, #postage_content {
+    display: flex;
+    flex-direction: column;
+}
+
+.submit_row {
     display: flex;
     justify-content: flex-end;
+}
+
+.submit_feedback {
+    display: block;
+    text-align: right;
+    min-height: 20px;
+}
+
+.submission {
+    color: #d93025;
+    font-size: 13px;
+    margin: 4px 5px 6px 0;
 }
 
 .listing_buttons {
@@ -463,6 +528,12 @@ body {
 .listing_buttons:hover {
     background-color: #0064d2;
     color: white;
+}
+
+.field-error {
+    color: #d93025;
+    font-size: 13px;
+    margin: 4px 0 10px 5px;
 }
 
 .viewing_state {display: none;}
