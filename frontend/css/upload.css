@@ -177,10 +177,20 @@ body {
     background: white;
     border-bottom: 1px solid #ccc;
     cursor: pointer;
+
+    /* smooth hover animation */
+    transition: background-color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                filter 0.25s ease;
 }
 
+/* smoother hover effect */
 .slide:hover {
-    background-color: #ddd;
+    background-color: #f2f7ff;
+    transform: translateY(-2px);
+    filter: brightness(0.98);
+    box-shadow: 0 4px 12px rgba(0, 100, 210, 0.12);
 }
 
 .slide_content {
@@ -334,6 +344,20 @@ body {
     background-color: #0064d2;
     color: white;
     max-width: 100%;
+
+    /* smooth hover transition */
+    transition: background-color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                filter 0.25s ease;
+}
+
+/* hover effect */
+#add_listing:hover {
+    background-color: #004da1;
+    transform: translateY(-2px);
+    filter: brightness(0.97);
+    box-shadow: 0 6px 14px rgba(0, 100, 210, 0.25);
 }
 
 #adding_listing.active {
@@ -421,18 +445,27 @@ body {
     display: none;
 }
 
+/*radio option buttons*/
 .radio_options label {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 5px;
-  background-color: #eee;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #eee;
+    border-radius: 10px;
+    cursor: pointer;
+
+    /* smooth transition */
+    transition: background-color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                filter 0.25s ease;
 }
 
+/*hover effect*/
 .radio_options label:hover {
-    background-color: #ddd;
+    background-color: #dceaff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 100, 210, 0.15);
 }
 
 .radio_options input[type="radio"]:checked + label {
@@ -514,20 +547,30 @@ body {
     margin: 4px 5px 6px 0;
 }
 
+/*listing button styling*/
 .listing_buttons {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 5px;
-  background-color: #eee;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.listing_buttons:hover {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
     background-color: #0064d2;
     color: white;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+
+    /* smooth hover animation */
+    transition: background-color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                filter 0.25s ease;
+}
+
+/*smoother hover effect*/
+.listing_buttons:hover {
+    background-color: #004da1;
+    transform: translateY(-2px);
+    filter: brightness(0.97);
+    box-shadow: 0 6px 14px rgba(0, 100, 210, 0.25);
 }
 
 .field-error {
@@ -538,6 +581,48 @@ body {
 
 .viewing_state {display: none;}
 .viewing_state.active {display: block}
+
+/* iBay logo (top left) */
+#logo {
+    width: 100px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* make the link behave like an interactive element */
+#logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    cursor: pointer;
+
+    /* smooth animation like buttons */
+    transition: transform 0.25s ease,
+                filter 0.25s ease;
+}
+
+/* image styling */
+#logo-link img {
+    height: 60%;
+    width: auto;
+    object-fit: contain;
+    display: block;
+
+    transition: transform 0.25s ease,
+                filter 0.25s ease;
+}
+
+/* hover effect (applies when hovering link OR image) */
+#logo-link:hover {
+    transform: translateY(-2px);
+}
+
+#logo-link:hover img {
+    filter: brightness(0.95);
+    transform: scale(1.05);
+}
 
 #footer {
     background-color: #0064d2;

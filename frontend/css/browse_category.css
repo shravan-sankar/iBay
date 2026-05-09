@@ -1,13 +1,13 @@
-body{
+body {
     font-family: Arial, sans-serif;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     background-color: #e8f0fe;
 
 }
 
 
-#header{
+#header {
     background-color: white;
     min-height: 58px;
     padding: 6px 20px;
@@ -36,38 +36,44 @@ body{
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
+
+    /* smooth transition */
+    transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
 #logout-link:hover {
-    background-color: #e7f0ff;
+    background-color: #dbe9ff;
+    transform: translateY(-1px);
 }
 
 /*navigation bar styling*/
-#navigator{
+#navigator {
     background-color: #0064d2;
     padding: 10px;
     padding-left: 30px;
 }
 
-#home-link{
+#home-link {
     color: #ffffff;
 }
 
-h5{
+h5 {
     color: white;
     margin: 0px;
 }
 
 /*profile link styling*/
-#profile-image-link{
-  display: inline-flex;
-  align-items: center;
+#profile-image-link {
+    display: inline-flex;
+    align-items: center;
 }
+
 /*basket link styling*/
-#basket-image-link{
-  display: inline-flex;
-  align-items: center;
+#basket-image-link {
+    display: inline-flex;
+    align-items: center;
 }
+
 /*logo styling*/
 .logo {
     float: left;
@@ -75,18 +81,58 @@ h5{
     width: 150px;
     height: auto;
 }
+
 /*profile image styling*/
 #profile-image {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  object-fit: cover;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+
+    /* hover animation */
+    transition: transform 0.25s ease, filter 0.25s ease;
 }
+
+#profile-image:hover {
+    filter: brightness(0.8);
+    transform: scale(1.08);
+}
+
 /*basket image styling*/
 #basket-image {
-  width: 28px;
-  height: 28px;
-  object-fit: cover;
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
+
+    /* hover animation */
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+#basket-image:hover {
+    filter: brightness(0.75);
+    transform: scale(1.08);
+}
+
+/*apply filters button styling*/
+#apply-filters-button {
+    padding: 10px 20px;
+    background-color: #0064d2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    /* smooth hover transition */
+    transition: background-color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+/* hover effect */
+#apply-filters-button:hover {
+    background-color: #004da1;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 100, 210, 0.25);
 }
 
 #page_layout {
@@ -127,7 +173,7 @@ h5{
 #search_bar {
     display: block;
     margin-top: 0em;
-    unicode-bidi: isolate;  
+    unicode-bidi: isolate;
 }
 
 #search_bar input {
@@ -136,7 +182,7 @@ h5{
     border-radius: 5px;
     border: 1px solid #ccc;
     margin-bottom: 10px;
-    
+
 }
 
 /* PRODUCTS */
@@ -148,11 +194,14 @@ h5{
     padding: 20px;
     border-radius: 10px;
 }
+
 #products-container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr); /* 6 per row */
+    grid-template-columns: repeat(6, 1fr);
+    /* 6 per row */
     gap: 20px;
 }
+
 /*reduces opacity while loading*/
 #products-container.is-loading {
     opacity: 0.55;
@@ -174,30 +223,51 @@ h5{
 
 /*product card styling*/
 .product-card {
-  flex: 0 0 220px;          /* Grow: 0, Shrink: 0, Width: 220px */
-    scroll-snap-align: start; /* Cards "snap" into place while scrolling */
+    flex: 0 0 220px;
+    /* Grow: 0, Shrink: 0, Width: 220px */
+    scroll-snap-align: start;
+    /* Cards "snap" into place while scrolling */
     background: white;
     border-radius: 8px;
-  background: white;
+    background: white;
     border-radius: 2px;
     padding: 5px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     width: 205px;
+
+    /* smooth transition */
+    transition: transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+/* product hover effect */
+.product-card:hover {
+    transform: translateY(-4px);
+    filter: brightness(0.96);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
 }
 
 /*product image styling*/
 .product-image {
-  width: 200px;
-  height: auto;
-  object-fit: cover;
+    width: 200px;
+    height: auto;
+    object-fit: cover;
 
+    /* smooth image hover */
+    transition: filter 0.25s ease;
+}
+
+/* darkens image slightly */
+.product-card:hover .product-image {
+    filter: brightness(0.9);
 }
 
 /*genre bubble styling*/
 .genre-bubble {
-    display: inline-block; 
+    display: inline-block;
     border: 1px solid #0064d2;
     color: #0064d2;
     background: #eef5ff;
@@ -206,7 +276,7 @@ h5{
     font-size: 13px;
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-    user-select: none; 
+    user-select: none;
     margin: 5px;
 }
 
@@ -218,9 +288,11 @@ h5{
     height: 0;
     width: 0;
 }
+
 /*hover effect*/
 .genre-bubble:hover {
     transform: translateY(-2px) scale(1.04);
+    background-color: #dceaff;
     box-shadow: 0 6px 14px rgba(0, 100, 210, 0.2);
 }
 
@@ -230,6 +302,7 @@ h5{
     color: #fff;
     box-shadow: 0 7px 16px rgba(0, 100, 210, 0.3);
 }
+
 /*price slider styling*/
 .price-slider-container {
     width: 90%;
@@ -247,14 +320,14 @@ h5{
     position: relative;
     width: 100%;
     height: 6px;
-    background-color: #ddd; 
+    background-color: #ddd;
     border-radius: 5px;
 }
 
 .slider-track {
     position: absolute;
     height: 100%;
-    background-color: #0064d2; 
+    background-color: #0064d2;
     border-radius: 5px;
 }
 
@@ -281,7 +354,7 @@ input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     cursor: pointer;
     border: 2px solid #fff;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Firefox handles */
@@ -302,30 +375,48 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 50px;
     padding: 4px;
     width: fit-content;
-    gap: 2px;
+    gap: 4px;
 }
 
+/*hide checkbox*/
 .toggle-wrapper input[type="checkbox"] {
     display: none;
 }
 
+/*default inactive state*/
 .toggle-wrapper label {
     padding: 8px 20px;
     border-radius: 50px;
     cursor: pointer;
     font-size: 14px;
-    font-weight: 500;
-    color: #666;
-    transition: all 0.3s ease;
+    font-weight: 600;
+
+    /* grey by default */
+    background-color: #bdbdbd;
+    color: white;
+
+    transition: background-color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+
     user-select: none;
 }
 
-.toggle-wrapper input[type="checkbox"]:checked + label {
-    background-color: #ffffff;
-    color: #000000;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+/*hover effect*/
+.toggle-wrapper label:hover {
+    background-color: #9f9f9f;
+    transform: translateY(-1px);
 }
 
-.toggle-wrapper label:hover {
-    color: #000000;
+/*checked button becomes grey*/
+.toggle-wrapper input[type="checkbox"]:checked + label {
+    background-color: #bdbdbd;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+/*unchecked buttons stay blue*/
+.toggle-wrapper input[type="checkbox"] + label {
+    background-color: #0064d2;
+    color: #ffffff;
 }

@@ -4,18 +4,28 @@
     padding: 0;
     box-sizing: border-box;
 }
- 
+
+html,
+body {
+    min-height: 100vh;
+}
+
 body {
     font-family: Arial, sans-serif;
     color: #333;
     background-color: #f5f5f5;
+
+    /* keeps footer at the bottom */
+    display: flex;
+    flex-direction: column;
 }
- 
+
 a {
     text-decoration: none;
     color: inherit;
 }
- 
+
+/* --- Header --- */
 #header {
     background-color: white;
     min-height: 58px;
@@ -24,43 +34,73 @@ a {
     align-items: center;
     justify-content: space-between;
 }
- 
+
+/* iBay logo link */
 #brand-link {
     display: inline-flex;
     align-items: center;
+
+    transition: transform 0.3s ease,
+                filter 0.3s ease;
 }
- 
+
+/* iBay logo hover */
+#brand-link:hover {
+    transform: scale(1.04);
+    filter: brightness(0.96);
+}
+
+/* iBay logo image */
 #brand-logo {
     height: 42px;
     width: auto;
     object-fit: contain;
+
+    transition: transform 0.3s ease;
 }
- 
+
+/* Header right icons */
 .header-actions {
     display: inline-flex;
     align-items: center;
     gap: 12px;
 }
- 
+
+/* Profile and basket links */
 #profile-image-link,
 #basket-image-link {
     display: inline-flex;
     align-items: center;
+
+    transition: transform 0.3s ease,
+                filter 0.3s ease;
 }
- 
+
+/* Profile and basket hover effect */
+#profile-image-link:hover,
+#basket-image-link:hover {
+    transform: scale(1.08);
+    filter: brightness(0.92);
+}
+
+/* Profile image */
 #profile-image {
     width: 42px;
     height: 42px;
     border-radius: 50%;
     object-fit: cover;
+
+    transition: box-shadow 0.3s ease;
 }
- 
+
+/* Basket image */
 #basket-image {
     width: 28px;
     height: 28px;
     object-fit: cover;
+
+    transition: transform 0.3s ease;
 }
- 
 
 /* --- Breadcrumb --- */
 .breadcrumb {
@@ -70,29 +110,32 @@ a {
     background-color: #0064d2;
     border-bottom: 1px solid #0055b3;
 }
- 
+
 .breadcrumb a {
     color: #ffffff;
 }
- 
+
 .breadcrumb a:hover {
     text-decoration: underline;
 }
- 
+
 .breadcrumb span {
     color: #ffffff;
 }
- 
-/* --- Main Content (full width like eBay) --- */
+
+/* --- Main Content --- */
 .main-content {
     max-width: 1100px;
     margin: 25px auto;
-    padding: 20px 20px;
+    padding: 20px;
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    /* pushes footer down */
+    flex: 1;
 }
- 
+
 /* --- Item Title & Category --- */
 .item-title {
     font-size: 24px;
@@ -100,25 +143,26 @@ a {
     color: #1a1a1a;
     margin-bottom: 5px;
 }
- 
+
 .item-category {
     font-size: 14px;
     color: #888;
     margin-bottom: 20px;
 }
- 
-/* --- Product Layout (image left, info right) --- */
+
+/* --- Product Layout --- */
 .product-wrapper {
     display: flex;
     gap: 40px;
     margin-bottom: 30px;
 }
- 
+
 .product-images {
     flex: 1;
     max-width: 450px;
 }
- 
+
+/* Main product image */
 .main-image {
     width: 100%;
     max-height: 320px;
@@ -127,12 +171,13 @@ a {
     border: 1px solid #ddd;
     margin-bottom: 10px;
 }
- 
+
+/* Product thumbnails */
 .thumbnail-row {
     display: flex;
     gap: 10px;
 }
- 
+
 .thumbnail {
     width: 80px;
     height: 80px;
@@ -140,12 +185,21 @@ a {
     border: 2px solid #ddd;
     border-radius: 6px;
     cursor: pointer;
+
+    transition: border-color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                filter 0.25s ease;
 }
- 
+
+/* Thumbnail hover */
 .thumbnail:hover {
     border-color: #0064d2;
+    transform: translateY(-2px);
+    filter: brightness(0.97);
+    box-shadow: 0 6px 14px rgba(0, 100, 210, 0.18);
 }
- 
+
 /* --- Price Box --- */
 .price-box {
     background-color: #f0f6ff;
@@ -154,19 +208,19 @@ a {
     padding: 15px;
     margin-bottom: 15px;
 }
- 
+
 .price {
     font-size: 28px;
     font-weight: bold;
     color: #0064d2;
 }
- 
+
 .postage {
     font-size: 14px;
     color: #555;
     margin-top: 5px;
 }
- 
+
 /* --- Seller Info --- */
 .seller-info {
     font-size: 14px;
@@ -174,24 +228,24 @@ a {
     margin-bottom: 20px;
     line-height: 1.9;
 }
- 
+
 .seller-info a {
     color: #0064d2;
 }
- 
+
 .seller-info a:hover {
     text-decoration: underline;
 }
- 
+
 .product-info {
     flex: 1;
 }
- 
+
 /* --- Quantity Box --- */
 .quantity-box {
     margin-bottom: 15px;
 }
- 
+
 .quantity-box label {
     font-size: 14px;
     font-weight: bold;
@@ -199,79 +253,96 @@ a {
     margin-bottom: 5px;
     color: #333;
 }
- 
+
 .quantity-box input {
     width: 80px;
     padding: 8px;
     font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 4px;
+
+    transition: border-color 0.25s ease,
+                box-shadow 0.25s ease;
 }
- 
+
+/* Quantity input focus */
+.quantity-box input:focus {
+    outline: none;
+    border-color: #0064d2;
+    box-shadow: 0 0 10px rgba(0, 100, 210, 0.15);
+}
+
 .error-msg {
     color: red;
     font-size: 13px;
     margin-top: 5px;
 }
- 
+
 /* --- Buttons --- */
 .btn-primary {
+    width: 100%;
+    margin-bottom: 10px;
     padding: 12px 24px;
+
     font-size: 15px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    width: 100%;
-    margin-bottom: 10px;
-}
- 
-.btn-primary {
+
     background-color: #0064d2;
     color: white;
+
+    transition: background-color 0.3s ease,
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                filter 0.3s ease;
 }
- 
+
+/* Add to basket hover */
 .btn-primary:hover {
     background-color: #1558b0;
+    transform: translateY(-2px);
+    filter: brightness(0.97);
+    box-shadow: 0 6px 14px rgba(0, 100, 210, 0.22);
 }
- 
- 
-/* --- Section (description & seller table) --- */
+
+/* --- Section Styling --- */
 .section {
     margin-top: 25px;
     border-top: 1px solid #eee;
     padding-top: 20px;
 }
- 
+
 .section h2 {
     font-size: 17px;
     color: #0064d2;
     margin-bottom: 10px;
 }
- 
+
 .section p {
     font-size: 14px;
     line-height: 1.7;
     color: #444;
 }
- 
+
 /* --- Seller Table --- */
 .seller-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
 }
- 
+
 .seller-table td {
     padding: 8px 10px;
     border-bottom: 1px solid #eee;
 }
- 
+
 .seller-table td:first-child {
     font-weight: bold;
     color: #555;
     width: 150px;
 }
- 
+
 /* --- Footer --- */
 .footer {
     background-color: #0064d2;
@@ -279,4 +350,7 @@ a {
     text-align: center;
     padding: 14px;
     font-size: 13px;
+
+    /* keeps footer at bottom */
+    margin-top: auto;
 }
