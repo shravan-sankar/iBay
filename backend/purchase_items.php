@@ -1,81 +1,67 @@
 <?php
+
 session_start();
 require_once 'connection.php';
 header('Content-Type: application/json');
 
-// Only allow POST requests for purchase completion
+// Only allow POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode([
         'success' => false,
         'message' => 'Invalid request method.'
     ]);
-    exit;
+    exit();
 }
 
-// Parse JSON body and extract item ids selected for purchase
-$raw = file_get_contents('php://input');
-$payload = json_decode($raw, true);
-$itemIds = $payload['item_ids'] ?? [];
-
-// Nothing to delete is treated as a successful no-op
-if (!is_array($itemIds) || count($itemIds) === 0) {
-    echo json_encode([
-        'success' => true,
-        'deleted' => 0
-    ]);
-    exit;
-}
-
-// Keep only numeric ids and cast them to integers
-$cleanIds = [];
-foreach ($itemIds as $id) {
-    if (is_numeric($id)) {
-        $cleanIds[] = (int) $id;
-    }
-}
-
-// Remove duplicates to avoid redundant placeholders
-$cleanIds = array_values(array_unique($cleanIds));
-if (count($cleanIds) === 0) {
-    echo json_encode([
-        'success' => true,
-        'deleted' => 0
-    ]);
-    exit;
-}
-
-// Build dynamic placeholders/types for a variable-length IN clause
-$placeholders = implode(',', array_fill(0, count($cleanIds), '?'));
-$types = str_repeat('i', count($cleanIds));
-// --> undo once finished // $sql = "DELETE FROM iBayProducts WHERE id IN ($placeholders)";
-$stmt = mysqli_prepare($conn, $sql);
-
-// Return a clear JSON error if statement preparation fails
-if (!$stmt) {
+// Check user is logged in
+if (empty($_SESSION['user_id'])) {
     echo json_encode([
         'success' => false,
-        'message' => 'Failed to prepare statement.'
+        'message' => 'User not logged in.'
     ]);
-    exit;
+    exit();
 }
 
-// Execute deletion for all purchased item ids
-mysqli_stmt_bind_param($stmt, $types, ...$cleanIds);
-$ok = mysqli_stmt_execute($stmt);
+// Get logged in user ID
+$userId = (int) $_SESSION['user_id'];
 
-// Return an error when delete execution fails
-if (!$ok) {
+// Clear basket field in database
+$clearBasket = mysqli_prepare(
+    $conn,
+    "UPDATE iBayMembers SET basket = '' WHERE id = ?"
+);
+
+// Stop if query preparation fails
+if (!$clearBasket) {
     echo json_encode([
         'success' => false,
-        'message' => 'Failed to remove purchased items.'
+        'message' => 'Failed to prepare basket clear query.'
     ]);
-    exit;
+    exit();
 }
 
-// Return count of rows deleted by this purchase action
+// Bind user ID
+mysqli_stmt_bind_param(
+    $clearBasket,
+    "i",
+    $userId
+);
+
+// Execute query
+$success = mysqli_stmt_execute($clearBasket);
+
+// Check execution success
+if (!$success) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Failed to clear basket.'
+    ]);
+    exit();
+}
+
+// Return success response
 echo json_encode([
-    'success' => true,
-    'deleted' => mysqli_stmt_affected_rows($stmt)
+    'success' => true
 ]);
 
 ?>

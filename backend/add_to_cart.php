@@ -1,55 +1,135 @@
 <?php
- 
-// Include the database connection
-include 'connection.php';
- 
-// Start Session
+
+// Database connection
+require_once 'connection.php';
+
+// Start session
 session_start();
- 
-// Tell the browser we are sending back JSON
+
+// Return JSON responses
 header('Content-Type: application/json');
- 
-// Check the user is logged in, return error as JSON if not
+
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Not logged in']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'User is not logged in.'
+    ]);
     exit();
 }
- 
-// Get the product id from the AJAX request
-$productId = $_POST['productId'];
- 
-// Get the id of the logged in user from the session
-$userId = $_SESSION['user_id'];
- 
-// Confirm the product actually exists in iBayProducts before adding to basket
-$productQuery = "SELECT id FROM iBayProducts WHERE id = '$productId'";
-$productResult = mysqli_query($conn, $productQuery);
- 
-// If the product doesn't exist return an error
-if (mysqli_num_rows($productResult) == 0) {
-    echo json_encode(['success' => false, 'message' => 'Product not found']);
+
+// Check if product ID exists
+if (!isset($_POST['productId'])) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'No product ID provided.'
+    ]);
     exit();
 }
- 
-// Get the user's current basket from the database
-$query = "SELECT basket FROM iBayMembers WHERE id = '$userId'";
-$result = mysqli_query($conn, $query);
-$row = mysqli_fetch_assoc($result);
-$currentBasket = $row['basket'];
- 
-// Check if the basket is empty or not
-if (empty($currentBasket)) {
-    $newBasket = $productId;
-} else {
-    $newBasket = $currentBasket . ', ' . $productId;
+
+// Clean input values
+$productId = (int) $_POST['productId'];
+$userId = (int) $_SESSION['user_id'];
+
+// Validate product ID
+if ($productId <= 0) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid product ID.'
+    ]);
+    exit();
 }
- 
-// Update the user's basket in the database
-$updateQuery = "UPDATE iBayMembers SET basket = '$newBasket' WHERE id = '$userId'";
-mysqli_query($conn, $updateQuery);
- 
-// Return success so the JS can redirect to the basket page
-echo json_encode(['success' => true]);
- 
+
+// Check if product exists
+$productQuery = mysqli_prepare(
+    $conn,
+    "SELECT id FROM iBayProducts WHERE id = ?"
+);
+
+mysqli_stmt_bind_param(
+    $productQuery,
+    "i",
+    $productId
+);
+
+mysqli_stmt_execute($productQuery);
+$productResult = mysqli_stmt_get_result($productQuery);
+
+// Stop if product does not exist
+if (mysqli_num_rows($productResult) === 0) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Product does not exist.'
+    ]);
+    exit();
+}
+
+// Get current basket
+$basketQuery = mysqli_prepare(
+    $conn,
+    "SELECT basket FROM iBayMembers WHERE id = ?"
+);
+
+mysqli_stmt_bind_param(
+    $basketQuery,
+    "i",
+    $userId
+);
+
+mysqli_stmt_execute($basketQuery);
+
+$basketResult = mysqli_stmt_get_result($basketQuery);
+
+$userData = mysqli_fetch_assoc($basketResult);
+
+// Store current basket
+$currentBasket = $userData['basket'];
+
+// Convert basket string into array
+$basketItems = [];
+
+if (!empty($currentBasket)) {
+    $basketItems = explode(',', $currentBasket);
+    $basketItems = array_map('trim', $basketItems);
+}
+
+// Prevent duplicate products
+if (!in_array($productId, $basketItems)) {
+    $basketItems[] = $productId;
+}
+
+// Convert basket array back into string
+$updatedBasket = implode(',', $basketItems);
+
+// Update basket in database
+$updateQuery = mysqli_prepare(
+    $conn,
+    "UPDATE iBayMembers SET basket = ? WHERE id = ?"
+);
+
+mysqli_stmt_bind_param(
+    $updateQuery,
+    "si",
+    $updatedBasket,
+    $userId
+);
+
+$updateSuccess = mysqli_stmt_execute($updateQuery);
+
+// Check update success
+if (!$updateSuccess) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Failed to update basket.'
+    ]);
+    exit();
+}
+
+// Return success response
+echo json_encode([
+    'success' => true,
+    'message' => 'Product added to basket successfully.',
+    'basket' => $basketItems
+]);
+
 ?>
- 

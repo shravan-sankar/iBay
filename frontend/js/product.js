@@ -67,28 +67,108 @@ function changeImage(thumbnail) {
     mainImage.src = thumbnail.src;
 }
 
+// Adds the current product to the user's basket
+async function addToBasket() {
 
-// --- Add to Basket ---
-// Gets the product id from the page and posts it to add_to_cart.php
+    // Get the product ID stored on the page
+    const productId = $("#product-page").attr("data-product-id");
 
-function addToBasket() {
-    var productId = $("#product-page").attr("data-product-id");
+    // Stop if the product ID cannot be found
+    if (!productId) {
+        alert("Missing product ID");
+        return;
+    }
 
+    // Send the product ID to the backend to update the database basket
     $.ajax({
         url: "../../backend/add_to_cart.php",
         method: "POST",
-        data: { productId: productId },
+        data: {
+            productId: productId
+        },
         dataType: "json",
-        xhrFields: { withCredentials: true }
-    }).done(function (response) {
+
+        // Include login session cookies
+        xhrFields: {
+            withCredentials: true
+        }
+
+    }).done(async function (response) {
+
+        // Continue only if the backend successfully updated the basket
         if (response.success) {
-            // Item added successfully, redirect to basket
+
+            try {
+
+                // Fetch the full product details from the backend
+                // so the item can also be stored in localStorage
+                const res = await fetch(
+                    `../../backend/get_product.php?id=${encodeURIComponent(productId)}`,
+                    {
+                        credentials: "include"
+                    }
+                );
+
+                // Make sure the request succeeded
+                if (res.ok) {
+                    // Convert the returned JSON into a JavaScript object
+                    const product = await res.json();
+                    // Create a basket item object
+                    const item = {
+                        id: String(productId),
+                        title: product.productName || "Item",
+                        price: parseFloat(product.price) || 0,
+                        postage: parseFloat(product.postage) || 0,
+                        image: product.image_url_1 || "../images/placeholder.jpg"
+                    };
+                    // LocalStorage key used across the basket system
+                    const KEY = "ibay_basket";
+                    let basket = [];
+                    try {
+                        // Read existing basket from localStorage
+                        const raw = localStorage.getItem(KEY);
+                        // Parse basket JSON into an array
+                        basket = raw ? JSON.parse(raw) : [];
+                        // Reset basket if the stored data is invalid
+                        if (!Array.isArray(basket)) {
+                            basket = [];
+                        }
+                    } catch (e) {
+                        basket = [];
+                    }
+
+                    // Check whether this product already exists in the basket
+                    const exists = basket.some(
+                        item => String(item.id) === String(productId)
+                    );
+
+                    // Only add the product if it is not already present
+                    if (!exists) {
+                        basket.push(item);
+                    }
+
+                    // Save the updated basket back into localStorage
+                    localStorage.setItem(
+                        KEY,
+                        JSON.stringify(basket)
+                    );
+                }
+
+            } catch (err) {
+                // Log any localStorage or fetch errors
+                console.error(
+                    "Failed storing basket item:",
+                    err
+                );
+            }
+            // Redirect the user to the basket page
             window.location.href = "basket.html";
         } else {
-            // PHP returned an error message
+            // Show backend error message
             alert(response.message);
         }
     }).fail(function () {
-        alert("Could not add item to basket. Please make sure you are logged in.");
+        // Show generic error if AJAX request fails
+        alert("Could not add item to basket.");
     });
 }
