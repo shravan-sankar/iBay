@@ -12,7 +12,7 @@ $postage    = $_POST['postage']  ?? [];
 $conditions = $_POST['item_condition']?? [];
 $searchTerm = $_POST['search_query'] ?? '';
 
-// Base SQL
+// Base SQL includes a JOIN to get the seller's name from the iBayMembers table
 $sql = "SELECT p.*, m.firstName AS sellerName 
         FROM iBayProducts p 
         JOIN iBayMembers m ON p.sellerId = m.id 
