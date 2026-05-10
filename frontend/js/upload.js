@@ -199,6 +199,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.getElementById('existing_listing').classList.remove('editing');
         document.getElementById('save_listing').style.display = 'none';
         document.getElementById('edit_listing').style.display = 'inline-block';
+        document.getElementById('delete_listing').disabled = true;
     }
     ///
 
@@ -210,6 +211,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.getElementById('existing_listing').classList.add('editing');
         document.getElementById('save_listing').style.display = 'inline-block';
         document.getElementById('edit_listing').style.display = 'none';
+        document.getElementById('delete_listing').disabled = false;
     }
     ///
 
@@ -519,6 +521,42 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
     ///
+
+    /// Delete Listing Handler
+    document.getElementById('delete_listing').addEventListener('click', async function () {
+        const editSumbitError = document.getElementById('edit_submit_error');
+
+        try {
+            const formData = new FormData();
+            formData.append('id', currentListingId);
+
+            const response = await fetch('../../backend/delete_product.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                editSumbitError.style.color = 'green';
+                editSumbitError.textContent = data.message;
+                disableEditMode();
+
+                setTimeout(() => {
+                    currentListingId = null;
+                    showState('empty');
+                    loadListings();
+                }, 1500);
+
+            } else {
+                editSumbitError.textContent = data.message;
+            }
+
+        } catch (error) {
+            console.error('Delete error:', error);
+            editSumbitError.textContent = 'Something went wrong.';
+        }
+    });
 
     document.querySelectorAll('.return_btn').forEach(btn => {
         btn.addEventListener('click', function () {

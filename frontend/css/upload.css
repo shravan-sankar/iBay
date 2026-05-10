@@ -573,6 +573,21 @@ body {
     box-shadow: 0 6px 14px rgba(0, 100, 210, 0.25);
 }
 
+.listing_buttons:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+    box-shadow: none;
+}
+
+.listing_buttons:disabled:hover {
+    background-color: #999;
+    transform: none;
+    box-shadow: none;
+    filter: none;
+}
+
 .field-error {
     color: #d93025;
     font-size: 13px;
