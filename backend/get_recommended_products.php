@@ -30,7 +30,10 @@ if ($userId) {
 
 
 // 2. Base SQL
-$sql = "SELECT * FROM iBayProducts WHERE 1=1";
+$sql = "SELECT p.*, m.firstName AS sellerName 
+        FROM iBayProducts p 
+        JOIN iBayMembers m ON p.sellerId = m.id 
+        WHERE 1=1";
 $params = [];
 $types = "";
 

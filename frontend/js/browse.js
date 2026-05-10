@@ -82,9 +82,9 @@ window.addEventListener('DOMContentLoaded', () => {
           <img src="../../product_images/${product.image_url_1}" alt="${product.productName}" class="product-image">
           <h2>${product.productName}</h2>
           <p>£${product.price}</p>
-          <p>Seller: ${product.seller}</p>
-          <p>${product.category}</p>
-          <p>${product.item_condition}</p>
+          <p>Seller: ${product.sellerName}</p>
+          <p>${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
+          <p>${product.item_condition.charAt(0).toUpperCase() + product.item_condition.slice(1)}</p>
         </a>`;
 
       Reccontainer.appendChild(card);
@@ -114,9 +114,9 @@ fetch('../../backend/get_latest_products.php', {
             <img src="../../product_images/${product.image}" alt="${product.productName}" class="product-image">
             <h2>${product.productName}</h2>
             <p>£${product.price}</p>
-            <p>Seller: ${product.seller}</p>
-            <p>${product.category}</p>
-            <p>${product.item_condition}</p>
+            <p>Seller: ${product.sellerName}</p>
+            <p>${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
+            <p>${product.item_condition.charAt(0).toUpperCase() + product.item_condition.slice(1)}</p>
         </a>`;
 
         container.appendChild(card);
