@@ -139,7 +139,9 @@ function renderProducts(products) {
                 <p>${category.charAt(0).toUpperCase() + category.slice(1)}</p>
                 <p>${condition.charAt(0).toUpperCase() + condition.slice(1)}</p>
             </a>`;
+        if (userId!= product.sellerId){
         container.appendChild(card);
+        }
     });
 }
 

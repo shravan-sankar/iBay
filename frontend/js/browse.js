@@ -41,7 +41,7 @@ window.addEventListener('DOMContentLoaded', () => {
     showPurchaseToastIfNeeded();
     document.getElementById('profile-image-link').href = `upload.html?id=${encodeURIComponent(String(userId))}`;
     document.getElementById('basket-image-link').href = `basket.html?id=${encodeURIComponent(String(userId))}`;
-
+    document.getElementById('filter_button_link').href = `Browse_category.html?id=${encodeURIComponent(String(userId))}`;
 
         const categoryButtons = document.querySelectorAll('.category_btn');
 
