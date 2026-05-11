@@ -123,7 +123,7 @@ async function addToBasket() {
                         title: product.productName || "Item",
                         price: parseFloat(product.price) || 0,
                         postage: parseFloat(product.postage) || 0,
-                        image: product.image_url_1 || "../images/placeholder.jpg"
+                        image_url_1: product.image_url_1 || null
                     };
                     // LocalStorage key used across the basket system
                     const KEY = "ibay_basket";
