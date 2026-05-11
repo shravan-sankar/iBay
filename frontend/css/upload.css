@@ -353,7 +353,7 @@ body {
 
 #existing_listing {
     width: 100%;
-    max-width: 650px;
+    max-width: 600px;
 }
 
 #view_itemName {
@@ -423,8 +423,17 @@ body {
 
 /* Add New Listing Form */
 
+.listing_title {
+    width: 100%;
+    max-width: 295px;
+}
+
 #adding_listing h2 {
     margin-bottom: 10px;
+}
+
+#adding_listing .radio_options {
+    max-width: 600px;
 }
 
 #title_box {
@@ -517,10 +526,16 @@ body {
     display: none;
 }
 
+.radio_options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .radio_options label {
     display: inline-block;
     padding: 10px 20px;
-    margin: 5px;
+    margin: 0;
     background-color: #eee;
     border-radius: 10px;
     cursor: pointer;

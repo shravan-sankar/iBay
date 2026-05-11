@@ -25,7 +25,7 @@ function validateImageUpload($file, $fieldname) {
     }
 
     if (!in_array($file['type'], $allowedTypes)) {
-        return "$fieldname must be a JPG, PNG, WEBP, or GIF image.";
+        return "$fieldname must be a JPG, PNG, or WEBP image.";
     }
 
     if ($file['size'] > 5 * 1024 * 1024) {
