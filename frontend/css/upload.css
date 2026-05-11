@@ -588,8 +588,16 @@ body {
     filter: none;
 }
 
-#delete_listing {
-    background-color: red
+#delete_listing:not(:disabled) {
+    background-color: #d93025;
+}
+
+#delete_listing:not(:disabled):hover {
+    background-color: #b42318;
+}
+
+#delete_listing:disabled {
+    background-color: #999;
 }
 
 .field-error {
