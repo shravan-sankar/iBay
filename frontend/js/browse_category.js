@@ -136,8 +136,8 @@ function renderProducts(products) {
                 <h2>${productName}</h2>
                 <p>£${price}</p>
                 <p>Seller: ${sellerName}</p>
-                <p>${category}</p>
-                <p>${condition}</p>
+                <p>${category.charAt(0).toUpperCase() + category.slice(1)}</p>
+                <p>${condition.charAt(0).toUpperCase() + condition.slice(1)}</p>
             </a>`;
         container.appendChild(card);
     });

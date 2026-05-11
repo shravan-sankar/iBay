@@ -197,7 +197,7 @@ h5 {
 
 #products-container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     /* 6 per row */
     gap: 20px;
 }
