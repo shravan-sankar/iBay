@@ -414,9 +414,15 @@ async function loadCarouselItems() {
 
         // Exclude products already in the basket from the carousel
         const basketIds = new Set(readBasket().map((item) => String(item.id)));
-        const filteredProducts = data.products.filter(
-            (p) => !basketIds.has(String(p.id))
-        );
+
+        // Exclude products listed by the logged-in user
+        const activeUserId = getActiveUserId();
+
+        const filteredProducts = data.products.filter((p) => {
+            if (basketIds.has(String(p.id))) return false;
+            if (activeUserId && String(p.sellerId) === String(activeUserId)) return false;
+            return true;
+        });
 
         renderCarouselProducts(filteredProducts.slice(0, 12));
     } catch (e) {
