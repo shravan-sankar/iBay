@@ -588,6 +588,10 @@ body {
     filter: none;
 }
 
+#delete_listing {
+    background-color: red
+}
+
 .field-error {
     color: #d93025;
     font-size: 13px;
