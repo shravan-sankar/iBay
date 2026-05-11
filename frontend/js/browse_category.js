@@ -1,4 +1,3 @@
-
 // gets the vlaues of the various filter inputs and sends them to filter.php to get the filtered products,
 //  then renders those products in the page
 const filterForm = document.getElementById("filters");
@@ -83,7 +82,23 @@ function setLoadingState(isLoading) {
 }
 
 function buildFormData() {
-    return new FormData(filterForm);
+    const formData = new FormData(filterForm);
+
+    // If no postage toggles are checked, include all postage options
+    const postageChecked = filterForm.querySelectorAll('input[name="postage[]"]:checked');
+    if (postageChecked.length === 0) {
+        formData.append("postage[]", "Free");
+        formData.append("postage[]", "Paid");
+    }
+
+    // If no condition toggles are checked, include all conditions
+    const conditionChecked = filterForm.querySelectorAll('input[name="item_condition[]"]:checked');
+    if (conditionChecked.length === 0) {
+        formData.append("item_condition[]", "new");
+        formData.append("item_condition[]", "used");
+    }
+
+    return formData;
 }
 
 function updateUrlFromCurrentFilters() {
@@ -163,7 +178,6 @@ async function fetchAndRenderProducts() {
             return;
         }
         renderProducts(products);
-        updateUrlFromCurrentFilters();
     } catch (error) {
         if (currentRequest !== requestCounter) {
             return;
