@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
     ///
 
-    ///
+    /// Clear listing button
     document.getElementById('clear_listing').addEventListener('click', function () {
         resetAddListingForm();
     });
