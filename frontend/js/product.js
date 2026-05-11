@@ -1,15 +1,7 @@
-// ===========================
-// iBay - Product Page Scripts
-// ===========================
-
-
-// --- Load Product Data ---
-// Runs as soon as the page is ready
-// Gets the product id from the URL and calls get_product.php to fetch the data
-
+// load product data
 $(document).ready(function () {
 
-    // Get the id from the URL e.g. product.html?id=1
+    // Get the id from the URL 
     var urlParams = new URLSearchParams(window.location.search);
     var productId = urlParams.get("id");
 
@@ -19,7 +11,7 @@ $(document).ready(function () {
         return;
     }
 
-    // Store the product id on the page for use when adding to basket
+    // Store the product id on the page
     $("#product-page").attr("data-product-id", productId);
 
     // Call get_product.php in the background passing the product id
@@ -42,11 +34,14 @@ $(document).ready(function () {
         $("#seller-email-header").text(product.seller_email);
         $("#seller-email").text(product.seller_email);
         $("#seller-since").text(product.seller_since);
+        displayStars("seller-rating", product.seller_rating);
+        $("#product-page").attr("data-seller-id", product.sellerId);
 
-        // Images
-        $("#main-image").attr("src", product.image_url_1);
-        $(".thumbnail").eq(0).attr("src", product.image_url_1);
-        $(".thumbnail").eq(1).attr("src", product.image_url_2);
+        // images
+        var imagePath = "../../product_images/";
+        $("#main-image").attr("src", imagePath + product.image_url_1);
+        $(".thumbnail").eq(0).attr("src", imagePath + product.image_url_1);
+        $(".thumbnail").eq(1).attr("src", imagePath + product.image_url_2);
 
         console.log(product);
 
@@ -56,12 +51,22 @@ $(document).ready(function () {
 
 });
 
+//  Display Star Rating 
+function displayStars(elementId, rating) {
+    var stars = "";
+    for (var i = 1; i <= 5; i++) {
+        if (rating >= i) {
+            stars += "★";        // full star
+        } else if (rating >= i - 0.5) {
+            stars += "⯨";        // half star    
+        } else {
+            stars += "☆";        // empty star
+        }
+    }
+    $("#" + elementId).text(stars);
+}
 
-// --- Thumbnail Image Swap ---
-// When a thumbnail is clicked, this function runs
-// 'thumbnail' is the image element that was clicked
-// We grab the main image by its id and update its src to match the thumbnail
-
+//  Thumbnail Image Swap 
 function changeImage(thumbnail) {
     var mainImage = document.getElementById("main-image");
     mainImage.src = thumbnail.src;
@@ -100,8 +105,7 @@ async function addToBasket() {
 
             try {
 
-                // Fetch the full product details from the backend
-                // so the item can also be stored in localStorage
+                // Fetch the full product details from the backend to get the price, title and image for the basket
                 const res = await fetch(
                     `../../backend/get_product.php?id=${encodeURIComponent(productId)}`,
                     {
@@ -152,17 +156,16 @@ async function addToBasket() {
                         KEY,
                         JSON.stringify(basket)
                     );
+
+                    // After adding to basket, show the rating popup to rate the seller
+                    showRatingPopup();
                 }
 
             } catch (err) {
-                // Log any localStorage or fetch errors
-                console.error(
-                    "Failed storing basket item:",
-                    err
-                );
+                console.error("Failed storing basket item:", err);
+                // If something goes wrong, go straight to basket
+                window.location.href = "basket.html";
             }
-            // Redirect the user to the basket page
-            window.location.href = "basket.html";
         } else {
             // Show backend error message
             alert(response.message);
@@ -170,5 +173,92 @@ async function addToBasket() {
     }).fail(function () {
         // Show generic error if AJAX request fails
         alert("Could not add item to basket.");
+    });
+}
+
+ 
+// Displays the star rating popup overlay for the user to rate the seller
+function showRatingPopup() {
+    $("#rating-popup").show();
+    $("#rating-overlay").show();
+}
+ 
+ 
+
+// Gets the selected star rating and sends it to submit_rating.php
+function submitRating() {
+    console.log("sellerId:", $("#product-page").attr("data-seller-id"));
+    console.log("rating:", $("#rating-popup").attr("data-selected-rating"));
+    var selectedRating = $("#rating-popup").attr("data-selected-rating");
+    var sellerId = $("#product-page").attr("data-seller-id");
+ 
+    // If no star has been selected, remind the user
+    if (!selectedRating) {
+        alert("Please select a star rating.");
+        return;
+    }
+ 
+    $.ajax({
+        url: "../../backend/submit_rating.php",
+        method: "POST",
+        data: { sellerId: sellerId, rating: selectedRating },
+        dataType: "json",
+        xhrFields: { withCredentials: true }
+    }).done(function (response) {
+        if (response.success) {
+            // Hide the popup and go to basket
+            $("#rating-popup").hide();
+            $("#rating-overlay").hide();
+            window.location.href = "basket.html";
+        } else {
+            alert(response.message);
+        }
+    }).fail(function () {
+        // If rating fails just go to basket anyway
+        window.location.href = "basket.html";
+    });
+}
+ 
+ 
+// Allows user to skip rating and just go to basket
+function skipRating() {
+    $("#rating-popup").hide();
+    $("#rating-overlay").hide();
+    window.location.href = "basket.html";
+}
+ 
+ 
+// Highlights stars when the user hovers over them and sets the selected rating when they click
+function starHover(star) {
+    var value = $(star).attr("data-value");
+    $(".rating-star").each(function () {
+        if ($(this).attr("data-value") <= value) {
+            $(this).text("★");
+        } else {
+            $(this).text("☆");
+        }
+    });
+}
+ 
+function starHoverOut() {
+    var selected = $("#rating-popup").attr("data-selected-rating");
+    $(".rating-star").each(function () {
+        if (selected && $(this).attr("data-value") <= selected) {
+            $(this).text("★");
+        } else {
+            $(this).text("☆");
+        }
+    });
+}
+ 
+function starClick(star) {
+    var value = $(star).attr("data-value");
+    $("#rating-popup").attr("data-selected-rating", value);
+    $(".rating-star").each(function () {
+        if ($(this).attr("data-value") <= value) {
+            $(this).text("★");
+        } else {
+            $(this).text("☆");
+        }
     });
 }

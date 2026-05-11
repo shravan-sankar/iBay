@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <!-- Right side: price, seller, buttons -->
+            <!-- price, seller and buttons -->
             <div class="product-info">
 
                 <!-- Price -->
@@ -67,12 +67,10 @@
                 <button class="btn-primary" onclick="addToBasket()">Add to Basket</button>
 
             </div>
-            <!-- End product-info -->
 
         </div>
-        <!-- End product-wrapper -->
 
-        <!-- Description -->
+        <!--  Item Description -->
         <div class="section">
             <h2>Item Description</h2>
             <p id="item-description"></p>
@@ -90,16 +88,37 @@
                     <td>Member Since:</td>
                     <td id="seller-since"></td>
                 </tr>
+                 <tr>
+                    <td>Seller Rating:</td>
+                    <td id="seller-rating"></td>
+                </tr>
             </table>
         </div>
 
     </div>
-    <!-- End Main Content -->
 
     <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2026 iBay. All rights reserved.</p>
     </footer>
+
+    <!-- Rating Overlay -->
+    <div id="rating-overlay"></div>
+ 
+    <!-- Rating Popup -->
+    <div id="rating-popup">
+        <h2>Rate the Seller</h2>
+        <p>How would you rate your experience with this seller?</p>
+        <div id="rating-stars">
+            <span class="rating-star" data-value="1" onmouseover="starHover(this)" onmouseout="starHoverOut()" onclick="starClick(this)">☆</span>
+            <span class="rating-star" data-value="2" onmouseover="starHover(this)" onmouseout="starHoverOut()" onclick="starClick(this)">☆</span>
+            <span class="rating-star" data-value="3" onmouseover="starHover(this)" onmouseout="starHoverOut()" onclick="starClick(this)">☆</span>
+            <span class="rating-star" data-value="4" onmouseover="starHover(this)" onmouseout="starHoverOut()" onclick="starClick(this)">☆</span>
+            <span class="rating-star" data-value="5" onmouseover="starHover(this)" onmouseout="starHoverOut()" onclick="starClick(this)">☆</span>
+        </div>
+        <button class="btn-primary" onclick="submitRating()">Submit Rating</button>
+        <button class="btn-secondary" onclick="skipRating()">Skip</button>
+    </div>
 
     <!-- jQuery needed for AJAX calls in product.js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
