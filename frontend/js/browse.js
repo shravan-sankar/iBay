@@ -111,7 +111,7 @@ fetch('../../backend/get_latest_products.php', {
         console.log('Rendering product:', product);
         card.innerHTML = 
         `<a href="product.html?id=${product.id}" class="product-link">
-            <img src="../../product_images/${product.image}" alt="${product.productName}" class="product-image">
+            <img src="../../product_images/${product.image_url_1}" alt="${product.productName}" class="product-image">
             <h2>${product.productName}</h2>
             <p>£${product.price}</p>
             <p>Seller: ${product.sellerName}</p>
@@ -184,7 +184,8 @@ function renderProductCard(product, container) {
   card.className = "product-card";
   card.innerHTML = `
     <a href="product.html?id=${product.id}" class="product-link">
-      <img src="../../product_images/${product.image}" alt="${product.productName}" class="product-image">
+    console.log(product.image);
+      <img src="../../product_images/${product.image_url_1}" alt="${product.productName}" class="product-image">
       <h2>${product.productName}</h2>
       <p>£${product.price}</p>
       <p>Seller: ${product.seller}</p>
