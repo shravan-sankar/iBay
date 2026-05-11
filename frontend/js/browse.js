@@ -118,8 +118,9 @@ fetch('../../backend/get_latest_products.php', {
             <p>${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
             <p>${product.item_condition.charAt(0).toUpperCase() + product.item_condition.slice(1)}</p>
         </a>`;
-
+      if (userId != product.sellerId){
         container.appendChild(card);
+        }
     });
 })
 .catch(err => console.error('Fetch failed:', err));
@@ -192,7 +193,9 @@ function renderProductCard(product, container) {
       <p>${product.category}</p>
       <p>${product.item_condition}</p>
     </a>`;
-  container.appendChild(card);
+    if (userId!= product.sellerId){
+        container.appendChild(card);
+        }
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
