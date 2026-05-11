@@ -72,12 +72,22 @@ function renderBasketFromStorage() {
         totalPrice += p;
         totalPostage += post;
 
+        // Resolve image: prefer explicit fields, fall back to placeholder
+        const imgSrc = row.image_url_1
+            ? `../../product_images/${row.image_url_1}`
+            : "../../images/placeholder.jpg";
+
         const article = document.createElement("article");
         article.className = "basket-item";
 
         article.innerHTML = `
             <div class="basket-item__media">
-                <img src="${(row.image || "").replace(/"/g, "&quot;")}" alt="" class="basket-item__img">
+                <img
+                    src="${imgSrc}"
+                    alt=""
+                    class="basket-item__img"
+                    onerror="this.onerror=null;this.src='../../images/placeholder.jpg';"
+                >
             </div>
             <div class="basket-item__body">
                 <div class="basket-item__head">
@@ -280,12 +290,11 @@ function setupBuyNowFlow() {
 
 // Get product image with fallback
 function getProductImage(product) {
-    return (
-        product.image ||
-        product.image_url ||
-        product.imageUrl ||
-        "../images/placeholder.jpg"
-    );
+    if (product.image_url_1) {
+        return `../../product_images/${product.image_url_1}`;
+    }
+
+    return "../../images/placeholder.jpg";
 }
 
 // Render carousel product cards
@@ -304,7 +313,7 @@ function renderCarouselProducts(products) {
 
         card.className = "card";
 
-        const image = escapeHtml(getProductImage(product));
+        const imageSrc = getProductImage(product);
         const name = escapeHtml(product.productName || product.title || "Item");
         const price = parseFloat(product.price) || 0;
         const id = encodeURIComponent(String(product.id || ""));
@@ -313,13 +322,33 @@ function renderCarouselProducts(products) {
             ? `product.html?id=${id}&user_id=${encodeURIComponent(userId)}`
             : `product.html?id=${id}`;
 
-        card.innerHTML = `
-            <a href="${href}" class="product-link">
-                <img src="${image}" alt="${name}">
-                <p>${name}</p>
-                <p>${formatGBP(price)}</p>
-            </a>
-        `;
+        // Build card DOM safely to avoid attribute-injection issues
+        const link = document.createElement("a");
+        link.href = href;
+        link.className = "product-link";
+
+        const img = document.createElement("img");
+        img.src = imageSrc;
+        img.alt = product.productName || product.title || "Item";
+        img.className = "card__img";
+        // Swap to placeholder if the image fails to load
+        img.onerror = function () {
+            this.onerror = null;
+            this.src = "../images/placeholder.jpg";
+        };
+
+        const nameEl = document.createElement("p");
+        nameEl.className = "card__name";
+        nameEl.textContent = product.productName || product.title || "Item";
+
+        const priceEl = document.createElement("p");
+        priceEl.className = "card__price";
+        priceEl.textContent = formatGBP(price);
+
+        link.appendChild(img);
+        link.appendChild(nameEl);
+        link.appendChild(priceEl);
+        card.appendChild(link);
 
         track.appendChild(card);
     });

@@ -324,21 +324,45 @@ body {
     box-shadow: 0 6px 16px rgba(0, 100, 210, 0.12);
 }
 
-/* Basket item image */
-.basket-item__media {
+/* ── Basket item image box ──────────────────────────────────────────────────
+   Fixed 88 × 88 px box, grey background so empty space is never stark white,
+   rounded corners, overflow hidden to clip whatever the img delivers.        */
+   .basket-item__media {
     flex-shrink: 0;
     width: 88px;
     height: 88px;
+    padding: 6px;
     border-radius: 8px;
     overflow: hidden;
-    background: #eee;
+    background-color: #eef0f3;
+    border: 1px solid #dde3ea;
+
+    /* Centre image perfectly */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
+/* Product image styling */
 .basket-item__img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+
+    /* Makes the FULL image fit cleanly */
+    object-fit: contain;
+    object-position: center;
+
     display: block;
+
+    /* Smooth image appearance */
+    transition: transform 0.25s ease,
+                opacity 0.25s ease;
+}
+
+/* Slight hover zoom */
+.basket-item:hover .basket-item__img {
+    transform: scale(1.04);
 }
 
 /* Basket item details */
@@ -455,7 +479,8 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* Carousel cards */
+/* ── Carousel card ──────────────────────────────────────────────────────────
+   Fixed-width cards so the carousel scrolls evenly.                         */
 .card {
     min-width: 160px;
     max-width: 160px;
@@ -481,18 +506,55 @@ body {
     box-shadow: 0 8px 18px rgba(0, 100, 210, 0.14);
 }
 
-.card img {
+/* ── Carousel image box ─────────────────────────────────────────────────────
+   Fixed 136 × 120 px box (card width minus padding on both sides = 136 px).
+   Grey background, rounded corners, flex-centred so smaller images sit neatly
+   without distortion.                                                        */
+   .card__img {
     width: 100%;
     height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
+    padding: 8px;
+    box-sizing: border-box;
+
+    /* Show the FULL product image neatly */
+    object-fit: contain;
+    object-position: center;
+
     display: block;
+    border-radius: 8px;
+    background-color: #eef0f3;
+    border: 1px solid #dde3ea;
+
+    /* Smooth animations */
+    transition: transform 0.25s ease,
+                opacity 0.25s ease,
+                background-color 0.25s ease;
 }
 
-.card p {
-    margin: 10px 0 0 0;
-    font-size: 14px;
+/* Slight product zoom on hover */
+.card:hover .card__img {
+    transform: scale(1.04);
+}
+
+.card__name {
+    margin: 10px 0 2px 0;
+    font-size: 13px;
     color: #333;
+
+    /* Clamp to two lines so all cards stay the same height */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.35;
+    min-height: 2.7em;
+}
+
+.card__price {
+    margin: 4px 0 0 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0064d2;
 }
 
 /* Carousel arrow buttons */
