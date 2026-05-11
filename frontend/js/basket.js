@@ -77,21 +77,29 @@ function renderBasketFromStorage() {
             ? `../../product_images/${row.image_url_1}`
             : "../../images/placeholder.jpg";
 
+        const userId = getActiveUserId();
+        const productId = encodeURIComponent(String(row.id || ""));
+        const productHref = userId
+            ? `product.html?id=${productId}&user_id=${encodeURIComponent(userId)}`
+            : `product.html?id=${productId}`;
+
         const article = document.createElement("article");
         article.className = "basket-item";
 
         article.innerHTML = `
-            <div class="basket-item__media">
+            <a href="${productHref}" class="basket-item__media" aria-label="View ${escapeHtml(row.title || "Item")}">
                 <img
                     src="${imgSrc}"
                     alt=""
                     class="basket-item__img"
                     onerror="this.onerror=null;this.src='../../images/placeholder.jpg';"
                 >
-            </div>
+            </a>
             <div class="basket-item__body">
                 <div class="basket-item__head">
-                    <h3 class="basket-item__title">${escapeHtml(row.title || "Item")}</h3>
+                    <a href="${productHref}" class="basket-item__title-link">
+                        <h3 class="basket-item__title">${escapeHtml(row.title || "Item")}</h3>
+                    </a>
                 </div>
                 <p class="basket-item__meta">${formatGBP(p)}</p>
             </div>
@@ -242,6 +250,20 @@ function setupSearchRedirect() {
     });
 }
 
+// Build the post-purchase redirect URL
+function buildCheckoutRedirectUrl() {
+    const nextUrl = new URL(buildBrowseUrl(""), window.location.href);
+    nextUrl.searchParams.set("purchased", "1");
+    return nextUrl.toString();
+}
+
+// Complete checkout: clear basket and navigate away
+function completeCheckout() {
+    writeBasket([]);
+    localStorage.removeItem(BASKET_STORAGE_KEY);
+    window.location.assign(buildCheckoutRedirectUrl());
+}
+
 // Handle checkout flow
 function setupBuyNowFlow() {
     const buyNowBtn = document.getElementById("buy-now-btn");
@@ -261,7 +283,7 @@ function setupBuyNowFlow() {
             .map((item) => Number.parseInt(item.id, 10))
             .filter((id) => Number.isInteger(id));
 
-        // Send purchased items to backend
+        // Send purchased items to backend first
         if (itemIds.length > 0) {
             try {
                 await fetch(`${API_BASE}/purchase_items.php`, {
@@ -277,14 +299,27 @@ function setupBuyNowFlow() {
             }
         }
 
-        // Clear basket after checkout
-        writeBasket([]);
-        localStorage.removeItem(BASKET_STORAGE_KEY);
+        // Pull the seller ID from the first basket item that has one,
+        // then show the rating popup - checkout completes from there.
+        const sellerItem = basketItems.find(
+            (item) => item.sellerId != null || item.seller_id != null
+        );
+        const sellerId = sellerItem
+            ? String(sellerItem.sellerId ?? sellerItem.seller_id)
+            : null;
 
-        const nextUrl = new URL(buildBrowseUrl(""), window.location.href);
-        nextUrl.searchParams.set("purchased", "1");
-
-        window.location.assign(nextUrl.toString());
+        if (sellerId) {
+            // Store seller ID on the popup so submitRating/skipRating can read it
+            $("#rating-popup").attr("data-seller-id", sellerId);
+            // Reset any previously selected star rating
+            $("#rating-popup").removeAttr("data-selected-rating");
+            $(".rating-star").text("☆");
+            showRatingPopup();
+            // Checkout will complete inside submitRating / skipRating
+        } else {
+            // No seller to rate - go straight to checkout
+            completeCheckout();
+        }
     });
 }
 
@@ -377,7 +412,13 @@ async function loadCarouselItems() {
             return;
         }
 
-        renderCarouselProducts(data.products.slice(0, 12));
+        // Exclude products already in the basket from the carousel
+        const basketIds = new Set(readBasket().map((item) => String(item.id)));
+        const filteredProducts = data.products.filter(
+            (p) => !basketIds.has(String(p.id))
+        );
+
+        renderCarouselProducts(filteredProducts.slice(0, 12));
     } catch (e) {
         track.innerHTML = "";
     }
@@ -530,3 +571,76 @@ document.addEventListener("DOMContentLoaded", () => {
         window.dispatchEvent(new Event("resize"));
     });
 });
+
+// Displays the star rating popup overlay for the user to rate the seller
+function showRatingPopup() {
+    $("#rating-popup").show();
+    $("#rating-overlay").show();
+}
+
+// Hides the rating popup and overlay
+function hideRatingPopup() {
+    $("#rating-popup").hide();
+    $("#rating-overlay").hide();
+}
+
+// Gets the selected star rating and sends it to submit_rating.php
+function submitRating() {
+    var selectedRating = $("#rating-popup").attr("data-selected-rating");
+    var sellerId = $("#rating-popup").attr("data-seller-id");
+
+    // If no star has been selected, remind the user
+    if (!selectedRating) {
+        alert("Please select a star rating.");
+        return;
+    }
+
+    $.ajax({
+        url: "../../backend/submit_rating.php",
+        method: "POST",
+        data: { sellerId: sellerId, rating: selectedRating },
+        dataType: "json",
+        xhrFields: { withCredentials: true }
+    }).done(function (response) {
+        if (response.success) {
+            hideRatingPopup();
+            completeCheckout();
+        } else {
+            alert(response.message);
+        }
+    }).fail(function () {
+        // If rating fails, proceed to checkout anyway
+        completeCheckout();
+    });
+}
+
+// Allows user to skip rating and proceed to checkout
+function skipRating() {
+    hideRatingPopup();
+    completeCheckout();
+}
+
+// Highlights stars when the user hovers over them
+function starHover(star) {
+    var value = $(star).attr("data-value");
+    $(".rating-star").each(function () {
+        $(this).text($(this).attr("data-value") <= value ? "★" : "☆");
+    });
+}
+
+// Restores stars to the currently selected rating on mouse-out
+function starHoverOut() {
+    var selected = $("#rating-popup").attr("data-selected-rating");
+    $(".rating-star").each(function () {
+        $(this).text(selected && $(this).attr("data-value") <= selected ? "★" : "☆");
+    });
+}
+
+// Sets the selected rating when a star is clicked
+function starClick(star) {
+    var value = $(star).attr("data-value");
+    $("#rating-popup").attr("data-selected-rating", value);
+    $(".rating-star").each(function () {
+        $(this).text($(this).attr("data-value") <= value ? "★" : "☆");
+    });
+}

@@ -9,6 +9,12 @@ header("Content-Type: application/json");
 // Get the product id from the URL e.g. get_product.php?id=1
 $productId = $_GET['id'];
 
+// Reject the request early if no id was provided
+if (!$productId) {
+    echo json_encode(["error" => "Missing product ID"]);
+    exit();
+}
+
 // Query iBayProducts and join iBayMembers to get seller details at the same time
 // use p. for product columns and m. for member columns to avoid name clashes
 $query = "SELECT 
@@ -26,10 +32,14 @@ $query = "SELECT
             CASE WHEN m.rating_count > 0 THEN m.rating_total / m.rating_count ELSE 0 END AS seller_rating
           FROM iBayProducts p
           LEFT JOIN iBayMembers m ON p.sellerId = m.id
-          WHERE p.id = '$productId'";
+          WHERE p.id = ?";
 
-$result = mysqli_query($conn, $query);
-$product = mysqli_fetch_assoc($result);
+// Use a prepared statement to prevent SQL injection
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $productId);
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
 
 // If no product found return an error
 if (!$product) {
