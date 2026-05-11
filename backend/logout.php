@@ -2,6 +2,7 @@
 session_start();
 $_SESSION = [];
 
+// logout functionality using PHP sessions
 if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();
     setcookie(

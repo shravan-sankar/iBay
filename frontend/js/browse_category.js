@@ -1,4 +1,4 @@
-// gets the vlaues of the various filter inputs and sends them to filter.php to get the filtered products,
+// gets the values of the various filter inputs and sends them to filter.php to get the filtered products,
 //  then renders those products in the page
 const filterForm = document.getElementById("filters");
 const container = document.getElementById("products-container");
