@@ -123,7 +123,8 @@ async function addToBasket() {
                         title: product.productName || "Item",
                         price: parseFloat(product.price) || 0,
                         postage: parseFloat(product.postage) || 0,
-                        image_url_1: product.image_url_1 || null
+                        image_url_1: product.image_url_1 || null,
+                        sellerId: product.sellerId || null
                     };
                     // LocalStorage key used across the basket system
                     const KEY = "ibay_basket";
@@ -157,8 +158,8 @@ async function addToBasket() {
                         JSON.stringify(basket)
                     );
 
-                    // After adding to basket, show the rating popup to rate the seller
-                    showRatingPopup();
+                    // After adding to basket, go straight to the basket page
+                    window.location.href = "basket.html";
                 }
 
             } catch (err) {
@@ -173,92 +174,5 @@ async function addToBasket() {
     }).fail(function () {
         // Show generic error if AJAX request fails
         alert("Could not add item to basket.");
-    });
-}
-
- 
-// Displays the star rating popup overlay for the user to rate the seller
-function showRatingPopup() {
-    $("#rating-popup").show();
-    $("#rating-overlay").show();
-}
- 
- 
-
-// Gets the selected star rating and sends it to submit_rating.php
-function submitRating() {
-    console.log("sellerId:", $("#product-page").attr("data-seller-id"));
-    console.log("rating:", $("#rating-popup").attr("data-selected-rating"));
-    var selectedRating = $("#rating-popup").attr("data-selected-rating");
-    var sellerId = $("#product-page").attr("data-seller-id");
- 
-    // If no star has been selected, remind the user
-    if (!selectedRating) {
-        alert("Please select a star rating.");
-        return;
-    }
- 
-    $.ajax({
-        url: "../../backend/submit_rating.php",
-        method: "POST",
-        data: { sellerId: sellerId, rating: selectedRating },
-        dataType: "json",
-        xhrFields: { withCredentials: true }
-    }).done(function (response) {
-        if (response.success) {
-            // Hide the popup and go to basket
-            $("#rating-popup").hide();
-            $("#rating-overlay").hide();
-            window.location.href = "basket.html";
-        } else {
-            alert(response.message);
-        }
-    }).fail(function () {
-        // If rating fails just go to basket anyway
-        window.location.href = "basket.html";
-    });
-}
- 
- 
-// Allows user to skip rating and just go to basket
-function skipRating() {
-    $("#rating-popup").hide();
-    $("#rating-overlay").hide();
-    window.location.href = "basket.html";
-}
- 
- 
-// Highlights stars when the user hovers over them and sets the selected rating when they click
-function starHover(star) {
-    var value = $(star).attr("data-value");
-    $(".rating-star").each(function () {
-        if ($(this).attr("data-value") <= value) {
-            $(this).text("★");
-        } else {
-            $(this).text("☆");
-        }
-    });
-}
- 
-function starHoverOut() {
-    var selected = $("#rating-popup").attr("data-selected-rating");
-    $(".rating-star").each(function () {
-        if (selected && $(this).attr("data-value") <= selected) {
-            $(this).text("★");
-        } else {
-            $(this).text("☆");
-        }
-    });
-}
- 
-function starClick(star) {
-    var value = $(star).attr("data-value");
-    $("#rating-popup").attr("data-selected-rating", value);
-    $(".rating-star").each(function () {
-        if ($(this).attr("data-value") <= value) {
-            $(this).text("★");
-        } else {
-            $(this).text("☆");
-        }
     });
 }

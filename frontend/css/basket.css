@@ -324,6 +324,19 @@ body {
     box-shadow: 0 6px 16px rgba(0, 100, 210, 0.12);
 }
 
+/* Clickable title link in basket items */
+.basket-item__title-link {
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    min-width: 0;
+}
+
+.basket-item__title-link:hover .basket-item__title {
+    color: #0064d2;
+    text-decoration: underline;
+}
+
 /* ── Basket item image box ──────────────────────────────────────────────────
    Fixed 88 × 88 px box, grey background so empty space is never stark white,
    rounded corners, overflow hidden to clip whatever the img delivers.        */
@@ -602,4 +615,106 @@ body {
 
 #copyright {
     text-align: center;
+}
+
+/*  Rating Overlay  */
+#rating-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+ 
+/*  Rating Popup  */
+#rating-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 101;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+ 
+#rating-popup h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #1a1a1a;
+}
+ 
+#rating-popup p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+ 
+/*  Stars in popup  */
+#rating-stars {
+    margin-bottom: 20px;
+}
+ 
+.rating-star {
+    font-size: 36px;
+    color: #0064d2;
+    cursor: pointer;
+    margin: 0 4px;
+}
+ 
+/* Rating popup button row */
+#rating-popup .btn-primary,
+#rating-popup .btn-secondary {
+    display: inline-block;
+    padding: 10px 24px;
+    margin: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+
+    transition: background-color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                filter 0.25s ease;
+}
+
+/* Submit Rating - solid iBay blue */
+#rating-popup .btn-primary {
+    background-color: #0064d2;
+    color: #fff;
+}
+
+#rating-popup .btn-primary:hover {
+    background-color: #004ea8;
+    transform: translateY(-2px);
+    filter: brightness(0.97);
+    box-shadow: 0 6px 14px rgba(0, 100, 210, 0.25);
+}
+
+/* Skip - ghost style with iBay blue border */
+#rating-popup .btn-secondary {
+    background-color: #fff;
+    color: #0064d2;
+    border: 2px solid #0064d2;
+}
+
+#rating-popup .btn-secondary:hover {
+    background-color: #e8f0fe;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 100, 210, 0.15);
+}
+
+/*  Seller rating display on page  */
+#seller-rating {
+    color: #0064d2;
+    font-size: 18px;
 }
