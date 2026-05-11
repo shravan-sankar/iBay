@@ -9,8 +9,8 @@ header("Content-Type: application/json");
 // Get the product id from the URL e.g. get_product.php?id=1
 $productId = $_GET['id'];
 
-// Query iBayProducts and JOIN iBayMembers to get seller details at the same time
-// We use p. for product columns and m. for member columns to avoid name clashes
+// Query iBayProducts and join iBayMembers to get seller details at the same time
+// use p. for product columns and m. for member columns to avoid name clashes
 $query = "SELECT 
             p.productName, 
             p.price, 
