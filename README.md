@@ -21,3 +21,6 @@
 ## Ideas
 - Registration has options they can select for preferences
 - Stephen lynch book as product
+
+## Notes
+- This project was a collaborative team effort building a replica of 'eBay' in our ideals as 'iBay' as part of our University Coursework
